@@ -4,7 +4,6 @@
 
 var myApp = angular.module('myApp', [
   'ngRoute',
-  'ui.bootstrap',
   'mainControllers',
   'mainDirectives'
 ]);
@@ -15,8 +14,7 @@ myApp.config(['$routeProvider',
         when('/index', {
           templateUrl: 'partials/index.html'}).
         when('/reg', {
-          templateUrl: 'partials/reg.html',
-          controller: 'HelloCntl'}).
+          templateUrl: 'partials/reg.html'}).
         when('/abyss', {
           templateUrl: 'partials/abyss.html', 
           controller: 'AbyssCtrl'

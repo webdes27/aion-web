@@ -1,4 +1,28 @@
 
 <h1 class="page-header">Топ игроков</h1>
 
-{{players | json}}
+<!--{{players | json}} -->
+
+<table class="table table-bordered table-hover">
+	<tr> 
+		<th>Ник</th> 
+		<th>Уровень</th>
+		<th>Расса</th>
+                <th>Пол</th>
+                <th>Класс</th>
+                <th>Титул</th>
+                <th>Положение</th>
+                <th>Онлайн</th>
+                
+	</tr>
+	<tr ng-repeat="item in players">
+		<td>{{item.p_name}}</td>
+		<td>{{getLevelByExp(item.exp)}}</td>
+		<td>{{item.race}}</td>
+		<td>{{item.gender}}</td>
+		<td>{{item.player_class}}</td>
+		<td>{{getTitle(item.title_id)}}</td>
+		<td>{{getWorld(item.world_id)}}</td>
+		<td>{{item.online}}</td>
+	</tr>
+</table>
