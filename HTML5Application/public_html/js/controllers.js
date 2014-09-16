@@ -119,8 +119,9 @@ mainControllers.controller('FormCtrl', ['$scope', '$http',
 
                     if (!data.success) {
                         // if not successful, bind errors to error variables
-                        $scope.errorName = data.errors.name;
-                        $scope.errorSuperhero = data.errors.superheroAlias;
+                        $scope.errorName = (typeof data.errors.name !== "undefined") ? data.errors.name[0] : '';
+                        $scope.errorPassword = (typeof data.errors.password !== "undefined") ? data.errors.password[0] : '';
+                        $scope.errorEmail = (typeof data.errors.email !== "undefined") ?  data.errors.email[0] : '';
                     } else {
                         // if successful, bind success message to message
                         $scope.message = data.message;
