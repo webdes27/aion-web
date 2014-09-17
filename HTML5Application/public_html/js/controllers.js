@@ -110,7 +110,7 @@ mainControllers.controller('FormCtrl', ['$scope', '$http', '$location', '$rootSc
         $scope.processForm = function() {
                 $http({
                 method  : 'POST',
-                url     : 'http://host3/index.php/site/signupjson',
+                url     : '/client/index.php/site/signupjson',
                 data    : $.param($scope.formData),  // pass in data as strings
                 headers : { 'Content-Type': 'application/x-www-form-urlencoded' }  // set the headers so angular passing info as form data (not request payload)
             })
