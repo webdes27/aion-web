@@ -17,6 +17,9 @@ myApp.config(['$routeProvider',
           templateUrl: 'partials/reg.html',
           controller: 'FormCtrl'
         }).
+        when('/regresult', {
+          templateUrl: 'partials/regresult.html'
+        }).   
         when('/abyss', {
           templateUrl: 'partials/abyss.html', 
           controller: 'AbyssCtrl'

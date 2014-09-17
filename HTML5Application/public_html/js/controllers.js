@@ -104,8 +104,8 @@ function($scope, $http) {
 }
 ]);
 
-mainControllers.controller('FormCtrl', ['$scope', '$http',
-    function($scope, $http) {
+mainControllers.controller('FormCtrl', ['$scope', '$http', '$location', '$rootScope',
+    function($scope, $http, $location, $rootScope) {
         $scope.formData = {};
         $scope.processForm = function() {
                 $http({
@@ -125,6 +125,8 @@ mainControllers.controller('FormCtrl', ['$scope', '$http',
                     } else {
                         // if successful, bind success message to message
                         $scope.message = data.message;
+                        $rootScope.reg = { message: data.message };
+                        $location.path('/regresult');
                     }
                 });
         };
