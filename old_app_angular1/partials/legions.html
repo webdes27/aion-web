@@ -1,0 +1,17 @@
+
+<h1 class="page-header">Легионы</h1>
+
+<!--{{legions | json}} -->
+
+<table class="table table-bordered table-hover">
+	<tr> 
+		<th>Легион</th> 
+		<th>Уровень</th>
+		<th>contribution_points</th>
+	</tr>
+	<tr ng-repeat="item in legions">
+		<td>{{item.name}}</td>
+		<td>{{item.level}}</td>
+		<td>{{item.contribution_points}}</td>
+	</tr>
+</table>

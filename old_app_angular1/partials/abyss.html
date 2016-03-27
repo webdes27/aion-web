@@ -1,0 +1,24 @@
+
+<h1 class="page-header">Abyss-игроки</h1>
+
+<!--{{abyss | json}} -->
+
+<table class="table table-bordered table-hover">
+	<tr> 
+		<th>Ник</th> 
+		<th>Расса</th>
+		<th>AP</th>
+		<th>Убийств</th>
+		<th>Ранг</th>
+	</tr>
+	<tr ng-repeat="item in abyss">
+		<td>{{item.name}}</td>
+		<td>{{item.race}}</td>
+		<td>{{item.ap}}</td>
+		<td>{{item.all_kill}}</td>
+		<td>{{getRankById(item.rank)}}</td>
+	</tr>
+</table>
+
+<!-- {{ranks | json}} -->
+<!-- {{getRankById(1)}}  -->
