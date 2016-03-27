@@ -1,0 +1,19 @@
+
+<h1 class="page-header">Abyss-игроки</h1>
+
+<table class="table table-bordered table-hover">
+	<tr> 
+		<th>Ник</th> 
+		<th>Расса</th>
+		<th>AP</th>
+		<th>Убийств</th>
+		<th>Ранг</th>
+	</tr>
+	<tr *ngFor="#item of items | async">
+		<td>{{item.name}}</td>
+		<td>{{item.race}}</td>
+		<td>{{item.ap}}</td>
+		<td>{{item.all_kill}}</td>
+		<td>{{getRankById(item.rank)}}</td>
+	</tr>
+</table>

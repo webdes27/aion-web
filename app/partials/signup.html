@@ -1,0 +1,64 @@
+<div class="page-header">
+        <h1><span class="glyphicon glyphicon-tower"></span> Регистрация</h1>
+</div>
+
+<div class="row">
+  <div class="col-sm-6" [hidden]="submitted">
+    <form *ngIf="active" (ngSubmit)="onSubmit(signupForm.value)" [ngFormModel]="signupForm">
+
+      <div class="form-group">
+        <label for="name">Логин</label>
+        <input type="text" class="form-control" required ngControl="name"  #name="ngForm" >
+        <div [hidden]="name.valid || name.pristine" class="alert alert-danger">
+                <p *ngIf="name.control.hasError('required')">Name is required.</p>
+                <p *ngIf="name.control.hasError('minlength')">Name is too short.</p>
+                <p *ngIf="name.control.hasError('maxlength')">Name is too long.</p>
+        </div>
+      </div>
+
+        <div ngControlGroup="passwordRetry">
+                <div class="form-group">
+                <label for="password">Пароль</label>
+                <input type="text" class="form-control" required ngControl="password"  #password="ngForm" >
+                <div [hidden]="password.valid || password.pristine" class="alert alert-danger">
+                  Password is required
+                </div>
+                </div>
+
+                <div class="form-group">
+                <label for="passwordConfirmation">Ещё раз пароль</label>
+                <input type="text" class="form-control" required ngControl="passwordConfirmation"  #passwordConfirmation="ngForm" >
+                <div [hidden]="passwordConfirmation.valid || passwordConfirmation.pristine" class="alert alert-danger">
+                  Password_repeat is required
+                </div>
+      </div>
+
+      </div>
+
+      <div class="form-group">
+        <label for="email">Email</label>
+        <input type="text" class="form-control" required ngControl="email"  #email="ngForm" >
+        <div [hidden]="email.valid || email.pristine" class="alert alert-danger">
+          Email is required
+        </div>
+      </div>
+
+        <button type="submit" class="btn btn-primary" [disabled]="!signupForm.valid">Зарегистрироваться</button>
+    </form>
+  </div>
+</div>
+
+  <div [hidden]="!submitted">
+    <div class="row">
+      <div class="col-xs-3">name</div>
+      <div class="col-xs-9  pull-left">{{ model.name }}</div>
+    </div>
+    <div class="row">
+      <div class="col-xs-3">password</div>
+      <div class="col-xs-9 pull-left">{{ model.password }}</div>
+    </div>
+    <div class="row">
+      <div class="col-xs-3">email</div>
+      <div class="col-xs-9 pull-left">{{ model.email }}</div>
+    </div>
+  </div>

@@ -1,1 +1,4 @@
-/HTML5Application/nbproject/
+typings/
+node_modules/
+*.js
+*.js.map
