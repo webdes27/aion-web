@@ -44,5 +44,5 @@ import {StatComponent} from './stat.component';
   }
 ])
 export class AppComponent {
-  title = 'Tour of Heroes';
+  title = 'Index';
 }

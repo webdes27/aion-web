@@ -1,19 +1,19 @@
 import {Component, OnInit}  from 'angular2/core';
 import {JSONP_PROVIDERS, Http, HTTP_PROVIDERS}  from 'angular2/http';
 import {Observable}       from 'rxjs/Observable';
-import {AionService} from './aion.service';
+import {BaseService} from './base.service';
 
 @Component({
   selector: 'my-app',
   templateUrl: 'app/partials/abyss.html',
-  providers:[JSONP_PROVIDERS, AionService, HTTP_PROVIDERS]
+  providers:[JSONP_PROVIDERS, BaseService, HTTP_PROVIDERS]
 })
 
 export class AbyssComponent implements OnInit {
   items: Observable<string[]>;
   ranks: Array<any>;
 
-  constructor (private _aionService: AionService, private http: Http) {}
+  constructor (private _baseService: BaseService, private http: Http) {}
 
   getRanks() {
     this.http.get('app/data/ranks.json')
@@ -40,6 +40,6 @@ export class AbyssComponent implements OnInit {
 
   ngOnInit() {
     this.getRanks();
-    this.items = this._aionService.search('abyss');
+    this.items = this._baseService.search('abyss');
   }
 }

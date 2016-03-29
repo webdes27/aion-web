@@ -1,12 +1,12 @@
 import {Component, OnInit}  from 'angular2/core';
 import {JSONP_PROVIDERS, Http, HTTP_PROVIDERS}  from 'angular2/http';
 import {Observable}       from 'rxjs/Observable';
-import {AionService} from './aion.service';
+import {BaseService} from './base.service';
 
 @Component({
   selector: 'my-app',
   templateUrl: 'app/partials/players.html',
-  providers:[JSONP_PROVIDERS, AionService, HTTP_PROVIDERS]
+  providers:[JSONP_PROVIDERS, BaseService, HTTP_PROVIDERS]
 })
 
 export class PlayersComponent implements OnInit {
@@ -15,7 +15,7 @@ export class PlayersComponent implements OnInit {
   titles: Array<any>;
   worlds: Array<any>;
 
-  constructor (private _aionService: AionService, private http: Http) {}
+  constructor (private _baseService: BaseService, private http: Http) {}
 
   getLevels() {
     this.http.get('app/data/levels.json')
@@ -90,6 +90,6 @@ export class PlayersComponent implements OnInit {
     this.getLevels();
     this.getTitles();
     this.getWorlds();
-    this.items = this._aionService.search('players');
+    this.items = this._baseService.search('players');
   }
 }

@@ -3,10 +3,10 @@ import {Jsonp, URLSearchParams} from 'angular2/http';
 import 'rxjs/Rx';
 
 @Injectable()
-export class AionService {
+export class BaseService {
   constructor(private jsonp: Jsonp) {}
   search (term: string) {
-    let wikiUrl = 'http://aion.kristal-lab.ru/client/index.php/site/getdata';
+    let url = 'http://aion.kristal-lab.ru/client/index.php/site/getdata';
     var params = new URLSearchParams();
     params.set('type', term);
     params.set('action', 'opensearch');
@@ -14,7 +14,7 @@ export class AionService {
     params.set('callback', 'JSONP_CALLBACK');
     // TODO: Add error handling
     return this.jsonp
-               .get(wikiUrl, { search: params })
+               .get(url, { search: params })
                .map(request => <string[]> request.json());
                // .do(data => console.log(data));
   }
