@@ -15,6 +15,8 @@ export class StatComponent implements OnInit {
   constructor (private _baseService: BaseService) {}
 
   ngOnInit() {
-    this.items = this._baseService.search('stat');
+    this._baseService.search('stat').subscribe(res => {
+      this.items = res;
+    });
   }
 }

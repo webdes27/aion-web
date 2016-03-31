@@ -15,7 +15,7 @@ export class BaseService {
     // TODO: Add error handling
     return this.jsonp
                .get(url, { search: params })
-               .map(request => <string[]> request.json());
+               .map(request => request.json());
                // .do(data => console.log(data));
   }
 }
