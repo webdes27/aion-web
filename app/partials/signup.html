@@ -15,24 +15,21 @@
                 <p *ngIf="name.control.hasError('maxlength')">Name is too long.</p>
         </div>
       </div>
+      
+        <div class="form-group">
+            <label for="password">Пароль</label>
+            <input type="text" class="form-control" required ngControl="password"  #password="ngForm" >
+            <div [hidden]="password.valid || password.pristine" class="alert alert-danger">
+              Password is required
+            </div>
+        </div>
 
-        <div ngControlGroup="passwordRetry">
-                <div class="form-group">
-                <label for="password">Пароль</label>
-                <input type="text" class="form-control" required ngControl="password"  #password="ngForm" >
-                <div [hidden]="password.valid || password.pristine" class="alert alert-danger">
-                  Password is required
-                </div>
-                </div>
-
-                <div class="form-group">
-                <label for="passwordConfirmation">Ещё раз пароль</label>
-                <input type="text" class="form-control" required ngControl="passwordConfirmation"  #passwordConfirmation="ngForm" >
-                <div [hidden]="passwordConfirmation.valid || passwordConfirmation.pristine" class="alert alert-danger">
-                  Password_repeat is required
-                </div>
-      </div>
-
+      <div class="form-group">
+            <label for="password_repeat">Ещё раз пароль</label>
+            <input type="text" class="form-control" required ngControl="password_repeat"  #password_repeat="ngForm" >
+            <div [hidden]="password_repeat.valid || password_repeat.pristine" class="alert alert-danger">
+              Password_repeat is required
+            </div>
       </div>
 
       <div class="form-group">

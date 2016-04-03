@@ -1,12 +1,12 @@
 import {Component}  from 'angular2/core';
 import {FORM_DIRECTIVES, ControlGroup, FormBuilder, Validators} from 'angular2/common';
 import {JSONP_PROVIDERS, Http, HTTP_PROVIDERS, Headers, RequestOptions}  from 'angular2/http';
-import {validateEmail} from './web.util';
+import {validateEmail, urlEncode} from './web.util';
 
 class User {
     public name: string;
     public password: string;
-    public passwordConfirmation: string;
+    public password_repeat: string;
     public email: string;
 }
 
@@ -23,10 +23,8 @@ export class SignupComponent {
     this.signupForm = this._formBuilder.group({
       name: ["", Validators.compose([Validators.required, Validators.minLength(2), Validators.maxLength(45)])],
       email: ["", Validators.compose([Validators.required, validateEmail])],
-      passwordRetry: this._formBuilder.group({
-        password: ["", Validators.required],
-        passwordConfirmation: ["", Validators.required]
-      })
+      password: ["", Validators.compose([Validators.required, Validators.minLength(4), Validators.maxLength(30)])],
+      password_repeat: ["", Validators.required]
     });
   }
 
@@ -34,14 +32,21 @@ export class SignupComponent {
     let headers = new Headers({ 'Content-Type': 'application/x-www-form-urlencoded' });
     let options = new RequestOptions({ headers: headers });
     return this.http
-      .post('http://host3/client/index.php/site/signupjson', JSON.stringify(credentials), options)
+      .post('http://host3/site/signupjson', urlEncode(credentials), options)
       .map(res => res.json())
-      .map((res) => {
-        if (res.success) {
-        	console.log('success');
-        }
-        console.log(res);
-        return res.success;
+      .map(
+        (data) => {
+          if (!data.success) {
+                // if not successful, bind errors to error variables
+                //name.errors = (typeof data.errors.name !== "undefined") ? data.errors.name[0] : '';
+                //password.errors = (typeof data.errors.password !== "undefined") ? data.errors.password[0] : '';
+                //email.errors = (typeof data.errors.email !== "undefined") ?  data.errors.email[0] : '';
+            } else {
+                // if successful, bind success message to message
+                //$scope.message = data.message;
+            }
+        console.log(data);
+        return data.success;
       });
   }
 
