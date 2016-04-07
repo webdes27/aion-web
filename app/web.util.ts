@@ -3,11 +3,16 @@ import {Headers, URLSearchParams } from 'angular2/http';
 
 const EMAIL_REG = /^([\w-]+(?:\.[\w-]+)*)@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$/i;
 
-export const OPTS_REQ_JSON = {
-  headers: new Headers({
-    'Content-Type': 'application/json'
-  })
-};
+export function getJsonHeaders() {
+    let headers = new Headers();
+    headers.append('Content-Type', 'application/json');
+    return headers;
+}
+
+export function getUrlencodedHeaders() {
+    let headers = new Headers({ 'Content-Type': 'application/x-www-form-urlencoded' });
+    return headers;
+}
 
 export function validateEmail(control: Control) {
   return EMAIL_REG.test(control.value) ? undefined : { validEmail: true };

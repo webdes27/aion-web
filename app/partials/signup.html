@@ -4,7 +4,7 @@
 
 <div class="row">
   <div class="col-sm-6" [hidden]="submitted">
-    <form *ngIf="active" (ngSubmit)="onSubmit(signupForm.value)" [ngFormModel]="signupForm">
+    <form (ngSubmit)="onSubmit(signupForm.value)" [ngFormModel]="signupForm">
 
       <div class="form-group">
         <label for="name">Логин</label>
@@ -15,6 +15,7 @@
                 <p *ngIf="name.control.hasError('maxlength')">Name is too long.</p>
         </div>
       </div>
+      <p [hidden]="!result.err_name" class="alert alert-danger">{{(result.err_name)}}</p>
       
         <div class="form-group">
             <label for="password">Пароль</label>
@@ -31,6 +32,7 @@
               Password_repeat is required
             </div>
       </div>
+       <p [hidden]="!result.err_password" class="alert alert-danger">{{(result.err_password)}}</p>
 
       <div class="form-group">
         <label for="email">Email</label>
@@ -39,6 +41,7 @@
             Enter a valid email.
         </div>
       </div>
+      <p [hidden]="!result.err_email" class="alert alert-danger">{{(result.err_email)}}</p>
 
         <button type="submit" class="btn btn-primary" [disabled]="!signupForm.valid">Зарегистрироваться</button>
     </form>
@@ -46,16 +49,6 @@
 </div>
 
   <div [hidden]="!submitted">
-    <div class="row">
-      <div class="col-xs-3">name</div>
-      <div class="col-xs-9  pull-left">{{ model.name }}</div>
-    </div>
-    <div class="row">
-      <div class="col-xs-3">password</div>
-      <div class="col-xs-9 pull-left">{{ model.password }}</div>
-    </div>
-    <div class="row">
-      <div class="col-xs-3">email</div>
-      <div class="col-xs-9 pull-left">{{ model.email }}</div>
-    </div>
+    <h2>Успешная регистрация</h2>
+    <p class="alert alert-success">{{(result.message)}}</p>
   </div>

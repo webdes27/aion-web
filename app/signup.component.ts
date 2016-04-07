@@ -1,13 +1,21 @@
 import {Component}  from 'angular2/core';
-import {FORM_DIRECTIVES, ControlGroup, FormBuilder, Validators} from 'angular2/common';
-import {JSONP_PROVIDERS, Http, HTTP_PROVIDERS, Headers, RequestOptions}  from 'angular2/http';
-import {validateEmail, urlEncode} from './web.util';
+import {FORM_DIRECTIVES, Control, ControlGroup, FormBuilder, Validators} from 'angular2/common';
+import {Http, HTTP_PROVIDERS, RequestOptions}  from 'angular2/http';
+import {validateEmail, urlEncode, getUrlencodedHeaders} from './web.util';
 
 class User {
     public name: string;
     public password: string;
     public password_repeat: string;
     public email: string;
+}
+
+class Result {
+    public err_name: string;
+    public err_password: string;
+    public err_email: string;
+    public message: string;
+    public success: boolean;
 }
 
 @Component({
@@ -18,6 +26,9 @@ class User {
 
 export class SignupComponent {
   signupForm: ControlGroup;
+  submitted: Boolean = false;
+  model = new User();
+  result = new Result();
 
   constructor (private _formBuilder: FormBuilder, private http: Http) {
     this.signupForm = this._formBuilder.group({
@@ -29,41 +40,44 @@ export class SignupComponent {
   }
 
   signup(credentials) {
-    let headers = new Headers({ 'Content-Type': 'application/x-www-form-urlencoded' });
-    let options = new RequestOptions({ headers: headers });
+    let options = new RequestOptions({ headers: getUrlencodedHeaders() });
     return this.http
       .post('http://host3/site/signupjson', urlEncode(credentials), options)
       .map(res => res.json())
-      .map(
-        (data) => {
-          if (!data.success) {
-                // if not successful, bind errors to error variables
-                //name.errors = (typeof data.errors.name !== "undefined") ? data.errors.name[0] : '';
-                //password.errors = (typeof data.errors.password !== "undefined") ? data.errors.password[0] : '';
-                //email.errors = (typeof data.errors.email !== "undefined") ?  data.errors.email[0] : '';
-            } else {
-                // if successful, bind success message to message
-                //$scope.message = data.message;
-            }
-        console.log(data);
-        return data.success;
+      .map((data) => {
+       		//console.log(data);
+       		this.result.success = data.success;
+       		if(!data.success) {
+		    	this.result.err_name = (typeof data.errors.name !== "undefined") ? data.errors.name[0] : '';
+		    	this.result.err_password  = (typeof data.errors.password !== "undefined") ? data.errors.password[0] : '';
+		    	this.result.err_email = (typeof data.errors.email !== "undefined") ?  data.errors.email[0] : '';
+			} else {
+		    	this.result.message = data.message;
+			}
+	        return this.result.success;
       });
   }
 
-  active = true;
-  model = new User();
-  submitted = false;
-
   onSubmit(credentials) {
-    this.signup(credentials).subscribe((result) => {
-      if (result) {
-        //this._router.navigate(['List']);
+    this.signup(credentials).subscribe((res) => {
+      if (res) {
+    	this.submitted = true;
+    	this.clear();
+     	setTimeout(()=> {
+    		this.model = new User();
+    		this.result = new Result();
+     		this.submitted=false;
+        	//this._router.navigate(['Index']);
+     	}, 7000);
       }
     });
-    // this.submitted = true;
-    // this.model = new User();
-    // this.active = false;
-    // setTimeout(()=> this.active=true, 0);
+  }
+
+  clear() {
+  	for(let c in this.signupForm.controls) {
+  		(<Control>this.signupForm.controls[c]).updateValue('');
+    	(<Control>this.signupForm.controls[c]).setErrors(null);
+  	};
   }
 
 }
