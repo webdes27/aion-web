@@ -1,5 +1,6 @@
-import {Component} from 'angular2/core';
+import {Component, provide, OpaqueToken, Inject} from 'angular2/core';
 import {RouteConfig, ROUTER_DIRECTIVES, ROUTER_PROVIDERS} from 'angular2/router';
+import {CONFIG, Config, APP_CONFIG} from './app.config';
 import {IndexComponent} from './index.component';
 import {PlayersComponent} from './players.component';
 import {AbyssComponent} from './abyss.component';
@@ -12,7 +13,7 @@ import {StatComponent} from './stat.component';
   templateUrl: 'app/partials/app.html',
   directives: [ROUTER_DIRECTIVES, StatComponent],
   providers: [
-    ROUTER_PROVIDERS
+    ROUTER_PROVIDERS, provide(APP_CONFIG, {useValue: CONFIG}),
   ]
 })
 @RouteConfig([
