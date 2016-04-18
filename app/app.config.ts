@@ -9,7 +9,7 @@ export interface Config {
 }
 
 export const CONFIG:Config = {
-	title: 'Dependency Injection',
+	title: 'AION Kristall',
 	apiGetData: 'http://aion.kristal-lab.ru/client/index.php/site/getdata',
 	apiSignup: 'http://host3/site/signupjson'
 };

@@ -45,5 +45,6 @@ import {StatComponent} from './stat.component';
   }
 ])
 export class AppComponent {
-  title = 'Index';
+	constructor(@Inject(APP_CONFIG) private _config: Config) {}
+  	title = this._config.title;
 }
