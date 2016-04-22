@@ -1,6 +1,6 @@
 import {Component, Inject}  from 'angular2/core';
 import {FORM_DIRECTIVES, Control, ControlGroup, FormBuilder, Validators} from 'angular2/common';
-import {Http, HTTP_PROVIDERS, RequestOptions}  from 'angular2/http';
+import {Http, RequestOptions}  from 'angular2/http';
 import {validateEmail, urlEncode, getUrlencodedHeaders} from './web.util';
 import {Config, APP_CONFIG} from './app.config';
 
@@ -22,7 +22,7 @@ class Result {
 @Component({
   selector: 'my-app',
   templateUrl: 'app/partials/signup.html',
-  providers:[FORM_DIRECTIVES, HTTP_PROVIDERS]
+  providers:[FORM_DIRECTIVES]
 })
 
 export class SignupComponent {
