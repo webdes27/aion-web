@@ -1,8 +1,8 @@
 import {Component} from 'angular2/core';
 import {FORM_DIRECTIVES, Control, ControlGroup, FormBuilder, Validators} from 'angular2/common';
 import {Router} from 'angular2/router';
-import {UserService} from './user.service';
-import {StorageService} from './storage.service';
+import {UserService} from './services/user.service';
+import {StorageService} from './services/storage.service';
 
 @Component({
   selector: 'login',
@@ -15,7 +15,7 @@ export class LoginComponent {
   constructor(private _userService: UserService, private _builder: FormBuilder, private _router: Router) {
 
     this.loginForm = _builder.group({
-      email: ['', Validators.required],
+      name: ['', Validators.required],
       password: ['', Validators.required]
     });
   }

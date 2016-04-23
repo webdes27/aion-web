@@ -1,7 +1,7 @@
 import {Injectable, Inject} from 'angular2/core';
 import {Jsonp, URLSearchParams} from 'angular2/http';
 import 'rxjs/Rx';
-import {Config, APP_CONFIG} from './app.config';
+import {Config, APP_CONFIG} from '../app.config';
 
 @Injectable()
 export class BaseService {

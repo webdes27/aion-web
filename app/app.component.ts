@@ -1,6 +1,6 @@
-import {Component, provide, OpaqueToken, Inject} from 'angular2/core';
+import {Component, Inject} from 'angular2/core';
 import {RouteConfig, ROUTER_DIRECTIVES, Router} from 'angular2/router';
-import {CONFIG, Config, APP_CONFIG} from './app.config';
+import {Config, APP_CONFIG} from './app.config';
 import {IndexComponent} from './index.component';
 import {PlayersComponent} from './players.component';
 import {AbyssComponent} from './abyss.component';
@@ -9,15 +9,13 @@ import {SignupComponent} from './signup.component';
 import {StatComponent} from './stat.component';
 import {LoginComponent} from './login.component';
 import {LoggedInRouterOutlet} from './directives/router_outlet';
-import {UserService} from './user.service';
+import {UserService} from './services/user.service';
 
 @Component({
   selector: 'my-app',
   templateUrl: 'app/partials/app.html',
   directives: [ROUTER_DIRECTIVES, StatComponent, LoggedInRouterOutlet],
-  providers: [
-    provide(APP_CONFIG, {useValue: CONFIG}),
-  ]
+  providers: []
 })
 @RouteConfig([
   {

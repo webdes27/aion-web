@@ -1,7 +1,7 @@
 import {Component, OnInit}  from 'angular2/core';
 import {JSONP_PROVIDERS}  from 'angular2/http';
 import {Observable}       from 'rxjs/Observable';
-import {BaseService} from './base.service';
+import {BaseService} from './services/base.service';
 
 @Component({
   selector: 'my-stat',
