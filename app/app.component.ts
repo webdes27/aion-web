@@ -1,5 +1,5 @@
 import {Component, Inject} from 'angular2/core';
-import {RouteConfig, ROUTER_DIRECTIVES, Router} from 'angular2/router';
+import {RouteConfig, Router} from 'angular2/router';
 import {Config, APP_CONFIG} from './app.config';
 import {IndexComponent} from './index.component';
 import {PlayersComponent} from './players.component';
@@ -9,12 +9,12 @@ import {SignupComponent} from './signup.component';
 import {StatComponent} from './stat.component';
 import {LoginComponent} from './login.component';
 import {LoggedInRouterOutlet} from './directives/router_outlet';
-import {UserService} from './services/user.service';
+import {MenuComponent} from './menu.component';
 
 @Component({
   selector: 'my-app',
   templateUrl: 'app/partials/app.html',
-  directives: [ROUTER_DIRECTIVES, StatComponent, LoggedInRouterOutlet],
+  directives: [StatComponent, LoggedInRouterOutlet, MenuComponent],
   providers: []
 })
 @RouteConfig([
@@ -51,18 +51,8 @@ import {UserService} from './services/user.service';
   }
 ])
 export class AppComponent {
-	constructor(@Inject(APP_CONFIG) private _config: Config, private _userService: UserService, private _router:Router) {}
+	constructor(@Inject(APP_CONFIG) private _config: Config) {}
 
-  title = this._config.title;
-
-  getLoggedIn() {
-    return this._userService.getLoggedIn();
-  }
-
-  logout() {
-    this._userService.logout();
-    this._router.navigate(['List']);
-    return false;
-  }
+  	title = this._config.title;
 
 }

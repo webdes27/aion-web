@@ -3,11 +3,11 @@ import {Router, RouterOutlet} from 'angular2/router';
 import {UserService} from '../services/user.service';
 
 @Directive({
-  selector: 'router-outlet2'
+  selector: 'router-outlet'
 })
 export class LoggedInRouterOutlet extends RouterOutlet {
   publicRoutes = [
-    '', 'login', 'signup'
+    '', 'index', 'players', 'abyss', 'legions', 'login', 'signup'
   ];
   private parentRouter: Router;
 
