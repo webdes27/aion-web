@@ -22,7 +22,7 @@ class Result {
 @Component({
   selector: 'my-app',
   templateUrl: 'app/partials/signup.html',
-  providers:[FORM_DIRECTIVES]
+  directives: [FORM_DIRECTIVES],
 })
 
 export class SignupComponent {

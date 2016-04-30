@@ -9,7 +9,7 @@
 		<th>Убийств</th>
 		<th>Ранг</th>
 	</tr>
-	<tr *ngFor="#item of items | async">
+	<tr *ngFor="let item of items | async">
 		<td>{{item.name}}</td>
 		<td>{{item.race}}</td>
 		<td>{{item.ap}}</td>

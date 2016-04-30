@@ -7,7 +7,8 @@ import {StorageService} from './services/storage.service';
 @Component({
   selector: 'login',
   templateUrl: 'app/partials/login.html',
-  providers:[FORM_DIRECTIVES, UserService, StorageService]
+  providers:[UserService, StorageService],
+  directives: [FORM_DIRECTIVES],
 })
 export class LoginComponent {
   loginForm: ControlGroup;

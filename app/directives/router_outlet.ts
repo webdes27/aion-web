@@ -1,4 +1,4 @@
-import {ElementRef, DynamicComponentLoader, Attribute, Directive} from 'angular2/core';
+import {ViewContainerRef, DynamicComponentLoader, Attribute, Directive} from 'angular2/core';
 import {Router, RouterOutlet} from 'angular2/router';
 import {UserService} from '../services/user.service';
 
@@ -11,9 +11,9 @@ export class LoggedInRouterOutlet extends RouterOutlet {
   ];
   private parentRouter: Router;
 
-  constructor(_elementRef: ElementRef, _loader: DynamicComponentLoader, _parentRouter: Router, @Attribute('name') nameAttr: string, private _userService: UserService) {
+  constructor(_containerRef: ViewContainerRef, _loader: DynamicComponentLoader, _parentRouter: Router, @Attribute('name') nameAttr: string, private _userService: UserService) {
 
-    super(_elementRef, _loader, _parentRouter, nameAttr);
+    super(_containerRef, _loader, _parentRouter, nameAttr);
 
     this.parentRouter = _parentRouter;
 

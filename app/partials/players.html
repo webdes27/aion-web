@@ -13,7 +13,7 @@
                 <th>Онлайн</th>
                 
 	</tr>
-	<tr *ngFor="#item of items | async">
+	<tr *ngFor="let item of items | async">
 		<td>{{item.p_name}}</td>
 		<td>{{getLevelByExp(item.exp)}}</td>
 		<td>{{item.race}}</td>
