@@ -1,5 +1,5 @@
-import {Injectable, Inject} from 'angular2/core';
-import {Http} from 'angular2/http';
+import {Injectable, Inject} from '@angular/core';
+import {Http} from '@angular/http';
 import {BehaviorSubject} from 'rxjs/BehaviorSubject';
 import {StorageService} from './storage.service';
 import {Config, APP_CONFIG} from '../app.config';

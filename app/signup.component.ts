@@ -1,6 +1,6 @@
-import {Component, Inject}  from 'angular2/core';
-import {FORM_DIRECTIVES, Control, ControlGroup, FormBuilder, Validators} from 'angular2/common';
-import {Http, RequestOptions}  from 'angular2/http';
+import {Component, Inject}  from '@angular/core';
+import {FORM_DIRECTIVES, Control, ControlGroup, FormBuilder, Validators} from '@angular/common';
+import {Http, RequestOptions}  from '@angular/http';
 import {validateEmail, urlEncode, getUrlencodedHeaders} from './web.util';
 import {Config, APP_CONFIG} from './app.config';
 

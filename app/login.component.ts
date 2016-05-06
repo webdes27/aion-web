@@ -1,6 +1,6 @@
-import {Component} from 'angular2/core';
-import {FORM_DIRECTIVES, Control, ControlGroup, FormBuilder, Validators} from 'angular2/common';
-import {Router} from 'angular2/router';
+import {Component} from '@angular/core';
+import {FORM_DIRECTIVES, Control, ControlGroup, FormBuilder, Validators} from '@angular/common';
+import {Router} from '@angular/router-deprecated';
 import {UserService} from './services/user.service';
 import {StorageService} from './services/storage.service';
 

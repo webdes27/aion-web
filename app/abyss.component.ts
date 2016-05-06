@@ -1,5 +1,5 @@
-import {Component, OnInit}  from 'angular2/core';
-import {JSONP_PROVIDERS, Http}  from 'angular2/http';
+import {Component, OnInit}  from '@angular/core';
+import {JSONP_PROVIDERS, Http}  from '@angular/http';
 import {Observable}       from 'rxjs/Observable';
 import {BaseService} from './services/base.service';
 

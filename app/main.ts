@@ -1,9 +1,9 @@
-import {bootstrap}    from 'angular2/platform/browser'
-import {AppComponent} from './app.component'
-import {enableProdMode, provide} from 'angular2/core';
-import {HTTP_PROVIDERS} from 'angular2/http';
-import {ROUTER_PROVIDERS} from 'angular2/router';
-import { HashLocationStrategy, LocationStrategy } from 'angular2/platform/common';
+import {bootstrap}    from '@angular/platform-browser-dynamic';
+import {AppComponent} from './app.component';
+import {enableProdMode, provide} from '@angular/core';
+import {HTTP_PROVIDERS} from '@angular/http';
+import {ROUTER_PROVIDERS} from '@angular/router-deprecated';
+import {FORM_PROVIDERS, HashLocationStrategy, LocationStrategy } from '@angular/common';
 import {UserService} from './services/user.service';
 import {StorageService} from './services/storage.service';
 import {CONFIG, Config, APP_CONFIG} from './app.config';
@@ -13,6 +13,7 @@ if (window['IS_PROD'] === 'true') {
 }
 
 bootstrap(AppComponent, [
+	FORM_PROVIDERS,
 	HTTP_PROVIDERS,
 	ROUTER_PROVIDERS,
 	UserService,

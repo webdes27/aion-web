@@ -1,5 +1,5 @@
-import {Injectable, Inject} from 'angular2/core';
-import {Jsonp, URLSearchParams} from 'angular2/http';
+import {Injectable, Inject} from '@angular/core';
+import {Jsonp, URLSearchParams} from '@angular/http';
 import 'rxjs/Rx';
 import {Config, APP_CONFIG} from '../app.config';
 

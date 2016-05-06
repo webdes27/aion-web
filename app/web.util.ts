@@ -1,5 +1,5 @@
-import {Control} from 'angular2/common';
-import {Headers, URLSearchParams } from 'angular2/http';
+import {Control} from '@angular/common';
+import {Headers, URLSearchParams } from '@angular/http';
 
 const EMAIL_REG = /^([\w-]+(?:\.[\w-]+)*)@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$/i;
 

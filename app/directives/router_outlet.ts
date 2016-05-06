@@ -1,5 +1,5 @@
-import {ViewContainerRef, DynamicComponentLoader, Attribute, Directive} from 'angular2/core';
-import {Router, RouterOutlet} from 'angular2/router';
+import {ViewContainerRef, DynamicComponentLoader, Attribute, Directive} from '@angular/core';
+import {Router, RouterOutlet} from '@angular/router-deprecated';
 import {UserService} from '../services/user.service';
 
 @Directive({
