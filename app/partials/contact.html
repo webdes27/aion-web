@@ -36,7 +36,7 @@
         <p [hidden]="!result.err_subject" class="alert alert-danger">{{(result.err_subject)}}</p>
 
       <div class="form-group">
-            <label for="сontact-body">Ещё раз пароль</label>
+            <label for="сontact-body">Сообщение</label>
             <textarea type="text" class="form-control" rows="6" required ngControl="body" #body="ngForm" id="сontact-body"></textarea>
             <div [hidden]="body.valid || body.pristine" class="alert alert-danger">
               body is required

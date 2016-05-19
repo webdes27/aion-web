@@ -24,7 +24,7 @@ export class BaseService {
   contact(credentials) {
     return this._http
       .post(this._config.apiContact, JSON.stringify(credentials), { headers: this._storage.getJsonHeaders() })
-      .map(res => { return res.json() });
+      .map(res => res.json());
   }
 
 }
