@@ -8,6 +8,7 @@ import {LegionsComponent} from './legions.component';
 import {SignupComponent} from './signup.component';
 import {StatComponent} from './stat.component';
 import {LoginComponent} from './login.component';
+import {ContactComponent} from './contact.component';
 import {LoggedInRouterOutlet} from './directives/router_outlet';
 import {MenuComponent} from './menu.component';
 
@@ -48,6 +49,11 @@ import {MenuComponent} from './menu.component';
     path: '/login',
     name: 'Login',
     component: LoginComponent
+  },
+  {
+    path: '/contact',
+    name: 'Contact',
+    component: ContactComponent
   }
 ])
 export class AppComponent {

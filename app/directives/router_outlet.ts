@@ -7,7 +7,7 @@ import {UserService} from '../services/user.service';
 })
 export class LoggedInRouterOutlet extends RouterOutlet {
   publicRoutes = [
-    '', 'index', 'players', 'abyss', 'legions', 'login', 'signup'
+    '', 'index', 'players', 'abyss', 'legions', 'login', 'signup', 'contact'
   ];
   private parentRouter: Router;
 

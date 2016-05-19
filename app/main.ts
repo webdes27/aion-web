@@ -1,7 +1,7 @@
 import {bootstrap}    from '@angular/platform-browser-dynamic';
 import {AppComponent} from './app.component';
 import {enableProdMode, provide} from '@angular/core';
-import {HTTP_PROVIDERS} from '@angular/http';
+import {JSONP_PROVIDERS, HTTP_PROVIDERS} from '@angular/http';
 import {ROUTER_PROVIDERS} from '@angular/router-deprecated';
 import {FORM_PROVIDERS, HashLocationStrategy, LocationStrategy } from '@angular/common';
 import {UserService} from './services/user.service';
@@ -13,6 +13,7 @@ if (window['IS_PROD'] === 'true') {
 }
 
 bootstrap(AppComponent, [
+  JSONP_PROVIDERS,
 	FORM_PROVIDERS,
 	HTTP_PROVIDERS,
 	ROUTER_PROVIDERS,

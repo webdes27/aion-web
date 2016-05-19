@@ -1,0 +1,55 @@
+<div class="page-header">
+        <h1><span class="glyphicon glyphicon-tower"></span> Обратная связь</h1>
+</div>
+
+<div class="row">
+  <div class="col-sm-6" [hidden]="submitted">
+    <form (ngSubmit)="onSubmit(contactForm.value)" [ngFormModel]="contactForm">
+
+      <div class="form-group">
+        <label for="сontact-name">Ваше имя</label>
+        <input type="text" class="form-control" required ngControl="name" #name="ngForm" id="сontact-name">
+        <div [hidden]="name.valid || name.pristine" class="alert alert-danger">
+                <p *ngIf="name.control.hasError('required')">Name is required.</p>
+                <p *ngIf="name.control.hasError('minlength')">Name is too short.</p>
+                <p *ngIf="name.control.hasError('maxlength')">Name is too long.</p>
+        </div>
+      </div>
+      <p [hidden]="!result.err_name" class="alert alert-danger">{{(result.err_name)}}</p>
+
+      <div class="form-group">
+        <label for="сontact-email">Ваш Email</label>
+        <input type="text" class="form-control" required ngControl="email"  #email="ngForm" id="сontact-email">
+        <div [hidden]="email.valid || email.pristine" class="alert alert-danger">
+            Enter a valid email.
+        </div>
+      </div>
+      <p [hidden]="!result.err_email" class="alert alert-danger">{{(result.err_email)}}</p>
+
+        <div class="form-group">
+            <label for="сontact-subject">Тема</label>
+            <input type="text" class="form-control" required ngControl="subject"  #subject="ngForm" id="сontact-subject">
+            <div [hidden]="subject.valid || subject.pristine" class="alert alert-danger">
+              subject is required
+            </div>
+        </div>
+        <p [hidden]="!result.err_subject" class="alert alert-danger">{{(result.err_subject)}}</p>
+
+      <div class="form-group">
+            <label for="сontact-body">Ещё раз пароль</label>
+            <textarea type="text" class="form-control" rows="6" required ngControl="body" #body="ngForm" id="сontact-body"></textarea>
+            <div [hidden]="body.valid || body.pristine" class="alert alert-danger">
+              body is required
+            </div>
+      </div>
+       <p [hidden]="!result.err_body" class="alert alert-danger">{{(result.err_body)}}</p>
+
+        <button type="submit" class="btn btn-primary" [disabled]="!contactForm.valid">Отправить</button>
+    </form>
+  </div>
+</div>
+
+  <div [hidden]="!submitted">
+    <h2>Успешно отправлено</h2>
+    <p class="alert alert-success">{{(result.message)}}</p>
+  </div>

@@ -16,15 +16,17 @@ export class LoginComponent {
   constructor(private _userService: UserService, private _builder: FormBuilder, private _router: Router) {
 
     this.loginForm = _builder.group({
-      name: ['', Validators.required],
+      username: ['', Validators.required],
       password: ['', Validators.required]
     });
   }
 
   onSubmit(credentials) {
     this._userService.login(credentials).subscribe((result) => {
-      if (result) {
+      if (result.access_token) {
         this._router.navigate(['Index']);
+      } else {
+        console.log(result);
       }
     });
   }

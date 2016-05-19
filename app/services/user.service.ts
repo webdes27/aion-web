@@ -20,13 +20,11 @@ export class UserService {
       .post(this._config.apiLogin, JSON.stringify(credentials), { headers: this._storage.getJsonHeaders() })
       .map(res => res.json())
       .map((res) => {
-        console.log(res);
-        if (res.success) {
-          this._storage.setAuthToken(res.auth_token);
+        if (res.access_token) {
+          this._storage.setAuthToken(res.access_token);
           this._loggedIn.next(true);
         }
-
-        return res.success;
+        return res;
       });
   }
 

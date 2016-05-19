@@ -5,14 +5,14 @@
         <form (ngSubmit)="onSubmit(loginForm.value)" [ngFormModel]="loginForm" class="login-form">
 
             <div class="form-group">
-                <label for="login-name">Name</label>
-                <input type="text" ngControl="name" #name="ngForm" class="form-control" id="login-name">
+                <label for="login-username">Username</label>
+                <input type="text" ngControl="username" #username="ngForm" class="form-control" id="login-username">
             </div>
-            <div *ngIf="name.control.hasError('required') && name.control.touched" class="alert alert-danger">
-                name is required
+            <div *ngIf="username.control.hasError('required') && username.control.touched" class="alert alert-danger">
+                username is required
             </div>
-            <div *ngIf="name.control.hasError('name') && name.control.touched" class="alert alert-danger">
-                name is invalid
+            <div *ngIf="username.control.hasError('username') && username.control.touched" class="alert alert-danger">
+                username is invalid
             </div>
 
             <div class="form-group">

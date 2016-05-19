@@ -6,12 +6,14 @@ export interface Config {
 	title: string,
 	apiGetData: string,
 	apiSignup: string,
-	apiLogin: string
+	apiLogin: string,
+	apiContact: string
 }
 
 export const CONFIG:Config = {
 	title: 'AION Kristall',
-	apiGetData: 'http://aion.kristal-lab.ru/client/index.php/site/getdata',
-	apiSignup: 'http://host3/site/signupjson',
-	apiLogin: 'http://host3/site/loginjson'
+	apiGetData: 'http://host5/api/data',
+	apiSignup: 'http://host5/api/signup',
+	apiLogin: 'http://host5/api/login',
+  	apiContact: 'http://host5/api/contact'
 };
