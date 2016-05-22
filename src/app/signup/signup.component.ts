@@ -1,8 +1,8 @@
 import {Component, Inject}  from '@angular/core';
 import {FORM_DIRECTIVES, Control, ControlGroup, FormBuilder, Validators} from '@angular/common';
 import {Http, RequestOptions}  from '@angular/http';
-import {validateEmail, urlEncode, getUrlencodedHeaders} from './web.util';
-import {Config, APP_CONFIG} from './app.config';
+import {validateEmail, urlEncode, getUrlencodedHeaders} from './../web.util';
+import {Config, APP_CONFIG} from './../app.config';
 
 class User {
     public name: string;
@@ -21,7 +21,7 @@ class Result {
 
 @Component({
   selector: 'my-app',
-  templateUrl: 'app/partials/signup.html',
+  template: require('./signup.html'),
   directives: [FORM_DIRECTIVES],
 })
 

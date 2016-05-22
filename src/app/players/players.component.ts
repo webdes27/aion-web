@@ -1,11 +1,11 @@
 import {Component, OnInit}  from '@angular/core';
 import {JSONP_PROVIDERS, Http}  from '@angular/http';
 import {Observable}       from 'rxjs/Observable';
-import {BaseService} from './services/base.service';
+import {BaseService} from './../services/base.service';
 
 @Component({
   selector: 'my-app',
-  templateUrl: 'app/partials/players.html',
+  template: require('./players.html'),
   providers:[JSONP_PROVIDERS, BaseService]
 })
 

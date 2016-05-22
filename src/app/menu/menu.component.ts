@@ -1,11 +1,11 @@
 import {Component, Inject, ChangeDetectionStrategy} from '@angular/core';
 import {ROUTER_DIRECTIVES, Router} from '@angular/router-deprecated';
-import {UserService} from './services/user.service';
-import {Config, APP_CONFIG} from './app.config';
+import {UserService} from './../services/user.service';
+import {Config, APP_CONFIG} from './../app.config';
 
 @Component({
   selector: 'top-menu',
-  templateUrl: 'app/partials/menu.html',
+  template: require('./menu.html'),
   directives: [ROUTER_DIRECTIVES],
   changeDetection: ChangeDetectionStrategy.OnPush,
   pipes: []

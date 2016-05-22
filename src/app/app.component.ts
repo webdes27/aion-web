@@ -1,15 +1,15 @@
 import {Component, Inject, ViewEncapsulation} from '@angular/core';
 import {RouteConfig, Router} from '@angular/router-deprecated';
-import {IndexComponent} from './index.component';
-import {PlayersComponent} from './players.component';
-import {AbyssComponent} from './abyss.component';
-import {LegionsComponent} from './legions.component';
-import {SignupComponent} from './signup.component';
-import {StatComponent} from './stat.component';
-import {LoginComponent} from './login.component';
-import {ContactComponent} from './contact.component';
+import {IndexComponent} from './index/index.component';
+import {PlayersComponent} from './players/players.component';
+import {AbyssComponent} from './abyss/abyss.component';
+import {LegionsComponent} from './legions/legions.component';
+import {SignupComponent} from './signup/signup.component';
+import {StatComponent} from './stat/stat.component';
+import {LoginComponent} from './login/login.component';
+import {ContactComponent} from './contact/contact.component';
 //import {LoggedInRouterOutlet} from './directives/router_outlet';
-import {MenuComponent} from './menu.component';
+import {MenuComponent} from './menu/menu.component';
 import {AppState} from './app.service';
 import { RouterActive } from './router-active';
 import { Home } from './home';
@@ -18,7 +18,7 @@ import { Home } from './home';
   selector: 'app',
   pipes: [ ],
   providers: [ ],
-  templateUrl: 'app/partials/app.html',
+  template: require('./app.html'),
   directives: [RouterActive, StatComponent, MenuComponent],
   styles: [
     require('./app.scss')
@@ -69,9 +69,8 @@ import { Home } from './home';
 export class App {
   angularclassLogo = 'assets/img/angularclass-avatar.png';
   loading = false;
-  name = 'Angular 2 Webpack Starter';
+  name = 'AION Kristall';
   url = 'https://twitter.com/AngularClass';
-  title = 'AION Kristall';
 
   constructor(
     public appState: AppState) {
@@ -79,7 +78,7 @@ export class App {
   }
 
   ngOnInit() {
-    console.log('Initial App State', this.appState.state);
+    //console.log('Initial App State', this.appState.state);
   }
 
 

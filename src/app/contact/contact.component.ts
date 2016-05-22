@@ -1,7 +1,7 @@
 import {Component, Inject}  from '@angular/core';
 import {FORM_DIRECTIVES, Control, ControlGroup, FormBuilder, Validators} from '@angular/common';
-import {validateEmail} from './web.util';
-import {BaseService} from './services/base.service';
+import {validateEmail} from './../web.util';
+import {BaseService} from './../services/base.service';
 
 class User {
     public name: string;
@@ -21,7 +21,7 @@ class Result {
 
 @Component({
   selector: 'contact',
-  templateUrl: 'app/partials/contact.html',
+  template: require('./contact.html'),
   providers:[BaseService],
   directives: [FORM_DIRECTIVES],
 })
