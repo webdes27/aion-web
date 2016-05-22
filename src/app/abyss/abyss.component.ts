@@ -1,7 +1,8 @@
 import {Component, OnInit}  from '@angular/core';
-import {JSONP_PROVIDERS, Http}  from '@angular/http';
+import {JSONP_PROVIDERS}  from '@angular/http';
 import {Observable}       from 'rxjs/Observable';
 import {BaseService} from './../services/base.service';
+import {Rank, Ranks} from './ranks';
 
 @Component({
   selector: 'my-app',
@@ -11,24 +12,11 @@ import {BaseService} from './../services/base.service';
 
 export class AbyssComponent implements OnInit {
   items: Observable<string[]>;
-  ranks: Array<any>;
 
-  constructor (private _baseService: BaseService, private http: Http) {}
-
-  getRanks() {
-    this.http.get('app/data/ranks.json')
-      .map(res => res.json())
-      .subscribe(
-        data => {
-          this.ranks = data;
-        },
-        err => console.error(err)
-        //() => console.log('done')
-      );
-  }
+  constructor (private _baseService: BaseService) {}
 
   getRankById = function(id){
-    var data = this.ranks;
+    var data = Ranks;
     function getName(code) {
       return data.filter(
         function(data){return data.id == code}
@@ -39,7 +27,6 @@ export class AbyssComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.getRanks();
     this.items = this._baseService.search('abyss');
   }
 }

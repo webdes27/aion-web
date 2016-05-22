@@ -1,7 +1,10 @@
 import {Component, OnInit}  from '@angular/core';
-import {JSONP_PROVIDERS, Http}  from '@angular/http';
+import {JSONP_PROVIDERS}  from '@angular/http';
 import {Observable}       from 'rxjs/Observable';
 import {BaseService} from './../services/base.service';
+import {Level, Levels} from './levels';
+import {Title, Titles} from './titles';
+import {World, Worlds} from './worlds';
 
 @Component({
   selector: 'my-app',
@@ -11,44 +14,14 @@ import {BaseService} from './../services/base.service';
 
 export class PlayersComponent implements OnInit {
   items: Observable<string[]>;
-  levels: Array<any>;
-  titles: Array<any>;
-  worlds: Array<any>;
 
-  constructor (private _baseService: BaseService, private http: Http) {}
-
-  getLevels() {
-    this.http.get('app/data/levels.json')
-      .map(res => res.json())
-      .subscribe(
-        data => this.levels = data,
-        err => console.error(err)
-      );
-  }
-
-  getTitles() {
-    this.http.get('app/data/titles.json')
-      .map(res => res.json())
-      .subscribe(
-        data => this.titles = data,
-        err => console.error(err)
-      );
-  }
-
-  getWorlds() {
-    this.http.get('app/data/worlds.json')
-      .map(res => res.json())
-      .subscribe(
-        data => this.worlds = data,
-        err => console.error(err)
-      );
-  }
+  constructor (private _baseService: BaseService) {}
 
   getWorld = function(id){
-    var data = this.worlds;
+    var data = Worlds;
     function getName(code) {
       return data.filter(
-        function(data){return data.world_id == code}
+        function(data){return data.id == code}
       );
     }
     var found = getName(id);
@@ -60,10 +33,10 @@ export class PlayersComponent implements OnInit {
   }
 
   getTitle = function(id){
-    var data = this.titles;
+    var data = Titles;
     function getName(code) {
       return data.filter(
-        function(data){return data.title_id == code}
+        function(data){return data.id == code}
       );
     }
     var found = getName(id);
@@ -75,10 +48,10 @@ export class PlayersComponent implements OnInit {
   }
 
   getLevelByExp = function(exp) {
-      var data = this.levels;
-      var level = 0;
+      var data = Levels;
+      var level = '0';
       for (var k in data) {
-          if (parseInt(exp) <= parseInt(data[k].exp)) {
+          if (parseInt(exp) <= data[k].exp) {
               level = data[k].level;
               break;
           }
@@ -87,9 +60,6 @@ export class PlayersComponent implements OnInit {
   };
 
   ngOnInit() {
-    this.getLevels();
-    this.getTitles();
-    this.getWorlds();
     this.items = this._baseService.search('players');
   }
 }
