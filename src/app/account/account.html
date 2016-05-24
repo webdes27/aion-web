@@ -1,0 +1,20 @@
+
+<h1 class="page-header">Аккаунты</h1>
+
+<table class="table table-bordered table-hover">
+	<tr> 
+		<th>ID</th> 
+		<th>Name</th>
+		<th>Activated</th>
+		<th>Access_level</th>
+		<th>Membership</th>
+	</tr>
+	<tr *ngFor="let item of items">
+		<td>{{item.id}}</td>
+		<td>{{item.name}}</td>
+		<td>{{item.activated}}</td>
+		<td>{{item.access_level}}</td>
+		<td>{{item.membership}}</td>
+	</tr>
+</table>
+<div class="error" *ngIf="errorMessage">{{errorMessage}}</div>
