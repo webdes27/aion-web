@@ -18,3 +18,7 @@
 	</tr>
 </table>
 <div class="error" *ngIf="errorMessage">{{errorMessage}}</div>
+
+<pre class="card card-block card-header">The selected page no: {{paginationCurrentPage}}/{{paginationTotalCount}}</pre>
+<pagination [totalItems]="paginationTotalCount" [(ngModel)]="paginationCurrentPage" [maxSize]="paginationPerPage" class="pagination-sm"
+            [boundaryLinks]="true" [rotate]="false" (numPages)="numPages = $event"></pagination>

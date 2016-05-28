@@ -1,8 +1,8 @@
 import {Component} from '@angular/core';
 import {FORM_DIRECTIVES, Control, ControlGroup, FormBuilder, Validators} from '@angular/common';
 import {Router} from '@angular/router-deprecated';
-import {UserService} from './../services/user.service';
-import {StorageService} from './../services/storage.service';
+import {UserService} from './../services/user/user.service';
+import {StorageService} from './../services/storage/storage.service';
 
 @Component({
   selector: 'login',

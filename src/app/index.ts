@@ -4,8 +4,9 @@ export * from './app.service';
 import {AppState} from './app.service';
 import {provide} from '@angular/core';
 import {JSONP_PROVIDERS} from '@angular/http';
-import {UserService} from './services/user.service';
-import {StorageService} from './services/storage.service';
+import {UserService} from './services/user/user.service';
+import {StorageService} from './services/storage/storage.service';
+import {RequestService} from './services/request/request.service';
 import {CONFIG, Config, APP_CONFIG} from './app.config';
 
 
@@ -15,5 +16,6 @@ export const APP_PROVIDERS = [
   	JSONP_PROVIDERS,
 	UserService,
 	StorageService,
+	RequestService,
 	provide(APP_CONFIG, {useValue: CONFIG})
 ];

@@ -1,10 +1,12 @@
 import {Component, OnInit}  from '@angular/core';
 import {Http, Response, HTTP_PROVIDERS}  from '@angular/http';
 import {Observable}       from 'rxjs/Observable';
+import {PAGINATION_DIRECTIVES} from 'ng2-bootstrap';
 
 @Component({
   selector: 'my-app',
   template: require('./account.html'),
+  directives: [PAGINATION_DIRECTIVES],
   providers:[HTTP_PROVIDERS]
 })
 
@@ -15,7 +17,7 @@ export class AccountComponent implements OnInit {
   paginationCurrentPage: number = 1;
   paginationPageCount: number;
   paginationPerPage: number;
-  paginationTotalCount: number;
+  paginationTotalCount;
   loading: boolean;
 
   constructor (private _http: Http) {}

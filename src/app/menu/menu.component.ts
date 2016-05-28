@@ -1,6 +1,6 @@
 import {Component, Inject, ChangeDetectionStrategy} from '@angular/core';
 import {ROUTER_DIRECTIVES, Router} from '@angular/router-deprecated';
-import {UserService} from './../services/user.service';
+import {UserService} from './../services/user/user.service';
 import {Config, APP_CONFIG} from './../app.config';
 
 @Component({

@@ -2,11 +2,11 @@ import {Injectable, Inject} from '@angular/core';
 import {Http, Jsonp, URLSearchParams} from '@angular/http';
 import 'rxjs/Rx';
 import {Config, APP_CONFIG} from '../app.config';
-import {StorageService} from './storage.service';
+import { RequestService } from './request/request.service';
 
 @Injectable()
 export class BaseService {
-  constructor(private _http: Http, private _jsonp: Jsonp, @Inject(APP_CONFIG) private _config: Config, private _storage: StorageService) {}
+  constructor(private _http: Http, private _jsonp: Jsonp, @Inject(APP_CONFIG) private _config: Config, private _requestService: RequestService) {}
   search (term: string) {
     let url = this._config.apiGetData;
     var params = new URLSearchParams();
@@ -23,7 +23,7 @@ export class BaseService {
 
   contact(credentials) {
     return this._http
-      .post(this._config.apiContact, JSON.stringify(credentials), { headers: this._storage.getJsonHeaders() })
+      .post(this._config.apiContact, JSON.stringify(credentials), { headers: this._requestService.getJsonHeaders() })
       .map(res => res.json());
   }
 
