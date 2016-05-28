@@ -7,8 +7,7 @@ import {Config, APP_CONFIG} from './../app.config';
   selector: 'top-menu',
   template: require('./menu.html'),
   directives: [ROUTER_DIRECTIVES],
-  changeDetection: ChangeDetectionStrategy.OnPush,
-  pipes: []
+  //changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class MenuComponent {
 

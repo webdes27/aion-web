@@ -21,7 +21,7 @@ export class UserService {
       .post(this._config.apiLogin, JSON.stringify(credentials), { headers: this._requestService.getJsonHeaders() })
       .map(res => res.json())
       .map((res) => {
-        if (res.access_token) {
+        if (!!res.access_token) {
           this._storage.setAuthToken(res.access_token);
           this._loggedIn.next(true);
         }
@@ -39,6 +39,9 @@ export class UserService {
   }
 
   getLoggedIn() {
-    return this._loggedIn
+    if (!!this._storage.getAuthToken()) {
+      this._loggedIn.next(true);
+    }
+    return this._loggedIn;
   }
 }
