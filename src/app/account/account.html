@@ -1,24 +1,11 @@
-
 <h1 class="page-header">Аккаунты</h1>
 
-<table class="table table-bordered table-hover">
-	<tr> 
-		<th>ID</th> 
-		<th>Name</th>
-		<th>Activated</th>
-		<th>Access_level</th>
-		<th>Membership</th>
-	</tr>
-	<tr *ngFor="let item of items">
-		<td>{{item.id}}</td>
-		<td>{{item.name}}</td>
-		<td>{{item.activated}}</td>
-		<td>{{item.access_level}}</td>
-		<td>{{item.membership}}</td>
-	</tr>
-</table>
-<div class="error" *ngIf="errorMessage">{{errorMessage}}</div>
+<p-dataTable [value]="items" [lazy]="true" [rows]="perPage" [paginator]="true" [totalRecords]="totalRecords" (onLazyLoad)="loadData($event)">
+    <p-column field="id" header="ID" [sortable]="false" [filter]="true"></p-column>
+    <p-column field="name" header="Name" [sortable]="false" [filter]="true"></p-column>
+    <p-column field="activated" header="Activated" [sortable]="false" [filter]="true"></p-column>
+    <p-column field="access_level" header="Access_level" [sortable]="false" [filter]="true"></p-column>
+    <p-column field="membership" header="Membership" [sortable]="false" [filter]="true"></p-column>
+</p-dataTable>
 
-<pre class="card card-block card-header">The selected page no: {{paginationCurrentPage}}/{{paginationTotalCount}}</pre>
-<pagination [totalItems]="paginationTotalCount" [(ngModel)]="paginationCurrentPage" [maxSize]="paginationPerPage" class="pagination-sm"
-            [boundaryLinks]="true" [rotate]="false" (numPages)="numPages = $event"></pagination>
+<div class="error" *ngIf="errorMessage">{{errorMessage}}</div>

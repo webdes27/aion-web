@@ -1,54 +1,51 @@
 import {Component, OnInit}  from '@angular/core';
-import {Http, Response, HTTP_PROVIDERS}  from '@angular/http';
-import {Observable}       from 'rxjs/Observable';
-import {PAGINATION_DIRECTIVES} from 'ng2-bootstrap';
+import {DataTable, Column, LazyLoadEvent} from 'primeng/primeng';
+import {Account, Meta, Link} from './account';
+import {AccountService} from './account-service';
 
 @Component({
   selector: 'my-app',
   template: require('./account.html'),
-  directives: [PAGINATION_DIRECTIVES],
-  providers:[HTTP_PROVIDERS]
+  directives: [DataTable, Column],
+  providers:[AccountService]
 })
 
 export class AccountComponent implements OnInit {
 
+  items: Account[];
+  datasource: Account[];
+  totalRecords: number = 0;
+  perPage: number = 10;
+
   errorMessage: string;
-  items: string[];
-  paginationCurrentPage: number = 1;
-  paginationPageCount: number;
-  paginationPerPage: number;
-  paginationTotalCount;
-  loading: boolean;
 
-  constructor (private _http: Http) {}
-
-  private _url = 'http://host5/account-datas';  // URL to web API
-
-  getItems(page: number): Observable<string[]> {
-  	this.loading = true;
-    return this._http.get(this._url+"?page="+page)
-                    .map(this.extractData)
-                    .catch(this.handleError);
-  }
-  private extractData(res: Response) {
-    let body = res.json();
-    this.paginationCurrentPage = parseInt(res.headers._headersMap.get('X-Pagination-Current-Page')[0]);
-    this.paginationPageCount = parseInt(res.headers._headersMap.get('X-Pagination-Page-Count')[0]);
-    this.paginationPerPage = parseInt(res.headers._headersMap.get('X-Pagination-Per-Page')[0]);
-    this.paginationTotalCount = parseInt(res.headers._headersMap.get('X-Pagination-Total-Count')[0]);
-    this.loading = false;
-    return body || { };
-  }
-  private handleError (error: any) {
-    let errMsg = (error.message) ? error.message :
-      error.status ? `${error.status} - ${error.statusText}` : 'Server error';
-    console.error(errMsg); // log to console instead
-    return Observable.throw(errMsg);
-  }
+  constructor (private _accountService: AccountService) {}
 
   ngOnInit() {
-    this.getItems(this.paginationCurrentPage).subscribe(
-                       items => this.items = items,
-                       error =>  this.errorMessage = <any>error);;
+    this._accountService.getAccounts(1)
+                        .then(data => {
+                          this.items = data.items;
+                          this.totalRecords = data._meta.totalCount;
+                          this.perPage = data._meta.perPage;
+                        })
+                        .catch(error => this.errorMessage = error);
   }
+
+  loadData(event: LazyLoadEvent) {
+      //in a real application, make a remote request to load data using state metadata from event
+      //event.first = First row offset
+      //event.rows = Number of rows per page
+      //event.sortField = Field name to sort with
+      //event.sortOrder = Sort order as number, 1 for asc and -1 for dec
+      //filters: FilterMetadata object having field as key and filter value, filter matchMode as value
+      console.log(event);
+      let page = (event.first/this.perPage)+1;
+      this._accountService.getAccounts(page)
+                          .then(data => {
+                            this.items = data.items;
+                            this.totalRecords = data._meta.totalCount;
+                          })
+                          .catch(error => this.errorMessage = error);
+  }
+
 }
