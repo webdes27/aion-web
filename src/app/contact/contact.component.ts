@@ -1,7 +1,7 @@
 import {Component, Inject}  from '@angular/core';
 import {FORM_DIRECTIVES, Control, ControlGroup, FormBuilder, Validators} from '@angular/common';
-import {validateEmail} from './../web.util';
-import {BaseService} from './../services/base.service';
+import {validateEmail} from './../services/validate/validate.service';
+import {ContactService} from './contact.service';
 
 class User {
     public name: string;
@@ -22,7 +22,7 @@ class Result {
 @Component({
   selector: 'contact',
   template: require('./contact.html'),
-  providers:[BaseService],
+  providers:[ContactService],
   directives: [FORM_DIRECTIVES],
 })
 export class ContactComponent {
@@ -31,7 +31,7 @@ export class ContactComponent {
   model = new User();
   result = new Result();
 
-  constructor (private _formBuilder: FormBuilder, private _baseService: BaseService) {
+  constructor (private _formBuilder: FormBuilder, private _contactService: ContactService) {
     this.contactForm = this._formBuilder.group({
       name: ["", Validators.compose([Validators.required, Validators.minLength(2), Validators.maxLength(45)])],
       email: ["", Validators.compose([Validators.required, validateEmail])],
@@ -41,7 +41,7 @@ export class ContactComponent {
   }
 
   onSubmit(credentials) {
-   this._baseService.contact(credentials).subscribe((data) => {
+   this._contactService.contact(credentials).subscribe((data) => {
      //console.log(data);
      this.result.success = data.success;
      if(!data.success) {

@@ -1,7 +1,8 @@
 import {Component, Inject}  from '@angular/core';
 import {FORM_DIRECTIVES, Control, ControlGroup, FormBuilder, Validators} from '@angular/common';
 import {Http, RequestOptions}  from '@angular/http';
-import {validateEmail, urlEncode, getUrlencodedHeaders} from './../web.util';
+import {validateEmail} from './../services/validate/validate.service';
+import {RequestService} from './../services/request/request.service';
 import {Config, APP_CONFIG} from './../app.config';
 
 class User {
@@ -31,7 +32,7 @@ export class SignupComponent {
   model = new User();
   result = new Result();
 
-  constructor (private _formBuilder: FormBuilder, private _http: Http, @Inject(APP_CONFIG) private _config: Config) {
+  constructor (private _formBuilder: FormBuilder, private _requestService: RequestService, private _http: Http, @Inject(APP_CONFIG) private _config: Config) {
     this.signupForm = this._formBuilder.group({
       name: ["", Validators.compose([Validators.required, Validators.minLength(2), Validators.maxLength(45)])],
       email: ["", Validators.compose([Validators.required, validateEmail])],
@@ -41,9 +42,9 @@ export class SignupComponent {
   }
 
   signup(credentials) {
-    let options = new RequestOptions({ headers: getUrlencodedHeaders() });
+    let options = new RequestOptions({ headers: this._requestService.getUrlencodedHeaders() });
     return this._http
-      .post(this._config.apiSignup, urlEncode(credentials), options)
+      .post(this._config.apiSignup, this._requestService.urlEncode(credentials), options)
       .map(res => res.json())
       .map((data) => {
        		//console.log(data);

@@ -21,10 +21,4 @@ export class BaseService {
                // .do(data => console.log(data));
   }
 
-  contact(credentials) {
-    return this._http
-      .post(this._config.apiContact, JSON.stringify(credentials), { headers: this._requestService.getJsonHeaders() })
-      .map(res => res.json());
-  }
-
 }
