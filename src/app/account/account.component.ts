@@ -38,9 +38,9 @@ export class AccountComponent implements OnInit {
       //event.sortField = Field name to sort with
       //event.sortOrder = Sort order as number, 1 for asc and -1 for dec
       //filters: FilterMetadata object having field as key and filter value, filter matchMode as value
-      console.log(event);
+      //console.log(event);
       let page = (event.first/this.perPage)+1;
-      this._accountService.getAccounts(page)
+      this._accountService.getAccounts(page, event.filters, event.sortField, event.sortOrder)
                           .then(data => {
                             this.items = data.items;
                             this.totalRecords = data._meta.totalCount;
