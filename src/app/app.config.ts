@@ -12,8 +12,8 @@ export interface Config {
 
 export const CONFIG:Config = {
 	title: 'AION Kristall',
-	apiGetData: 'http://host5/api/data',
-	apiSignup: 'http://host5/api/signup',
-	apiLogin: 'http://host5/api/login',
-  	apiContact: 'http://host5/api/contact'
+	apiGetData: 'http://host5/data/status',
+	apiSignup: 'http://host5/auth/signup',
+	apiLogin: 'http://host5/auth/login',
+  	apiContact: 'http://host5/auth/contact'
 };

@@ -2,12 +2,12 @@ import {Injectable} from '@angular/core';
 import {Http, Response, URLSearchParams} from '@angular/http';
 import 'rxjs/add/operator/toPromise';
 import { RequestService } from '../services/request/request.service';
-import {Data} from './account';
+import {Data, Account} from './account';
 
 @Injectable()
 export class AccountService {
     
-    constructor(private _http: Http, private _requestService: RequestService) {}
+    constructor(private http: Http, private _requestService: RequestService) {}
 
     private _url = 'http://host5/account-datas';
 
@@ -15,11 +15,58 @@ export class AccountService {
         let headers = this._requestService.getAuthHeaders();
         let url = this._url+"?page="+page+this.urlEncode(filters)+this.urlSort(sortField, sortOrder)
         //console.log(url);
-        return this._http.get(url, { headers: headers })
+        return this.http.get(url, { headers: headers })
                         .toPromise()
                         .then(this.extractData)
                         .catch(this.handleError);
     }
+
+  getAccount(id: number) {
+    let filterId = {
+      id: {value : id}
+    };
+    return this.getAccounts(1, filterId)
+                .then(data => data.items[0]);
+  }
+
+  save(item: Account): Promise<Account>  {
+    if (item.id) {
+      return this.put(item);
+    }
+    return this.post(item);
+  }
+
+  delete(item: Account) {
+    let headers = this._requestService.getAuthHeaders();;
+    headers.append('Content-Type', 'application/json');
+    let url = `${this._url}/${item.id}`;
+    return this.http
+               .delete(url, headers)
+               .toPromise()
+               .catch(this.handleError);
+  }
+
+  // Add new
+  post(item: Account): Promise<Account> {
+    let headers = this._requestService.getAuthHeaders();;
+    return this.http
+               .post(this._url, JSON.stringify(item), {headers: headers})
+               .toPromise()
+               .then(res => res.json().data)
+               .catch(this.handleError);
+  }
+
+  // Update existing
+  put(item: Account) {
+    let headers = this._requestService.getAuthHeaders();;
+    headers.append('Content-Type', 'application/json');
+    let url = `${this._url}/${item.id}`;
+    return this.http
+               .put(url, JSON.stringify(item), {headers: headers})
+               .toPromise()
+               .then(() => item)
+               .catch(this.handleError);
+  }
 
   private extractData(res: Response) {
     let body = res.json();
