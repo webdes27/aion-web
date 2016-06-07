@@ -51,7 +51,7 @@ export class AccountService {
     return this.http
                .post(this._url, JSON.stringify(item), {headers: headers})
                .toPromise()
-               .then(res => res.json().data)
+               .then(res => res.json())
                .catch(this.handleError);
   }
 
@@ -62,7 +62,7 @@ export class AccountService {
     return this.http
                .put(url, JSON.stringify(item), {headers: headers})
                .toPromise()
-               .then(() => item)
+               .then(res => res.json())
                .catch(this.handleError);
   }
 

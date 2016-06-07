@@ -72,7 +72,6 @@ export class AccountComponent implements OnInit {
                 .then(item => {
                   this.item = item;
                   this.items.push(this.item);
-                  this.getAccounts();
                 })
                 .catch(error => this.errorMessage = error);
           } else {
