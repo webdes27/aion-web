@@ -1,0 +1,19 @@
+<h2>Accounts</h2>
+<ul class="accounts">
+  <li *ngFor="let account of accounts" (click)="onSelect(account)" [class.selected]="account === selectedAccount">
+    <span class="account-element">
+      <span class="badge">{{account.id}}</span> {{account.name}}
+    </span>
+    <button class="delete-button" (click)="delete(account, $event)">Delete</button>
+  </li>
+</ul>
+<button (click)="addAccount()">Add New Account</button>
+<div *ngIf="addingAccount">
+  <account-detail (close)="close($event)"></account-detail>
+</div>
+<div *ngIf="selectedAccount">
+  <h2>
+    {{selectedAccount.name | uppercase}} is my account
+  </h2>
+  <button (click)="gotoDetail()">View Details</button>
+</div>

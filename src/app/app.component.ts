@@ -9,6 +9,7 @@ import {StatComponent} from './stat/stat.component';
 import {LoginComponent} from './login/login.component';
 import {ContactComponent} from './contact/contact.component';
 import {AccountComponent} from './account/account.component';
+import { AccountDetailComponent } from './account/account-detail.component';
 //import {LoggedInRouterOutlet} from './directives/router_outlet';
 import {MenuComponent} from './menu/menu.component';
 import {AppState} from './app.service';
@@ -64,6 +65,7 @@ import { Home } from './home';
     component: ContactComponent
   },
   { path: '/account',  name: 'Account',  component: AccountComponent },
+  { path: '/account/detail/:id', name: 'AccountDetail', component: AccountDetailComponent },
   { path: '/home',  name: 'Home',  component: Home },
   // Async load a component using Webpack's require with es6-promise-loader and webpack `require`
   { path: '/about', name: 'About', loader: () => require('es6-promise!./about')('About') }

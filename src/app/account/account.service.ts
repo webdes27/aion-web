@@ -11,7 +11,7 @@ export class AccountService {
 
     private _url = 'http://host5/account-datas';
 
-    getAccounts(page: number, filters?:{[s: string]: any;}, sortField?: string, sortOrder?: number) : Promise<Data> {
+    getAccounts(page: number = 1, filters?:{[s: string]: any;}, sortField?: string, sortOrder?: number) : Promise<Data> {
         let headers = this._requestService.getAuthHeaders();
         let url = this._url+"?page="+page+this.urlEncode(filters)+this.urlSort(sortField, sortOrder)
         //console.log(url);
@@ -38,7 +38,6 @@ export class AccountService {
 
   delete(item: Account) {
     let headers = this._requestService.getAuthHeaders();;
-    headers.append('Content-Type', 'application/json');
     let url = `${this._url}/${item.id}`;
     return this.http
                .delete(url, headers)
@@ -59,7 +58,6 @@ export class AccountService {
   // Update existing
   put(item: Account) {
     let headers = this._requestService.getAuthHeaders();;
-    headers.append('Content-Type', 'application/json');
     let url = `${this._url}/${item.id}`;
     return this.http
                .put(url, JSON.stringify(item), {headers: headers})

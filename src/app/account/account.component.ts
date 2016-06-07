@@ -1,7 +1,7 @@
-import {Component, OnInit, EventEmitter, Input, Output}  from '@angular/core';
+import {Component, OnInit}  from '@angular/core';
 import {DataTable, Column, LazyLoadEvent, TabPanel, TabView, CodeHighlighter, Header, Footer, Dialog, Button, InputText} from 'primeng/primeng';
 import {Account, Meta, Link} from './account';
-import {AccountService} from './account-service';
+import {AccountService} from './account.service';
 
 class PrimeAccount implements Account {
     constructor(public id?, public name?, public activated?, public access_level?, public membership?) {}
@@ -17,28 +17,30 @@ class PrimeAccount implements Account {
 export class AccountComponent implements OnInit {
 
   items: Account[];
-  datasource: Account[];
   totalRecords: number = 0;
   perPage: number = 10;
 
   displayDialog: boolean;
-  @Input() item: Account = new PrimeAccount();
+  item: Account = new PrimeAccount();
   selectedItem: Account;
   newItem: boolean;
 
   errorMessage: string;
-  @Output() close = new EventEmitter();
 
   constructor (private _accountService: AccountService) {}
 
-  ngOnInit() {
-    this._accountService.getAccounts(1)
+  getAccounts() {
+    this._accountService.getAccounts()
                         .then(data => {
                           this.items = data.items;
                           this.totalRecords = data._meta.totalCount;
                           this.perPage = data._meta.perPage;
                         })
                         .catch(error => this.errorMessage = error);
+  }
+
+  ngOnInit() {
+    this.getAccounts();
   }
 
   loadData(event: LazyLoadEvent) {
@@ -69,8 +71,8 @@ export class AccountComponent implements OnInit {
                 .post(this.item)
                 .then(item => {
                   this.item = item;
-                  this.close.emit(item);
                   this.items.push(this.item);
+                  this.getAccounts();
                 })
                 .catch(error => this.errorMessage = error);
           } else {
@@ -78,7 +80,6 @@ export class AccountComponent implements OnInit {
                 .put(this.item)
                 .then(item => {
                   this.item = item;
-                  this.close.emit(item);
                   this.items[this.findSelectedItemIndex()] = this.item;
                 })
                 .catch(error => this.errorMessage = error);
