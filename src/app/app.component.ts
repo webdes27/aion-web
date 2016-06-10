@@ -1,20 +1,11 @@
 import {Component, Inject, ViewEncapsulation} from '@angular/core';
 import {RouteConfig, Router} from '@angular/router-deprecated';
-import {IndexComponent} from './index/index.component';
-import {PlayersComponent} from './players/players.component';
-import {AbyssComponent} from './abyss/abyss.component';
-import {LegionsComponent} from './legions/legions.component';
-import {SignupComponent} from './signup/signup.component';
 import {StatComponent} from './stat/stat.component';
-import {LoginComponent} from './login/login.component';
-import {ContactComponent} from './contact/contact.component';
-import {AccountComponent} from './account/account.component';
-import { AccountDetailComponent } from './account/account-detail.component';
-//import {LoggedInRouterOutlet} from './directives/router_outlet';
+//import {LoggedInRouterOutlet} from './login/directives/router_outlet';
 import {MenuComponent} from './menu/menu.component';
 import {AppState} from './app.service';
 import { RouterActive } from './router-active';
-import { Home } from './home';
+import { ROUTES } from './router.config';
 
 @Component({
   selector: 'app',
@@ -27,49 +18,9 @@ import { Home } from './home';
   ],
   encapsulation: ViewEncapsulation.None,
 })
-@RouteConfig([
-  {
-    path: '/index',
-    name: 'Index',
-    component: IndexComponent,
-    useAsDefault: true
-  },
-  {
-    path: '/signup',
-    name: 'Signup',
-    component: SignupComponent
-  },
-  {
-    path: '/players',
-    name: 'Players',
-    component: PlayersComponent
-  },
-  {
-    path: '/abyss',
-    name: 'Abyss',
-    component: AbyssComponent
-  },
-  {
-    path: '/legions',
-    name: 'Legions',
-    component: LegionsComponent
-  },
-  {
-    path: '/login',
-    name: 'Login',
-    component: LoginComponent
-  },
-  {
-    path: '/contact',
-    name: 'Contact',
-    component: ContactComponent
-  },
-  { path: '/account',  name: 'Account',  component: AccountComponent },
-  { path: '/account/detail/:id', name: 'AccountDetail', component: AccountDetailComponent },
-  { path: '/home',  name: 'Home',  component: Home },
-  // Async load a component using Webpack's require with es6-promise-loader and webpack `require`
-  { path: '/about', name: 'About', loader: () => require('es6-promise!./about')('About') }
-])
+
+@RouteConfig(ROUTES)
+
 export class App {
   angularclassLogo = 'assets/img/angularclass-avatar.png';
   loading = false;

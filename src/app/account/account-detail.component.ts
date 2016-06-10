@@ -1,9 +1,9 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { RouteParams } from '@angular/router-deprecated';
-import { Account }        from './account';
+import { Item }        from './account';
 import { AccountService } from './account.service';
 
-class PrimeAccount implements Account {
+class PrimeAccount implements Item {
     constructor(public id?, public name?, public activated?, public access_level?, public membership?) {}
 }
 
@@ -14,7 +14,7 @@ class PrimeAccount implements Account {
 })
 
 export class AccountDetailComponent implements OnInit {
-  @Input() account: Account;
+  @Input() account: Item;
   @Output() close = new EventEmitter();
   error: any;
   navigated = false; // true if navigated here
@@ -26,7 +26,7 @@ export class AccountDetailComponent implements OnInit {
     if (this.routeParams.get('id') !== null) {
       let id = +this.routeParams.get('id');
       this.navigated = true;
-      this.accountService.getAccount(id)
+      this.accountService.getItem(id)
           .then(account => this.account = account);
     } else {
       this.navigated = false;
@@ -42,7 +42,7 @@ export class AccountDetailComponent implements OnInit {
         })
         .catch(error => this.error = error); // TODO: Display error message
   }
-  goBack(savedAccount: Account = null) {
+  goBack(savedAccount: Item = null) {
     this.close.emit(savedAccount);
     if (this.navigated) { window.history.back(); }
   }

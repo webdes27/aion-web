@@ -2,14 +2,14 @@ import {Injectable} from '@angular/core';
 import {Http, Response, URLSearchParams} from '@angular/http';
 import 'rxjs/add/operator/toPromise';
 import { RequestService } from '../services/request/request.service';
-import {Data, Item} from './account';
+import {Data, Item} from './model';
 
 @Injectable()
-export class AccountService {
+export class CrudService {
 
     constructor(private http: Http, private request: RequestService) {}
 
-    private url = 'http://host5/account-datas';
+    private url;
 
     getItems(page: number = 1, filters?:{[s: string]: any;}, sortField?: string, sortOrder?: number) : Promise<Data> {
         let headers = this.request.getAuthHeaders();

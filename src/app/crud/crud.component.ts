@@ -1,16 +1,16 @@
 import {Component, OnInit}  from '@angular/core';
 import {DataTable, Column, LazyLoadEvent, TabPanel, TabView, CodeHighlighter, Header, Footer, Dialog, Button, InputText} from 'primeng/primeng';
-import {Item, PrimeItem} from './account';
-import {AccountService} from './account.service';
+import {Item, PrimeItem} from './model';
+import {CrudService} from './crud.service';
 
 @Component({
   selector: 'my-app',
   template: require('./account.html'),
   directives: [DataTable, Column, TabPanel, TabView, CodeHighlighter, Header, Footer, Dialog, Button, InputText],
-  providers:[AccountService]
+  providers:[CrudService]
 })
 
-export class AccountComponent implements OnInit {
+export class CrudComponent implements OnInit {
 
   items: Item[];
   totalRecords: number = 0;
@@ -23,7 +23,7 @@ export class AccountComponent implements OnInit {
 
   errorMessage: string;
 
-  constructor (private service: AccountService) {}
+  constructor (private service: CrudService) {}
 
   getItems() {
     this.service.getItems()

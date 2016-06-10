@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router }            from '@angular/router-deprecated';
-import { Account }                from './account';
+import { Item }                from './account';
 import { AccountService }         from './account.service';
 import { AccountDetailComponent } from './account-detail.component';
 @Component({
@@ -10,8 +10,8 @@ import { AccountDetailComponent } from './account-detail.component';
   providers:[AccountService]
 })
 export class AccountComponent implements OnInit {
-  accounts: Account[];
-  selectedAccount: Account;
+  accounts: Item[];
+  selectedAccount: Item;
   addingAccount = false;
   error: any;
   constructor(
@@ -19,7 +19,7 @@ export class AccountComponent implements OnInit {
     private accountService: AccountService) { }
   getAccounts() {
     this.accountService
-        .getAccounts(1)
+        .getItems(1)
         .then(data => this.accounts = data.items)
         .catch(error => this.error = error); // TODO: Display error message
   }
@@ -27,11 +27,11 @@ export class AccountComponent implements OnInit {
     this.addingAccount = true;
     this.selectedAccount = null;
   }
-  close(savedAccount: Account) {
+  close(savedAccount: Item) {
     this.addingAccount = false;
     if (savedAccount) { this.getAccounts(); }
   }
-  delete(account: Account, event: any) {
+  delete(account: Item, event: any) {
     event.stopPropagation();
     this.accountService
         .delete(account)
@@ -44,7 +44,7 @@ export class AccountComponent implements OnInit {
   ngOnInit() {
     this.getAccounts();
   }
-  onSelect(account: Account) {
+  onSelect(account: Item) {
     this.selectedAccount = account;
     this.addingAccount = false;
   }
