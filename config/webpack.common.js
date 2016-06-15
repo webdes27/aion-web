@@ -238,12 +238,12 @@ module.exports = {
       to: 'assets'
     },
 	{
-	  from: 'node_modules/primeui/themes/delta/theme.css',
-	  to: 'assets/primeui/themes/delta/theme.css'
+	  from: 'node_modules/primeui/themes/bootstrap/theme.css',
+	  to: 'assets/primeui/themes/bootstrap/theme.css'
     },
     {
-      from: 'node_modules/primeui/themes/delta/images/',
-      to: 'assets/primeui/themes/delta/images'
+      from: 'node_modules/primeui/themes/bootstrap/images/',
+      to: 'assets/primeui/themes/bootstrap/images'
     },
     {
       from: 'node_modules/primeui/primeui-ng-all.min.css',

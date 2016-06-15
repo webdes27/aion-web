@@ -2,16 +2,20 @@ import {Injectable} from '@angular/core';
 import {Http, Response, URLSearchParams} from '@angular/http';
 import 'rxjs/add/operator/toPromise';
 import { RequestService } from '../services/request/request.service';
-import {Data, Item} from './model';
 
 @Injectable()
 export class CrudService {
 
-    constructor(private http: Http, private request: RequestService) {}
+    public url;
+    private http: Http;
+    private request: RequestService;
 
-    private url;
+    constructor(http: Http, request: RequestService) {
+      this.http = http;
+      this.request = request;
+    }
 
-    getItems(page: number = 1, filters?:{[s: string]: any;}, sortField?: string, sortOrder?: number) : Promise<Data> {
+    getItems(page: number = 1, filters?:{[s: string]: any;}, sortField?: string, sortOrder?: number) : Promise<any> {
         let headers = this.request.getAuthHeaders();
         let url = this.url+"?page="+page+this.urlEncode(filters)+this.urlSort(sortField, sortOrder)
         //console.log(url);
@@ -29,14 +33,14 @@ export class CrudService {
                 .then(data => data.items[0]);
   }
 
-  save(item: Item): Promise<Item>  {
+  save(item: any): Promise<any>  {
     if (item.id) {
       return this.put(item);
     }
     return this.post(item);
   }
 
-  delete(item: Item) {
+  delete(item: any) {
     let headers = this.request.getAuthHeaders();;
     let url = `${this.url}/${item.id}`;
     return this.http
@@ -46,7 +50,7 @@ export class CrudService {
   }
 
   // Add new
-  post(item: Item): Promise<Item> {
+  post(item: any): Promise<any> {
     let headers = this.request.getAuthHeaders();;
     return this.http
                .post(this.url, JSON.stringify(item), {headers: headers})
@@ -56,7 +60,7 @@ export class CrudService {
   }
 
   // Update existing
-  put(item: Item) {
+  put(item: any) {
     let headers = this.request.getAuthHeaders();;
     let url = `${this.url}/${item.id}`;
     return this.http
@@ -72,7 +76,15 @@ export class CrudService {
   }
 
   private handleError(error: any) {
-    let errMsg = (error.message) ? error.message : error.status ? `${error.status} - ${error.statusText}` : 'Server error';
+    let errMsg = '';
+    let messages = error.json();
+    if(messages) {
+      for (let i = 0, len = messages.length; i<len; i++) {
+        errMsg += messages[i].message + ' <br> ';
+      };
+    } else {
+      errMsg = (error.message) ? error.message : error.status ? `${error.status} - ${error.reasonPhrase}` : 'Server error';
+    }
     console.error('An error occurred', error);
     return Promise.reject(errMsg);
   }

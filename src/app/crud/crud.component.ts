@@ -23,7 +23,11 @@ export class CrudComponent implements OnInit {
 
   errorMessage: string;
 
-  constructor (private service: CrudService) {}
+  private service: CrudService;
+
+  constructor (service: CrudService) {
+    this.service = service;
+  }
 
   getItems() {
     this.service.getItems()
