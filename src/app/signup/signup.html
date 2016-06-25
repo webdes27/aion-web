@@ -2,6 +2,10 @@
         <h1>Регистрация</h1>
 </div>
 
+<loading-indicator></loading-indicator>
+
+<div class="alert alert-danger" role="alert" *ngIf="errorMessage">{{errorMessage}}</div>
+
 <div class="row">
   <div class="col-sm-6" [hidden]="submitted">
     <form (ngSubmit)="onSubmit(signupForm.value)" [ngFormModel]="signupForm">

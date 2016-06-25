@@ -1,9 +1,8 @@
 import {Component, Inject}  from '@angular/core';
 import {FORM_DIRECTIVES, Control, ControlGroup, FormBuilder, Validators} from '@angular/common';
-import {Http, RequestOptions}  from '@angular/http';
 import {validateEmail} from './../services/validate/validate.service';
-import {RequestService} from './../services/request/request.service';
-import {Config, APP_CONFIG} from './../app.config';
+import {SignupService} from './signup.service';
+import { LoadingIndicator, LoadingService } from '../services/loading';
 
 class User {
     public name: string;
@@ -23,7 +22,8 @@ class Result {
 @Component({
   selector: 'my-app',
   template: require('./signup.html'),
-  directives: [FORM_DIRECTIVES],
+  providers: [SignupService],
+  directives: [LoadingIndicator],
 })
 
 export class SignupComponent {
@@ -31,8 +31,9 @@ export class SignupComponent {
   submitted: Boolean = false;
   model = new User();
   result = new Result();
+  errorMessage: string;
 
-  constructor (private _formBuilder: FormBuilder, private _requestService: RequestService, private _http: Http, @Inject(APP_CONFIG) private _config: Config) {
+  constructor (private _formBuilder: FormBuilder, private signupService: SignupService, private loadingService:LoadingService) {
     this.signupForm = this._formBuilder.group({
       name: ["", Validators.compose([Validators.required, Validators.minLength(2), Validators.maxLength(45)])],
       email: ["", Validators.compose([Validators.required, validateEmail])],
@@ -41,38 +42,32 @@ export class SignupComponent {
     });
   }
 
-  signup(credentials) {
-    let options = new RequestOptions({ headers: this._requestService.getUrlencodedHeaders() });
-    return this._http
-      .post(this._config.apiSignup, this._requestService.urlEncode(credentials), options)
-      .map(res => res.json())
-      .map((data) => {
+  onSubmit(credentials) {
+    this.loadingService.show();
+    this.signupService.signup(credentials).then(data => {
+          this.loadingService.hide();
        		//console.log(data);
        		this.result.success = data.success;
        		if(!data.success) {
 		    	this.result.err_name = (typeof data.errors.name !== "undefined") ? data.errors.name[0] : '';
 		    	this.result.err_password  = (typeof data.errors.password !== "undefined") ? data.errors.password[0] : '';
 		    	this.result.err_email = (typeof data.errors.email !== "undefined") ?  data.errors.email[0] : '';
-			} else {
-		    	this.result.message = data.message;
-			}
-	        return this.result.success;
+    			} else {
+    		    	this.result.message = data.message;
+              this.submitted = true;
+              this.clear();
+               setTimeout(()=> {
+                this.model = new User();
+                this.result = new Result();
+                 this.submitted=false;
+                  //this._router.navigate(['Index']);
+               }, 7000);
+    			}
+      })
+      .catch(error => {
+        this.loadingService.hide();
+        this.errorMessage = error;
       });
-  }
-
-  onSubmit(credentials) {
-    this.signup(credentials).subscribe((res) => {
-      if (res) {
-    	this.submitted = true;
-    	this.clear();
-     	setTimeout(()=> {
-    		this.model = new User();
-    		this.result = new Result();
-     		this.submitted=false;
-        	//this._router.navigate(['Index']);
-     	}, 7000);
-      }
-    });
   }
 
   clear() {

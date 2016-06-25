@@ -76,14 +76,13 @@ export class CrudService {
   }
 
   private handleError(error: any) {
-    let errMsg = '';
+  	let errMsg = 'An error occurred. ';
     let messages = error.json();
+    errMsg += (error.message) ? error.message : error.status ? `${error.status} - ${error.statusText}` : 'Server error';
     if(messages) {
       for (let i = 0, len = messages.length; i<len; i++) {
-        errMsg += messages[i].message + ' <br> ';
+        errMsg +=' <br> ' + messages[i].message;
       };
-    } else {
-      errMsg = (error.message) ? error.message : error.status ? `${error.status} - ${error.reasonPhrase}` : 'Server error';
     }
     console.error('An error occurred', error);
     return Promise.reject(errMsg);

@@ -2,13 +2,13 @@ import {Component, OnInit}  from '@angular/core';
 import {DataTable, Column, LazyLoadEvent, TabPanel, TabView, CodeHighlighter, Header, Footer, Dialog, Button, InputText} from 'primeng/primeng';
 import {Item, PrimeItem} from './account';
 import {AccountService} from './account.service';
-import { LoadingIndicator, LoadingService } from '../services/loading/index';
+import { LoadingIndicator, LoadingService } from '../services/loading';
 
 @Component({
   selector: 'my-app',
   template: require('./account.html'),
   directives: [DataTable, Column, TabPanel, TabView, CodeHighlighter, Header, Footer, Dialog, Button, InputText, LoadingIndicator],
-  providers:[AccountService, LoadingService]
+  providers:[AccountService]
 })
 
 export class AccountComponent implements OnInit {
