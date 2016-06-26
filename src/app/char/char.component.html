@@ -1,0 +1,18 @@
+<h2>My chars</h2>
+
+<ul class="chars">
+  <li *ngFor="let char of chars" (click)="onSelect(char)" [class.selected]="char === selectedChar">
+    <span class="char-element">
+      <span class="badge">{{char.id}}</span> {{char.name}}
+    </span>
+  </li>
+</ul>
+<div *ngIf="addingChar">
+  <char-detail (close)="close($event)"></char-detail>
+</div>
+<div *ngIf="selectedChar">
+  <h2>
+    {{selectedChar.name | uppercase}} is my char
+  </h2>
+  <button (click)="gotoDetail()">View Details</button>
+</div>
