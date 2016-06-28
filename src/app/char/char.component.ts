@@ -24,7 +24,7 @@ export class CharComponent implements OnInit {
     this.charService
         .getChars()
         .then(data => {
-          console.log(data);
+          //console.log(data);
           this.chars = data;
         })
         .catch(error => this.error = error); // TODO: Display error message

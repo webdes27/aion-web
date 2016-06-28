@@ -44,7 +44,7 @@ export class CrudService {
     let headers = this.request.getAuthHeaders();;
     let url = `${this.url}/${item.id}`;
     return this.http
-               .delete(url, headers)
+               .delete(url, {headers: headers})
                .toPromise()
                .catch(this.handleError);
   }

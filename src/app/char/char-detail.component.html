@@ -1,10 +1,38 @@
+<loading-indicator></loading-indicator>
+
+<div class="alert alert-danger" role="alert" *ngIf="errorMessage">{{errorMessage}}</div>
+<div class="alert alert-success" role="alert" *ngIf="result">{{resultMessage}}</div>
+
 <div *ngIf="char">
   <h2>{{char.name}} details!</h2>
   <div>
-    <label>id: </label>{{char.id}}</div>
-  <div>
-    <label>name: </label>
-    <input [(ngModel)]="char.name" placeholder="name" />
-   </div>
-  <button (click)="goBack()">Back</button>
+    <button (click)="goBack()" class="btn btn-primary">Back</button>
+  </div>
+
+  <table class="table table-bordered">
+    <thead>
+    <tr>
+      <th>#</th>
+      <th>ID</th>
+      <th>Название</th>
+      <th>Описание</th>
+      <th>Цена</th>
+      <th></th>
+    </tr>
+    </thead>
+
+    <tbody>
+    <tr *ngFor="let product of products">
+      <td><img src="{{product.pic}}" alt=""></td>
+      <td>{{product.id}}</td>
+      <td>{{product.item_name}}</td>
+      <td>{{product.description}}</td>
+      <td>{{product.price}}</td>
+      <td>
+        <button (click)="byItem(product.id, char.id)"  type="button" class="btn btn-primary">Купить</button>
+      </td>
+    </tr>
+    </tbody>
+  </table>
+
 </div>
