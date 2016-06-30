@@ -11,7 +11,7 @@ export class CharService {
 	constructor(private http: Http, private requestService: RequestService) { }
 
 	getChars(): Promise<Char[]> {
-    let url = 'http://host5/data/mychars';
+    let url = 'http://host3/data/mychars';
     let headers = this.requestService.getAuthHeaders();
 	  return this.http.get(url, {headers: headers})
 	           .toPromise()
@@ -25,7 +25,7 @@ export class CharService {
 	}
 
   getProducts(): Promise<Product[]> {
-    let url = 'http://host5/pay-shop';
+    let url = 'http://host3/pay-shop';
     let headers = this.requestService.getAuthHeaders();
     return this.http.get(url, {headers: headers})
              .toPromise()
@@ -34,7 +34,7 @@ export class CharService {
   }
 
   byItem(id:number, charId:number, count:number = 1) {
-    let url = 'http://host5/data/buyitem';
+    let url = 'http://host3/data/buyitem';
     let headers = this.requestService.getAuthHeaders();
     let item = {'id': id, 'charId':charId, 'count':count};
     return this.http

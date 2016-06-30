@@ -6,7 +6,7 @@ import { RequestService } from '../services/request/request.service';
 @Injectable()
 export class AccountService extends CrudService {
 
-    url = 'http://host5/account-datas';
+    url = 'http://host3/account-datas';
     constructor(http: Http, request: RequestService) {
     	super(http, request);
     }
