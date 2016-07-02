@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Router }            from '@angular/router-deprecated';
+import { Router }            from '@angular/router';
 import { Char }                from './char';
 import { CharService }         from './char.service';
 import { CharDetailComponent } from './char-detail.component';
@@ -45,7 +45,7 @@ export class CharComponent implements OnInit {
   }
 
   gotoDetail() {
-    this.router.navigate(['CharDetail', { id: this.selectedChar.id }]);
+    this.router.navigate(['/char/detail', this.selectedChar.id ]);
   }
-  
+
 }

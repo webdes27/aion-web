@@ -1,6 +1,6 @@
 import {Component} from '@angular/core';
-import {FORM_DIRECTIVES, Control, ControlGroup, FormBuilder, Validators} from '@angular/common';
-import {Router} from '@angular/router-deprecated';
+import {FORM_DIRECTIVES, ControlGroup, FormBuilder, Validators} from '@angular/common';
+import {Router} from '@angular/router';
 import {UserService} from './../services/user/user.service';
 import {StorageService} from './../services/storage/storage.service';
 
@@ -24,7 +24,7 @@ export class LoginComponent {
   onSubmit(credentials) {
     this._userService.login(credentials).subscribe((result) => {
       if (!!result.access_token) {
-        this._router.navigate(['Index']);
+        this._router.navigate(['index']);
       } else {
         console.log(result);
       }

@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { RouteParams } from '@angular/router-deprecated';
+import { ActivatedRoute } from '@angular/router';
 import { Item }        from './account';
 import { AccountService } from './account.service';
 
@@ -17,21 +17,27 @@ export class AccountDetailComponent implements OnInit {
   @Input() account: Item;
   @Output() close = new EventEmitter();
   error: any;
+  sub: any;
   navigated = false; // true if navigated here
   constructor(
     private accountService: AccountService,
-    private routeParams: RouteParams) {
+    private route: ActivatedRoute) {
   }
   ngOnInit() {
-    if (this.routeParams.get('id') !== null) {
-      let id = +this.routeParams.get('id');
-      this.navigated = true;
-      this.accountService.getItem(id)
-          .then(account => this.account = account);
-    } else {
-      this.navigated = false;
-      this.account = new PrimeAccount();
-    }
+    this.sub = this.route.params.subscribe(params => {
+      if (params['id'] !== undefined) {
+        let id = +params['id'];
+        this.navigated = true;
+        this.accountService.getItem(id)
+            .then(account => this.account = account);
+      } else {
+        this.navigated = false;
+        this.account = new PrimeAccount();
+      }
+    });
+  }
+  ngOnDestroy() {
+    this.sub.unsubscribe();
   }
   save() {
     this.accountService

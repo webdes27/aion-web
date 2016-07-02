@@ -6,17 +6,17 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-          <a class="navbar-brand" [routerLink]="['Index']">{{title}}</a>
+          <a class="navbar-brand" [routerLink]="['index']">{{title}}</a>
         </div>
         <div class="collapse navbar-collapse">
           <ul class="nav navbar-nav">
-            <li><a [routerLink]="['Signup']">Signup</a></li>
-            <li><a [routerLink]="['Players']">Players</a></li>
-            <li><a [routerLink]="['Abyss']">Abyss</a></li>
-            <li><a [routerLink]="['Legions']">Legions</a></li>
-            <li><a [routerLink]="['Contact']">Contact</a></li>
-            <li><a [routerLink]="['Char']" *ngIf="getLoggedIn() | async">MyChars</a></li>
-            <li><a [routerLink]="['/Login']" *ngIf="!(getLoggedIn() | async)">Login</a></li>
+            <li><a [routerLink]="['signup']">Signup</a></li>
+            <li><a [routerLink]="['players']">Players</a></li>
+            <li><a [routerLink]="['abyss']">Abyss</a></li>
+            <li><a [routerLink]="['legions']">Legions</a></li>
+            <li><a [routerLink]="['contact']">Contact</a></li>
+            <li><a [routerLink]="['char']" *ngIf="getLoggedIn() | async">MyChars</a></li>
+            <li><a [routerLink]="['login']" *ngIf="!(getLoggedIn() | async)">Login</a></li>
             <li><a href="#" (click)="logout()" *ngIf="getLoggedIn() | async">Logout</a></li>
           </ul>
         </div><!-- /.nav-collapse -->

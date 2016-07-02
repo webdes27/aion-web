@@ -1,6 +1,6 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 
-import {RouteParams} from '@angular/router-deprecated';
+import {ActivatedRoute} from '@angular/router';
 
 import {Char}        from './char';
 import {Product}     from './product';
@@ -22,9 +22,10 @@ export class CharDetailComponent implements OnInit {
   products:Product[];
   result:boolean;
   resultMessage:string;
+  sub: any;
 
   constructor(private charService:CharService,
-              private routeParams:RouteParams,
+              private route:ActivatedRoute,
               private loadingService:LoadingService) {
   }
 
@@ -55,16 +56,22 @@ export class CharDetailComponent implements OnInit {
   }
 
   ngOnInit() {
-    if (this.routeParams.get('id') !== null) {
-      let id = +this.routeParams.get('id');
-      this.navigated = true;
-      this.charService.getChar(id)
-        .then(char => this.char = char);
-      this.getProducts();
-    } else {
-      this.navigated = false;
-      this.char = new Char();
-    }
+    this.sub = this.route.params.subscribe(params => {
+      if (params['id'] !== undefined) {
+        let id = +params['id'];
+        this.navigated = true;
+        this.charService.getChar(id)
+          .then(char => this.char = char);
+        this.getProducts();
+      } else {
+        this.navigated = false;
+        this.char = new Char();
+      }
+    });
+  }
+
+  ngOnDestroy() {
+    this.sub.unsubscribe();
   }
 
   goBack(savedChar:Char = null) {

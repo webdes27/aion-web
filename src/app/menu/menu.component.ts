@@ -1,12 +1,11 @@
 import {Component, Inject, ChangeDetectionStrategy} from '@angular/core';
-import {ROUTER_DIRECTIVES, Router} from '@angular/router-deprecated';
+import {Router} from '@angular/router';
 import {UserService} from './../services/user/user.service';
 import {Config, APP_CONFIG} from './../app.config';
 
 @Component({
   selector: 'top-menu',
-  template: require('./menu.html'),
-  directives: [ROUTER_DIRECTIVES],
+  template: require('./menu.html')
   //changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class MenuComponent {
@@ -21,7 +20,7 @@ export class MenuComponent {
 
   logout() {
     this._userService.logout();
-    this._router.navigate(['Index']);
+    this._router.navigate(['index']);
     return false;
   }
 

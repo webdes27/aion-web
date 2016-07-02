@@ -2,7 +2,7 @@
   "name": "angular2-webpack-starter",
   "version": "5.0.5",
   "description": "An Angular 2 Webpack Starter kit featuring Angular 2 (Router, Http, Forms, Services, Tests, E2E, Coverage), Karma, Protractor, Jasmine, Istanbul, TypeScript, and Webpack by AngularClass",
-    "keywords": [
+  "keywords": [
     "angular2",
     "webpack",
     "typescript"
@@ -57,17 +57,18 @@
     "postversion": "git push && git push --tags"
   },
   "dependencies": {
-    "@angular/common": "2.0.0-rc.3",
-    "@angular/compiler": "2.0.0-rc.3",
-    "@angular/core": "2.0.0-rc.3",
-    "@angular/forms": "0.1.1",
-    "@angular/http": "2.0.0-rc.2",
-    "@angular/platform-browser": "2.0.0-rc.3",
-    "@angular/platform-browser-dynamic": "2.0.0-rc.3",
-    "@angular/platform-server": "2.0.0-rc.1",
-    "@angular/router":  "3.0.0-alpha.8",
-    "@angular/router-deprecated":  "2.0.0-rc.2",
-    "@angular/upgrade":  "2.0.0-rc.3",
+    "@angular/common": "2.0.0-rc.4",
+    "@angular/compiler": "2.0.0-rc.4",
+    "@angular/core": "2.0.0-rc.4",
+    "@angular/forms": "0.2.0",
+    "@angular/http": "2.0.0-rc.4",
+    "@angular/platform-browser": "2.0.0-rc.4",
+    "@angular/platform-browser-dynamic": "2.0.0-rc.4",
+    "@angular/platform-server": "2.0.0-rc.4",
+    "@angular/router": "3.0.0-beta.2",
+    "@angular/upgrade": "2.0.0-rc.4",
+    "@angularclass/request-idle-callback": "^1.0.7",
+    "@angularclass/webpack-toolkit": "^1.3.3",
     "core-js": "^2.4.0",
     "ng2-bootstrap": "^1.0.16",
     "normalize.css": "^4.1.1",
@@ -78,7 +79,6 @@
     "zone.js": "~0.6.12"
   },
   "devDependencies": {
-    "@angularclass/angular2-beta-to-rc-alias": "~0.0.3",
     "angular2-hmr": "~0.8.0",
     "awesome-typescript-loader": "~0.17.0",
     "codelyzer": "~0.0.21",

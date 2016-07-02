@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Router }            from '@angular/router-deprecated';
+import { Router }            from '@angular/router';
 import { Item }                from './account';
 import { AccountService }         from './account.service';
 import { AccountDetailComponent } from './account-detail.component';
@@ -49,6 +49,6 @@ export class AccountComponent implements OnInit {
     this.addingAccount = false;
   }
   gotoDetail() {
-    this.router.navigate(['AccountDetail', { id: this.selectedAccount.id }]);
+    this.router.navigate(['/account/detail', this.selectedAccount.id ]);
   }
 }

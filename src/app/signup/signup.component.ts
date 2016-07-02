@@ -23,7 +23,7 @@ class Result {
   selector: 'my-app',
   template: require('./signup.html'),
   providers: [SignupService],
-  directives: [LoadingIndicator],
+  directives: [FORM_DIRECTIVES, LoadingIndicator],
 })
 
 export class SignupComponent {
