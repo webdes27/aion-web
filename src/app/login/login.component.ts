@@ -1,5 +1,5 @@
 import {Component} from '@angular/core';
-import {FORM_DIRECTIVES, ControlGroup, FormBuilder, Validators} from '@angular/common';
+import {FormGroup, FormBuilder, Validators} from '@angular/forms';
 import {Router} from '@angular/router';
 import {UserService} from './../services/user/user.service';
 import {StorageService} from './../services/storage/storage.service';
@@ -8,10 +8,9 @@ import {StorageService} from './../services/storage/storage.service';
   selector: 'login',
   template: require('./login.html'),
   providers:[UserService, StorageService],
-  directives: [FORM_DIRECTIVES],
 })
 export class LoginComponent {
-  loginForm: ControlGroup;
+  loginForm: FormGroup;
 
   constructor(private _userService: UserService, private _builder: FormBuilder, private _router: Router) {
 

@@ -1,7 +1,8 @@
 import {Component, Inject}  from '@angular/core';
-import {FORM_DIRECTIVES, Control, ControlGroup, FormBuilder, Validators} from '@angular/common';
+import {FormControl, FormGroup, FormBuilder, Validators} from '@angular/forms';
 import {validateEmail} from './../services/validate/validate.service';
-import {ContactService} from './contact.service';
+import {ContactService} from './contact.service'
+import { LoadingIndicator, LoadingService } from '../services/loading';;
 
 class User {
     public name: string;
@@ -23,15 +24,16 @@ class Result {
   selector: 'contact',
   template: require('./contact.html'),
   providers:[ContactService],
-  directives: [FORM_DIRECTIVES],
+  directives: [LoadingIndicator]
 })
 export class ContactComponent {
-  contactForm: ControlGroup;
+  contactForm: FormGroup;
   submitted: Boolean = false;
   model = new User();
   result = new Result();
+  errorMessage: string;
 
-  constructor (private _formBuilder: FormBuilder, private _contactService: ContactService) {
+  constructor (private _formBuilder: FormBuilder, private contactService: ContactService, private loadingService:LoadingService) {
     this.contactForm = this._formBuilder.group({
       name: ["", Validators.compose([Validators.required, Validators.minLength(2), Validators.maxLength(45)])],
       email: ["", Validators.compose([Validators.required, validateEmail])],
@@ -41,32 +43,38 @@ export class ContactComponent {
   }
 
   onSubmit(credentials) {
-   this._contactService.contact(credentials).subscribe((data) => {
-     //console.log(data);
-     this.result.success = data.success;
-     if(!data.success) {
-       this.result.err_name = (typeof data.errors.name !== "undefined") ? data.errors.name[0] : '';
-       this.result.err_email = (typeof data.errors.email !== "undefined") ?  data.errors.email[0] : '';
-       this.result.err_subject  = (typeof data.errors.subject !== "undefined") ? data.errors.subject[0] : '';
-       this.result.err_body  = (typeof data.errors.body !== "undefined") ? data.errors.body[0] : '';
-     } else {
-       this.result.message = data.message;
-       this.submitted = true;
-       this.clear();
-       setTimeout(()=> {
-         this.model = new User();
-         this.result = new Result();
-         this.submitted=false;
-         //this._router.navigate(['Index']);
-       }, 7000);
-     }
-   });
+    this.loadingService.show();
+    this.contactService.contact(credentials).then(data => {
+        this.loadingService.hide();
+       //console.log(data);
+       this.result.success = data.success;
+       if(!data.success) {
+         this.result.err_name = (typeof data.errors.name !== "undefined") ? data.errors.name[0] : '';
+         this.result.err_email = (typeof data.errors.email !== "undefined") ?  data.errors.email[0] : '';
+         this.result.err_subject  = (typeof data.errors.subject !== "undefined") ? data.errors.subject[0] : '';
+         this.result.err_body  = (typeof data.errors.body !== "undefined") ? data.errors.body[0] : '';
+       } else {
+         this.result.message = data.message;
+         this.submitted = true;
+         this.clear();
+         setTimeout(()=> {
+           this.model = new User();
+           this.result = new Result();
+           this.submitted=false;
+           //this._router.navigate(['Index']);
+         }, 7000);
+       }
+     })
+     .catch(error => {
+        this.loadingService.hide();
+        this.errorMessage = error;
+      });
   }
 
   clear() {
     for(let c in this.contactForm.controls) {
-      (<Control>this.contactForm.controls[c]).updateValue('');
-      (<Control>this.contactForm.controls[c]).setErrors(null);
+      (<FormControl>this.contactForm.controls[c]).updateValue('');
+      (<FormControl>this.contactForm.controls[c]).setErrors(null);
     };
   }
 

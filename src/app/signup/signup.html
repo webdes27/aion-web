@@ -1,26 +1,26 @@
+<loading-indicator></loading-indicator>
+
 <div class="page-header">
   <h1>Регистрация</h1>
 </div>
-
-<loading-indicator></loading-indicator>
 
 <div class="alert alert-danger" role="alert" *ngIf="errorMessage">{{errorMessage}}</div>
 
 <div class="row">
   <div class="col-sm-6" [hidden]="submitted">
-    <form (ngSubmit)="onSubmit(signupForm.value)" [ngFormModel]="signupForm">
+    <form (ngSubmit)="onSubmit(signupForm.value)" [formGroup]="signupForm" #f="ngForm">
 
       <div class="form-group">
         <label for="name">Логин</label>
-        <input type="text" class="form-control" required ngControl="name" #name="ngForm" id="name">
+        <input type="text" class="form-control" required formControlName="name" id="name">
 
-        <div *ngIf="name.control.hasError('required') && name.control.touched" class="alert alert-danger">
+        <div *ngIf="signupForm.controls['name'].hasError('required') && signupForm.controls['name'].touched" class="alert alert-danger">
           name is required
         </div>
-        <div *ngIf="name.control.hasError('minlength') && name.control.touched" class="alert alert-danger">
+        <div *ngIf="signupForm.controls['name'].hasError('minlength') && signupForm.controls['name'].touched" class="alert alert-danger">
           name is too short
         </div>
-        <div *ngIf="name.control.hasError('maxlength') && name.control.touched" class="alert alert-danger">
+        <div *ngIf="signupForm.controls['name'].hasError('maxlength') && signupForm.controls['name'].touched" class="alert alert-danger">
           name is too long
         </div>
       </div>
@@ -28,17 +28,18 @@
 
       <div class="form-group">
         <label for="password">Пароль</label>
-        <input type="text" class="form-control" required ngControl="password" #password="ngForm" id="password">
-        <div [hidden]="password.valid || password.pristine" class="alert alert-danger">
+        <input type="text" class="form-control" required formControlName="password" id="password">
+
+        <div *ngIf="signupForm.controls['password'].hasError('required') && signupForm.controls['password'].touched" class="alert alert-danger">
           Password is required
         </div>
       </div>
 
       <div class="form-group">
         <label for="password_repeat">Ещё раз пароль</label>
-        <input type="text" class="form-control" required ngControl="password_repeat" #password_repeat="ngForm" id="password_repeat">
+        <input type="text" class="form-control" required formControlName="password_repeat" id="password_repeat">
 
-        <div *ngIf="password.control.hasError('required') && password.control.touched" class="alert alert-danger">
+        <div *ngIf="signupForm.controls['password'].hasError('required') && signupForm.controls['password'].touched" class="alert alert-danger">
           Password is required
         </div>
       </div>
@@ -46,9 +47,9 @@
 
       <div class="form-group">
         <label for="email">Email</label>
-        <input type="text" class="form-control" required ngControl="email" #email="ngForm" id="email">
+        <input type="text" class="form-control" required formControlName="email" id="email">
 
-        <div *ngIf="email.control.hasError('required') && email.control.touched" class="alert alert-danger">
+        <div *ngIf="signupForm.controls['email'].hasError('required') && signupForm.controls['email'].touched" class="alert alert-danger">
           email is required
         </div>
       </div>

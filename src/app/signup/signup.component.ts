@@ -1,5 +1,5 @@
 import {Component, Inject}  from '@angular/core';
-import {FORM_DIRECTIVES, Control, ControlGroup, FormBuilder, Validators} from '@angular/common';
+import { FormControl, FormGroup, FormBuilder, Validators} from '@angular/forms';
 import {validateEmail} from './../services/validate/validate.service';
 import {SignupService} from './signup.service';
 import { LoadingIndicator, LoadingService } from '../services/loading';
@@ -23,11 +23,11 @@ class Result {
   selector: 'my-app',
   template: require('./signup.html'),
   providers: [SignupService],
-  directives: [FORM_DIRECTIVES, LoadingIndicator],
+  directives: [LoadingIndicator],
 })
 
 export class SignupComponent {
-  signupForm: ControlGroup;
+  signupForm: FormGroup;
   submitted: Boolean = false;
   model = new User();
   result = new Result();
@@ -72,8 +72,8 @@ export class SignupComponent {
 
   clear() {
   	for(let c in this.signupForm.controls) {
-  		(<Control>this.signupForm.controls[c]).updateValue('');
-    	(<Control>this.signupForm.controls[c]).setErrors(null);
+  		(<FormControl>this.signupForm.controls[c]).updateValue('');
+    	(<FormControl>this.signupForm.controls[c]).setErrors(null);
   	};
   }
 
