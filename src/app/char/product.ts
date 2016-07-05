@@ -5,4 +5,8 @@ export class Product {
     item_name: string;
     description: string;
     price: string;
+
+  constructor(values: Object = {}) {
+    Object.assign(this, values);
+  }  
 }

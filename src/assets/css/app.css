@@ -60,3 +60,7 @@ footer {
 .ng-invalid[required], .ng-invalid[required]:focus {
   border-left: 5px solid #a94442; /* red */
 }
+.app-root-loader {
+  text-align: center;
+  padding: 30px;
+}

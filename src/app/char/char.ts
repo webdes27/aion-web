@@ -4,4 +4,8 @@ export class Char {
     account_id: number;
     account_name: number;
     exp: number;
+
+  constructor(values: Object = {}) {
+    Object.assign(this, values);
+  }
 }

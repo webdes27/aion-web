@@ -1,4 +1,4 @@
-import {Component, Inject, ViewEncapsulation} from '@angular/core';
+import {Component, Inject} from '@angular/core';
 import {StatComponent} from './stat/stat.component';
 import {MenuComponent} from './menu/menu.component';
 import {AppState} from './app.service';
@@ -9,10 +9,6 @@ import {AppState} from './app.service';
   providers: [ ],
   template: require('./app.html'),
   directives: [StatComponent, MenuComponent],
-  styles: [
-    require('./app.scss')
-  ],
-  encapsulation: ViewEncapsulation.None,
 })
 
 export class App {

@@ -30,6 +30,7 @@
   <!-- end favicon -->
 
   <link rel="stylesheet" type="text/css" href="/assets/css/bootstrap.min.css">
+  <link rel="stylesheet" type="text/css" href="/assets/css/app.css">
   <link rel="stylesheet" type="text/css" href="/assets/primeui/themes/bootstrap/theme.css">
   <link rel="stylesheet" type="text/css" href="/assets/css/font-awesome.min.css">
   <link rel="stylesheet" type="text/css" href="/assets/primeui/primeui-ng-all.min.css">
@@ -43,7 +44,9 @@
 <body>
 
   <app>
-    Loading...
+    <div class="app-root-loader">
+      Loading, please wait...
+    </div>
   </app>
 
   <% if (webpackConfig.metadata.isDevServer) { %>
