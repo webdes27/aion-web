@@ -14,11 +14,11 @@ import {LoadingService} from './services/loading';
 
 // Application wide providers
 export const APP_PROVIDERS = [
-    AppState,
-    JSONP_PROVIDERS,
-    UserService,
-    StorageService,
-    RequestService,
-    provide(APP_CONFIG, { useValue: CONFIG }),
-    LoadingService
+  AppState,
+  JSONP_PROVIDERS,
+  UserService,
+  StorageService,
+  RequestService,
+  provide(APP_CONFIG, {useValue: CONFIG}),
+  LoadingService
 ];

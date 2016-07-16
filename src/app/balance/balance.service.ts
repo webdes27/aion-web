@@ -9,9 +9,9 @@ import { RequestService } from '../services/request/request.service';
 export class BalanceService {
   constructor (private http: Http, private requestService: RequestService, @Inject(APP_CONFIG) private _config: Config) {}
 
-  private url = this._config.apiGetBalance;;  // URL to web API
+  private url = this._config.apiGetBalance;
 
-  getStat (): Observable<Balance> {
+  getData (): Observable<Balance> {
     let headers = this.requestService.getAuthHeaders();
     return this.http.get(this.url, {headers: headers})
                     .map(this.extractData)

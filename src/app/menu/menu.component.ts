@@ -10,17 +10,17 @@ import {Config, APP_CONFIG} from './../app.config';
 })
 export class MenuComponent {
 
-  constructor(private _userService: UserService, private _router:Router, @Inject(APP_CONFIG) private _config: Config) {}
+  constructor(private userService: UserService, private router:Router, @Inject(APP_CONFIG) private config: Config) {}
 
-  title = this._config.title;
+  title = this.config.title;
 
   getLoggedIn() {
-    return this._userService.getLoggedIn();
+    return this.userService.getLoggedIn();
   }
 
   logout() {
-    this._userService.logout();
-    this._router.navigate(['index']);
+    this.userService.logout();
+    this.router.navigate(['index']);
     return false;
   }
 
