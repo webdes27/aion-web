@@ -8,7 +8,8 @@ export interface Config {
 	apiGetStat: string,
 	apiSignup: string,
 	apiLogin: string,
-	apiContact: string
+	apiContact: string,
+	apiGetBalance: string
 }
 
 export const CONFIG:Config = {
@@ -17,5 +18,6 @@ export const CONFIG:Config = {
 	apiGetStat: 'http://host3/data/stat',
 	apiSignup: 'http://host3/auth/signup',
 	apiLogin: 'http://host3/auth/login',
-  	apiContact: 'http://host3/auth/contact'
+  	apiContact: 'http://host3/auth/contact',
+  	apiGetBalance : 'http://host3/data/balanse'
 };

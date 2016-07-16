@@ -2,13 +2,14 @@ import {Component, Inject} from '@angular/core';
 import {StatComponent} from './stat/stat.component';
 import {MenuComponent} from './menu/menu.component';
 import {AppState} from './app.service';
+import {BalanceComponent} from './balance/balance.component';
 
 @Component({
   selector: 'app',
   pipes: [ ],
   providers: [ ],
   template: require('./app.html'),
-  directives: [StatComponent, MenuComponent],
+  directives: [StatComponent, MenuComponent, BalanceComponent],
 })
 
 export class App {
