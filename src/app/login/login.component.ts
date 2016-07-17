@@ -22,7 +22,7 @@ export class LoginComponent {
 
   onSubmit(credentials) {
     this._userService.login(credentials).subscribe((result) => {
-      if (!!result.access_token) {
+      if (!!result['access_token']) {
         this._router.navigate(['index']);
       } else {
         console.log(result);

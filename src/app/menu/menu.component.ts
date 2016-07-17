@@ -5,7 +5,7 @@ import {Config, APP_CONFIG} from './../app.config';
 
 @Component({
   selector: 'top-menu',
-  template: require('./menu.html')
+  template: require('./menu.html'),
   //changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class MenuComponent {
@@ -20,7 +20,7 @@ export class MenuComponent {
 
   logout() {
     this.userService.logout();
-    this.router.navigate(['index']);
+    this.router.navigate(['']);
     return false;
   }
 

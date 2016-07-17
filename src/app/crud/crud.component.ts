@@ -5,7 +5,7 @@ import {CrudService} from './crud.service';
 
 @Component({
   selector: 'my-app',
-  template: require('./account.html'),
+  template: require('./account.component.html'),
   directives: [DataTable, Column, TabPanel, TabView, CodeHighlighter, Header, Footer, Dialog, Button, InputText],
   providers:[CrudService]
 })

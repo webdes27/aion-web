@@ -26,5 +26,13 @@ export interface Data {
 }
 
 export class PrimeItem implements Item {
-  constructor(public id?, public name?, public activated?, public access_level?, public membership?) {}
+  id: number;
+  name: string;
+  activated: number;
+  access_level: number;
+  membership: number;
+
+  constructor(values: Object = {}) {
+    Object.assign(this, values);
+  }
 }
