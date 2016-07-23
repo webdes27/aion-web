@@ -36,7 +36,7 @@ export class CharDetailComponent implements OnInit {
         this.products = data;
       })
       .catch(error => {
-        this.errorMessage = error;
+        this.errorMessage = JSON.stringify(error); 
         console.log(error);
       });
   }
@@ -50,7 +50,7 @@ export class CharDetailComponent implements OnInit {
       console.log(data);
     }).catch(error => {
       this.loadingService.hide();
-      this.errorMessage = error;
+      this.errorMessage = JSON.stringify(error);
       console.log(error);
     });
   }

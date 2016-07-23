@@ -1,18 +1,19 @@
 import {Component} from '@angular/core';
 import {FormGroup, FormBuilder, Validators} from '@angular/forms';
 import {Router} from '@angular/router';
-import {UserService} from './../services/user/user.service';
-import {StorageService} from './../services/storage/storage.service';
+import {LoginService} from './login.service';
+import { UserService } from '../services/user/user.service';
 
 @Component({
   selector: 'login',
   template: require('./login.html'),
-  providers:[UserService, StorageService],
+  providers:[LoginService],
 })
 export class LoginComponent {
   loginForm: FormGroup;
+  errorMessage: string;
 
-  constructor(private _userService: UserService, private _builder: FormBuilder, private _router: Router) {
+  constructor(private _loginService: LoginService, private _builder: FormBuilder, private _router: Router, private _userService: UserService) {
 
     this.loginForm = _builder.group({
       username: ['', Validators.required],
@@ -21,12 +22,19 @@ export class LoginComponent {
   }
 
   onSubmit(credentials) {
-    this._userService.login(credentials).subscribe((result) => {
-      if (!!result['access_token']) {
+    this._loginService.login(credentials).then(data => {
+      if (!!data['access_token']) {
+        this._userService.login(data['access_token']);
         this._router.navigate(['index']);
       } else {
-        console.log(result);
+        this.errorMessage = JSON.stringify(data); 
       }
-    });
+      })
+      .catch(error => {
+        this.errorMessage = JSON.stringify(error);
+        console.log(error);
+      });
+
   }
+
 }
