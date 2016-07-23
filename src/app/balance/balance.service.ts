@@ -7,9 +7,9 @@ import { RequestService } from '../services/request/request.service';
 
 @Injectable()
 export class BalanceService {
-  constructor (private http: Http, private requestService: RequestService, @Inject(APP_CONFIG) private _config: Config) {}
+  constructor (private http: Http, private requestService: RequestService, @Inject(APP_CONFIG) private config: Config) {}
 
-  private url = this._config.apiGetBalance;
+  private url = this.config.apiGetBalance;
 
   getData (): Observable<Balance> {
     let headers = this.requestService.getAuthHeaders();

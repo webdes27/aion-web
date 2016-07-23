@@ -9,7 +9,11 @@ export interface Config {
 	apiSignup: string,
 	apiLogin: string,
 	apiContact: string,
-	apiGetBalance: string
+	apiGetBalance: string,
+	apiAccount: string,
+	apiMychars: string,
+	apiPayShop: string,
+	apiBuyitem: string
 }
 
 export const CONFIG:Config = {
@@ -19,5 +23,9 @@ export const CONFIG:Config = {
 	apiSignup: 'http://host3/auth/signup',
 	apiLogin: 'http://host3/auth/login',
   	apiContact: 'http://host3/auth/contact',
-  	apiGetBalance : 'http://host3/data/balanse'
+  	apiGetBalance: 'http://host3/data/balanse',
+  	apiAccount: 'http://host3/account-datas',
+  	apiMychars: 'http://host3/data/mychars',
+  	apiPayShop:'http://host3/pay-shop',
+  	apiBuyitem:'http://host3/data/buyitem'
 };
