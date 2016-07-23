@@ -1,4 +1,4 @@
-import {Component, OnInit, OnDestroy, ChangeDetectionStrategy}  from '@angular/core';
+import {Component, OnInit, OnDestroy}  from '@angular/core';
 import {Observable}       from 'rxjs/Observable';
 import {BalanceService} from './balance.service';
 import {Balance} from './balance';
@@ -9,8 +9,7 @@ import {Subscription} from 'rxjs/Subscription';
 @Component({
   selector: 'my-balance',
   template: require('./balance.component.html'),
-  providers:[BalanceService],
-  changeDetection: ChangeDetectionStrategy.OnPush
+  providers:[BalanceService]
 })
 
 export class BalanceComponent implements OnInit, OnDestroy {
