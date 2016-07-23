@@ -28,9 +28,6 @@ export class UserService {
   }
 
   getLoggedIn() {
-/*    if (!!this._storage.getAuthToken()) {
-      this._loggedIn.next(true);
-    }*/
     return this._loggedIn;
   }
 }

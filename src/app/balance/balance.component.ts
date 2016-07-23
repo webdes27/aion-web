@@ -10,7 +10,7 @@ import {Subscription} from 'rxjs/Subscription';
   selector: 'my-balance',
   template: require('./balance.component.html'),
   providers:[BalanceService],
-  //changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 
 export class BalanceComponent implements OnInit, OnDestroy {
