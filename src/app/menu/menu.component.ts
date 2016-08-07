@@ -24,4 +24,12 @@ export class MenuComponent {
     return false;
   }
 
+  getUserName() {
+    return this.userService.getUsername();
+  }
+
+  isAdmin() {
+   return this.userService.getLoggedIn() && this.userService.getUsername()=='admin';
+  }
+
 }

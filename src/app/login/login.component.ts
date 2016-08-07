@@ -24,7 +24,7 @@ export class LoginComponent {
   onSubmit(credentials) {
     this._loginService.login(credentials).then(data => {
       if (!!data['access_token']) {
-        this._userService.login(data['access_token']);
+        this._userService.login(data['access_token'], data['username']);
         this._router.navigate(['index']);
       } else {
         this.errorMessage = JSON.stringify(data); 

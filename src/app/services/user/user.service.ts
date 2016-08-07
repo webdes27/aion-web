@@ -13,13 +13,15 @@ export class UserService {
     }
   }
 
-  login(access_token) {
+  login(access_token, username) {
     this._storage.setAuthToken(access_token);
+    this._storage.setAuthUsername(username);
     this._loggedIn.next(true);
   }
 
   logout() {
     this._storage.removeAuthToken();
+    this._storage.removeAuthUsername();
     this._loggedIn.next(false);
   }
 
@@ -30,4 +32,9 @@ export class UserService {
   getLoggedIn() {
     return this._loggedIn;
   }
+
+  getUsername() {
+   return this._storage.getAuthUsername();
+  }
+
 }

@@ -1,4 +1,4 @@
-<h2>My chars</h2>
+<h2>Мои персонажи</h2>
 
 <span *ngFor="let char of chars" (click)="onSelect(char)" [class.selected]="char === selectedChar">
     <button class="btn btn-primary">{{char.name}}</button>
