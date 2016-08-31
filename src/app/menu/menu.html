@@ -18,6 +18,7 @@
           <ul class="nav navbar-nav navbar-right">
             <li><a [routerLink]="['account']" *ngIf="isAdmin()">Аккаунты</a></li>
             <li><a [routerLink]="['signup']" *ngIf="!(getLoggedIn() | async)">Регистрация</a></li>
+            <li><a [routerLink]="['exchange']" *ngIf="getLoggedIn() | async">Обменник</a></li>
             <li><a [routerLink]="['char']" *ngIf="getLoggedIn() | async">Мои персонажи</a></li>
             <li><a [routerLink]="['login']" *ngIf="!(getLoggedIn() | async)">Вход</a></li>
             <li><a href="#" (click)="logout()" *ngIf="getLoggedIn() | async">Выход ({{getUserName()}})</a></li>

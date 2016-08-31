@@ -12,6 +12,7 @@ import {ContactComponent} from './contact/contact.component';
 import {AccountComponent} from './account/account.component';
 import {CharComponent} from './char/char.component';
 import {CharDetailComponent} from './char/char-detail.component';
+import {ExchangeComponent} from './exchange/exchange.component';
 
 import { DataResolver } from './app.resolver';
 
@@ -29,6 +30,7 @@ export const routes: RouterConfig = [
   { path: 'account',  component: AccountComponent },
   { path: 'char',  component: CharComponent },
   { path: 'char/detail/:id', component: CharDetailComponent },
+  { path: 'exchange', component: ExchangeComponent },
 
   // make sure you match the component type string to the require in asyncRoutes
   { path: 'about', component: 'About',

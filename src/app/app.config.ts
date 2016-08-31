@@ -13,7 +13,8 @@ export interface Config {
 	apiAccount: string,
 	apiMychars: string,
 	apiPayShop: string,
-	apiBuyitem: string
+	apiBuyitem: string,
+	apiExchange: string,
 }
 
 export const CONFIG:Config = {
@@ -27,5 +28,6 @@ export const CONFIG:Config = {
   	apiAccount: 'http://host3/account-datas',
   	apiMychars: 'http://host3/data/mychars',
   	apiPayShop:'http://host3/pay-shop',
-  	apiBuyitem:'http://host3/data/buyitem'
+  	apiBuyitem:'http://host3/data/buyitem',
+  	apiExchange: 'http://host3/data/exchange',
 };

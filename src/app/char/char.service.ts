@@ -50,9 +50,7 @@ export class CharService {
     let messages = error.json();
     errMsg += (error.message) ? error.message : error.status ? `${error.status} - ${error.statusText}` : 'Server error';
     if(messages) {
-      for (let i = 0, len = messages.length; i<len; i++) {
-        errMsg +=' <br> ' + messages[i].message;
-      }
+      errMsg += ' ' + JSON.stringify(messages);
     }
     console.error('An error occurred', error);
     return Promise.reject(errMsg);
