@@ -4,11 +4,11 @@ import {StorageService} from '../storage/storage.service';
 
 @Injectable()
 export class UserService {
-  
+
   _loggedIn:BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
   public update:BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
 
-  constructor(private _storage: StorageService) {
+  constructor(private _storage:StorageService) {
 
     if (!!this._storage.getAuthToken()) {
       this._loggedIn.next(true);
@@ -36,11 +36,11 @@ export class UserService {
   }
 
   getUsername() {
-   return this._storage.getAuthUsername();
+    return this._storage.getAuthUsername();
   }
 
-  setUpdateStatus(isUpdate){
-   this.update.next(isUpdate);
+  setUpdateStatus(isUpdate) {
+    this.update.next(isUpdate);
   }
 
 }

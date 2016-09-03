@@ -1,9 +1,9 @@
 export class Balance {
-	login: string;
-    balance: number;
-    credits: number;
+  login:string;
+  balance:number;
+  credits:number;
 
-  constructor(values: Object = {}) {
+  constructor(values:Object = {}) {
     Object.assign(this, values);
   }
 }

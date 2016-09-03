@@ -6,8 +6,8 @@ import {BalanceComponent} from './balance/balance.component';
 
 @Component({
   selector: 'app',
-  pipes: [ ],
-  providers: [ ],
+  pipes: [],
+  providers: [],
   template: require('./app.html'),
   directives: [StatComponent, MenuComponent, BalanceComponent],
 })
@@ -18,8 +18,7 @@ export class App {
   name = 'AION Kristall';
   url = 'https://twitter.com/AngularClass';
 
-  constructor(
-    public appState: AppState) {
+  constructor(public appState:AppState) {
 
   }
 

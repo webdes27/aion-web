@@ -1,10 +1,11 @@
-import { Injectable } from '@angular/core';
-import { Http } from '@angular/http';
+import {Injectable} from '@angular/core';
+import {Http} from '@angular/http';
 
 @Injectable()
 export class Title {
   value = 'Angular 2';
-  constructor(public http: Http) {
+
+  constructor(public http:Http) {
 
   }
 

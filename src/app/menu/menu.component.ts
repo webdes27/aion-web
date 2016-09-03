@@ -10,7 +10,8 @@ import {Config, APP_CONFIG} from './../app.config';
 })
 export class MenuComponent {
 
-  constructor(private userService: UserService, private router:Router, @Inject(APP_CONFIG) private config: Config) {}
+  constructor(private userService:UserService, private router:Router, @Inject(APP_CONFIG) private config:Config) {
+  }
 
   title = this.config.title;
 
@@ -29,7 +30,7 @@ export class MenuComponent {
   }
 
   isAdmin() {
-   return this.userService.getLoggedIn() && this.userService.getUsername()=='admin';
+    return this.userService.getLoggedIn() && this.userService.getUsername() == 'admin';
   }
 
 }

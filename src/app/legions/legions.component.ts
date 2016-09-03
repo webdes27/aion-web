@@ -6,13 +6,14 @@ import {BaseService} from './../services/base.service';
 @Component({
   selector: 'my-app',
   template: require('./legions.html'),
-  providers:[JSONP_PROVIDERS, BaseService]
+  providers: [JSONP_PROVIDERS, BaseService]
 })
 
 export class LegionsComponent implements OnInit {
-  items: Observable<string[]>;
+  items:Observable<string[]>;
 
-  constructor (private _baseService: BaseService, private http: Http) {}
+  constructor(private _baseService:BaseService, private http:Http) {
+  }
 
   ngOnInit() {
     this.items = this._baseService.search('legions');

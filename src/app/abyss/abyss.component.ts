@@ -7,21 +7,26 @@ import {Rank, Ranks} from './ranks';
 @Component({
   selector: 'my-app',
   template: require('./abyss.html'),
-  providers:[JSONP_PROVIDERS, BaseService]
+  providers: [JSONP_PROVIDERS, BaseService]
 })
 
 export class AbyssComponent implements OnInit {
-  items: Observable<string[]>;
+  items:Observable<string[]>;
 
-  constructor (private _baseService: BaseService) {}
+  constructor(private _baseService:BaseService) {
+  }
 
-  getRankById = function(id){
+  getRankById = function (id) {
     var data = Ranks;
+
     function getName(code) {
       return data.filter(
-        function(data){return data.id == code}
+        function (data) {
+          return data.id == code
+        }
       );
     }
+
     var found = getName(id);
     return found[0].name;
   }

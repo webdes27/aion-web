@@ -1,2 +1,2 @@
-export { LoadingService } from './loading.service';
-export { LoadingIndicator } from './loading-indicator';
+export {LoadingService} from './loading.service';
+export {LoadingIndicator} from './loading-indicator';

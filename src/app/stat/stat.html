@@ -1,12 +1,12 @@
-	  <div class="list-group" *ngIf="items">
-		<span class="list-group-item active">Статистика</span>
-		<span class="list-group-item">login: <span [ngClass]="setLoginStatusClass()">{{items.login_status}}</span></span>
-		<span class="list-group-item">game: <span [ngClass]="setGameStatusClass()">{{items.game_status}}</span></span>
-		<span class="list-group-item">online: {{items.count_online}}</span>
-		<span class="list-group-item">аккаунтов: {{items.count_account}}</span>
-		<span class="list-group-item">персонажей: {{items.count_char}}</span>
-		<span class="list-group-item">парней в aion: {{items.count_male}}</span>
-		<span class="list-group-item">девушек в aion: {{items.count_female}}</span>
-		<span class="list-group-item">элийцы: {{items.count_elyos}}</span>
-		<span class="list-group-item">асмодиане: {{items.count_asmodian}}</span>
-	  </div>
+<div class="list-group" *ngIf="items">
+  <span class="list-group-item active">Статистика</span>
+  <span class="list-group-item">login: <span [ngClass]="setLoginStatusClass()">{{items.login_status}}</span></span>
+  <span class="list-group-item">game: <span [ngClass]="setGameStatusClass()">{{items.game_status}}</span></span>
+  <span class="list-group-item">online: {{items.count_online}}</span>
+  <span class="list-group-item">аккаунтов: {{items.count_account}}</span>
+  <span class="list-group-item">персонажей: {{items.count_char}}</span>
+  <span class="list-group-item">парней в aion: {{items.count_male}}</span>
+  <span class="list-group-item">девушек в aion: {{items.count_female}}</span>
+  <span class="list-group-item">элийцы: {{items.count_elyos}}</span>
+  <span class="list-group-item">асмодиане: {{items.count_asmodian}}</span>
+</div>

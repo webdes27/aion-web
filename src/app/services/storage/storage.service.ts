@@ -1,4 +1,3 @@
-
 const STORAGE_KEY = 'auth_token';
 const STORAGE_KEY_USER_NAME = 'username';
 
@@ -16,7 +15,7 @@ export class StorageService {
   }
 
   getAuthUsername() {
-  	return localStorage.getItem(STORAGE_KEY_USER_NAME);
+    return localStorage.getItem(STORAGE_KEY_USER_NAME);
   }
 
   setAuthUsername(username) {

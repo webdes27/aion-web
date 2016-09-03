@@ -8,16 +8,16 @@ import {Subscription} from 'rxjs/Subscription';
 @Component({
   selector: 'my-balance',
   template: require('./balance.component.html'),
-  providers:[BalanceService]
+  providers: [BalanceService]
 })
 
 export class BalanceComponent implements OnInit, OnDestroy {
-  errorMessage: string;
-  items: Balance;
+  errorMessage:string;
+  items:Balance;
   subscription:Subscription;
   subscriptionUpdate:Subscription;
 
-  constructor (private balanceService: BalanceService, private user: UserService) {
+  constructor(private balanceService:BalanceService, private user:UserService) {
 
     this.subscription = this.user._loggedIn.subscribe(
       item => {
@@ -33,7 +33,7 @@ export class BalanceComponent implements OnInit, OnDestroy {
   }
 
   getData() {
-    if(this.user.isLoggedIn()) {
+    if (this.user.isLoggedIn()) {
       this.balanceService.getData().subscribe(
         data => this.items = data,
         error => this.errorMessage = <any>error);

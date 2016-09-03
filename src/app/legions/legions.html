@@ -1,15 +1,14 @@
-
 <h1 class="page-header">Легионы</h1>
 
 <table class="table table-bordered table-hover">
-	<tr> 
-		<th>Легион</th> 
-		<th>Уровень</th>
-		<th>Contribution points</th>
-	</tr>
-	<tr *ngFor="let item of items | async">
-		<td>{{item.name}}</td>
-		<td>{{item.level}}</td>
-		<td>{{item.contribution_points}}</td>
-	</tr>
+  <tr>
+    <th>Легион</th>
+    <th>Уровень</th>
+    <th>Contribution points</th>
+  </tr>
+  <tr *ngFor="let item of items | async">
+    <td>{{item.name}}</td>
+    <td>{{item.level}}</td>
+    <td>{{item.contribution_points}}</td>
+  </tr>
 </table>

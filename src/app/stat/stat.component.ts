@@ -7,24 +7,25 @@ import {Stat} from './stat';
 @Component({
   selector: 'my-stat',
   template: require('./stat.html'),
-  providers:[StatService]
+  providers: [StatService]
 })
 
 export class StatComponent implements OnInit {
-  errorMessage: string;
-  items: Stat;
+  errorMessage:string;
+  items:Stat;
   mode = 'Observable';
 
-  constructor (private statService: StatService) {}
+  constructor(private statService:StatService) {
+  }
 
   ngOnInit() {
     this.statService.getStat().subscribe(
-                       data => this.items = data,
-                       error =>  this.errorMessage = <any>error);
+      data => this.items = data,
+      error => this.errorMessage = <any>error);
   }
 
   setLoginStatusClass() {
-    let classes =  {
+    let classes = {
       'text-danger': this.items.login_status == 'Off',
       'text-success': this.items.login_status == 'On',
     };
@@ -32,7 +33,7 @@ export class StatComponent implements OnInit {
   }
 
   setGameStatusClass() {
-    let classes =  {
+    let classes = {
       'text-danger': this.items.game_status == 'Off',
       'text-success': this.items.game_status == 'On',
     };

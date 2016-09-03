@@ -9,54 +9,63 @@ import {World, Worlds} from './worlds';
 @Component({
   selector: 'my-app',
   template: require('./players.html'),
-  providers:[JSONP_PROVIDERS, BaseService]
+  providers: [JSONP_PROVIDERS, BaseService]
 })
 
 export class PlayersComponent implements OnInit {
-  items: Observable<string[]>;
+  items:Observable<string[]>;
 
-  constructor (private _baseService: BaseService) {}
+  constructor(private _baseService:BaseService) {
+  }
 
-  getWorld = function(id){
+  getWorld = function (id) {
     var data = Worlds;
+
     function getName(code) {
       return data.filter(
-        function(data){return data.id == code}
+        function (data) {
+          return data.id == code
+        }
       );
     }
+
     var found = getName(id);
     if (typeof found[0] === "undefined") {
-    return 'Не известно';
+      return 'Не известно';
     } else {
-    return found[0].name;
+      return found[0].name;
     }
   }
 
-  getTitle = function(id){
+  getTitle = function (id) {
     var data = Titles;
+
     function getName(code) {
       return data.filter(
-        function(data){return data.id == code}
+        function (data) {
+          return data.id == code
+        }
       );
     }
+
     var found = getName(id);
     if (typeof found[0] === "undefined") {
-    return '-';
+      return '-';
     } else {
-    return found[0].name;
+      return found[0].name;
     }
   }
 
-  getLevelByExp = function(exp) {
-      var data = Levels;
-      var level = '0';
-      for (var k in data) {
-          if (parseInt(exp) <= data[k].exp) {
-              level = data[k].level;
-              break;
-          }
+  getLevelByExp = function (exp) {
+    var data = Levels;
+    var level = '0';
+    for (var k in data) {
+      if (parseInt(exp) <= data[k].exp) {
+        level = data[k].level;
+        break;
       }
-      return level;
+    }
+    return level;
   };
 
   ngOnInit() {

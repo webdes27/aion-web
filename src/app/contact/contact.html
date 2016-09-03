@@ -14,13 +14,16 @@
         <label for="сontact-name">Ваше имя</label>
         <input type="text" class="form-control" formControlName="name" required id="сontact-name">
 
-        <div *ngIf="contactForm.controls['name'].hasError('required') && contactForm.controls['name'].touched" class="alert alert-danger">
+        <div *ngIf="contactForm.controls['name'].hasError('required') && contactForm.controls['name'].touched"
+             class="alert alert-danger">
           name is required
         </div>
-        <div *ngIf="contactForm.controls['name'].hasError('minlength') && contactForm.controls['name'].touched" class="alert alert-danger">
+        <div *ngIf="contactForm.controls['name'].hasError('minlength') && contactForm.controls['name'].touched"
+             class="alert alert-danger">
           name is too short
         </div>
-        <div *ngIf="contactForm.controls['name'].hasError('maxlength') && contactForm.controls['name'].touched" class="alert alert-danger">
+        <div *ngIf="contactForm.controls['name'].hasError('maxlength') && contactForm.controls['name'].touched"
+             class="alert alert-danger">
           name is too long
         </div>
       </div>
@@ -30,7 +33,8 @@
         <label for="сontact-email">Ваш Email</label>
         <input type="text" class="form-control" formControlName="email" required id="сontact-email">
 
-        <div *ngIf="contactForm.controls['email'].hasError('required') && contactForm.controls['email'].touched" class="alert alert-danger">
+        <div *ngIf="contactForm.controls['email'].hasError('required') && contactForm.controls['email'].touched"
+             class="alert alert-danger">
           email is required
         </div>
       </div>
@@ -40,7 +44,8 @@
         <label for="сontact-subject">Тема</label>
         <input type="text" class="form-control" formControlName="subject" required id="сontact-subject">
 
-        <div *ngIf="contactForm.controls['subject'].hasError('required') && contactForm.controls['subject'].touched" class="alert alert-danger">
+        <div *ngIf="contactForm.controls['subject'].hasError('required') && contactForm.controls['subject'].touched"
+             class="alert alert-danger">
           subject is required
         </div>
       </div>
@@ -48,9 +53,11 @@
 
       <div class="form-group">
         <label for="сontact-body">Сообщение</label>
-        <textarea type="text" class="form-control" rows="6" formControlName="body" required id="сontact-body"></textarea>
+        <textarea type="text" class="form-control" rows="6" formControlName="body" required
+                  id="сontact-body"></textarea>
 
-        <div *ngIf="contactForm.controls['body'].hasError('required') && contactForm.controls['body'].touched" class="alert alert-danger">
+        <div *ngIf="contactForm.controls['body'].hasError('required') && contactForm.controls['body'].touched"
+             class="alert alert-danger">
           body is required
         </div>
       </div>

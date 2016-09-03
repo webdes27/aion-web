@@ -5,7 +5,7 @@ import {ActivatedRoute} from '@angular/router';
 import {Char}        from './char';
 import {Product}     from './product';
 import {CharService} from './char.service';
-import { LoadingIndicator, LoadingService } from '../services/loading';
+import {LoadingIndicator, LoadingService} from '../services/loading';
 
 @Component({
   selector: 'char-detail',
@@ -22,7 +22,7 @@ export class CharDetailComponent implements OnInit {
   products:Product[];
   result:boolean;
   resultMessage:string;
-  sub: any;
+  sub:any;
 
   constructor(private charService:CharService,
               private route:ActivatedRoute,
@@ -36,7 +36,7 @@ export class CharDetailComponent implements OnInit {
         this.products = data;
       })
       .catch(error => {
-        this.errorMessage = JSON.stringify(error); 
+        this.errorMessage = JSON.stringify(error);
         console.log(error);
       });
   }

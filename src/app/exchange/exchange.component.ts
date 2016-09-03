@@ -3,23 +3,23 @@ import {FormGroup, FormBuilder, Validators} from '@angular/forms';
 import {Router} from '@angular/router';
 import {ExchangeService} from './exchange.service';
 import {UserService} from '../services/user/user.service';
-import { LoadingIndicator, LoadingService } from '../services/loading';
+import {LoadingIndicator, LoadingService} from '../services/loading';
 
 @Component({
   selector: 'exchange',
   template: require('./exchange.component.html'),
   directives: [LoadingIndicator],
-  providers:[ExchangeService],
+  providers: [ExchangeService],
 })
 export class ExchangeComponent {
-  form: FormGroup;
-  errorMessage: string;
+  form:FormGroup;
+  errorMessage:string;
   resultMessage:string;
 
-  constructor(private service: ExchangeService, 
-              private builder: FormBuilder, 
-              private router: Router, 
-              private user: UserService,
+  constructor(private service:ExchangeService,
+              private builder:FormBuilder,
+              private router:Router,
+              private user:UserService,
               private loadingService:LoadingService) {
 
     this.form = builder.group({
@@ -31,13 +31,13 @@ export class ExchangeComponent {
     this.loadingService.show();
     this.service.exchange(credentials).then(data => {
       this.loadingService.hide();
-    	this.errorMessage = null;
-    	this.resultMessage = data;
-		  this.user.setUpdateStatus(true);
-      })
+      this.errorMessage = null;
+      this.resultMessage = data;
+      this.user.setUpdateStatus(true);
+    })
       .catch(error => {
         this.loadingService.hide();
-      	this.resultMessage = null;
+        this.resultMessage = null;
         this.errorMessage = JSON.stringify(error);
         console.log(error);
       });

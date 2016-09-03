@@ -1,12 +1,13 @@
-import { Injectable } from '@angular/core';
-import { Headers, URLSearchParams } from '@angular/http';
+import {Injectable} from '@angular/core';
+import {Headers, URLSearchParams} from '@angular/http';
 
-import { StorageService } from '../storage/storage.service';
+import {StorageService} from '../storage/storage.service';
 
 @Injectable()
 export class RequestService {
 
-  constructor(private _storage: StorageService) {}
+  constructor(private _storage:StorageService) {
+  }
 
   getAuthHeaders() {
     let headers = this.getJsonHeaders();
@@ -24,14 +25,14 @@ export class RequestService {
   }
 
   getUrlencodedHeaders() {
-    let headers = new Headers({ 'Content-Type': 'application/x-www-form-urlencoded' });
+    let headers = new Headers({'Content-Type': 'application/x-www-form-urlencoded'});
     return headers;
   }
 
-  urlEncode(obj: Object): string {
+  urlEncode(obj:Object):string {
     let urlSearchParams = new URLSearchParams();
     for (let key in obj) {
-        urlSearchParams.append(key, obj[key]);
+      urlSearchParams.append(key, obj[key]);
     }
     return urlSearchParams.toString();
   }
