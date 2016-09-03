@@ -1,7 +1,7 @@
 import {Injectable} from '@angular/core';
 import {Http, Response, URLSearchParams} from '@angular/http';
 import 'rxjs/add/operator/toPromise';
-import { RequestService } from '../services/request/request.service';
+import { RequestService } from '../request/request.service';
 
 @Injectable()
 export class CrudService {

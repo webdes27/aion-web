@@ -7,6 +7,7 @@ import { RequestService } from '../services/request/request.service';
 
 @Injectable()
 export class BalanceService {
+
   constructor (private http: Http, private requestService: RequestService, @Inject(APP_CONFIG) private config: Config) {}
 
   private url = this.config.apiGetBalance;
@@ -31,4 +32,5 @@ export class BalanceService {
     console.error(errMsg); // log to console instead
     return Observable.throw(errMsg);
   }
+
 }

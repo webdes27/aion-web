@@ -2,32 +2,30 @@ import {Component, OnInit, OnDestroy}  from '@angular/core';
 import {Observable}       from 'rxjs/Observable';
 import {BalanceService} from './balance.service';
 import {Balance} from './balance';
-import { UserService } from '../services/user/user.service';
+import {UserService} from '../services/user/user.service';
 import {Subscription} from 'rxjs/Subscription';
-import {ExchangeService} from '../exchange/exchange.service';
-
 
 @Component({
   selector: 'my-balance',
   template: require('./balance.component.html'),
-  providers:[BalanceService, ExchangeService]
+  providers:[BalanceService]
 })
 
 export class BalanceComponent implements OnInit, OnDestroy {
   errorMessage: string;
   items: Balance;
   subscription:Subscription;
-  subscriptionExchange:Subscription;
+  subscriptionUpdate:Subscription;
 
-  constructor (private balanceService: BalanceService, private user: UserService, private exchangeService: ExchangeService) {
+  constructor (private balanceService: BalanceService, private user: UserService) {
 
     this.subscription = this.user._loggedIn.subscribe(
       item => {
         this.getData();
       }
     );
-    this.subscriptionExchange = this.exchangeService.exchanged.subscribe(
-      item => {
+    this.subscriptionUpdate = this.user.update.subscribe(
+      value => {
         this.getData();
       }
     );
@@ -45,11 +43,12 @@ export class BalanceComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
+
   }
 
   ngOnDestroy() {
     this.subscription.unsubscribe();
-    this.subscriptionExchange.unsubscribe();
+    this.subscriptionUpdate.unsubscribe();
   }
 
 }

@@ -4,7 +4,9 @@ import {StorageService} from '../storage/storage.service';
 
 @Injectable()
 export class UserService {
-  _loggedIn = new BehaviorSubject(false);
+  
+  _loggedIn:BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
+  public update:BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
 
   constructor(private _storage: StorageService) {
 
@@ -35,6 +37,10 @@ export class UserService {
 
   getUsername() {
    return this._storage.getAuthUsername();
+  }
+
+  setUpdateStatus(isUpdate){
+   this.update.next(isUpdate);
   }
 
 }

@@ -2,11 +2,9 @@ import {Injectable, Inject} from '@angular/core';
 import {Http} from '@angular/http';
 import {RequestService} from '../services/request/request.service';
 import {Config, APP_CONFIG} from '../app.config';
-import {BehaviorSubject} from 'rxjs/BehaviorSubject';
 
 @Injectable()
 export class ExchangeService {
-  exchanged = new BehaviorSubject(false);
 
   constructor(private http: Http, private requestService: RequestService, @Inject(APP_CONFIG) private config: Config) {
   }
