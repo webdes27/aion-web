@@ -15,6 +15,7 @@ export interface Config {
   apiPayShop:string,
   apiBuyitem:string,
   apiExchange:string,
+  apiPayBalance:string,
 }
 
 export const CONFIG:Config = {
@@ -30,4 +31,5 @@ export const CONFIG:Config = {
   apiPayShop: 'http://host3/pay-shop',
   apiBuyitem: 'http://host3/data/buyitem',
   apiExchange: 'http://host3/data/exchange',
+  apiPayBalance: 'http://host3/pay-balances',
 };
