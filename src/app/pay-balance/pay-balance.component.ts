@@ -1,25 +1,12 @@
 import {Component, OnInit}  from '@angular/core';
-import {
-  DataTable,
-  Column,
-  LazyLoadEvent,
-  TabPanel,
-  TabView,
-  CodeHighlighter,
-  Header,
-  Footer,
-  Dialog,
-  Button,
-  InputText
-} from 'primeng/primeng';
+import {LazyLoadEvent} from 'primeng/primeng';
 import {Item, PrimeItem} from './pay-balance';
 import {PayBalanceService} from './pay-balance.service';
-import {LoadingIndicator, LoadingService} from '../services/loading';
+import {LoadingService} from '../services/loading';
 
 @Component({
   selector: 'my-app',
   template: require('./pay-balance.component.html'),
-  directives: [DataTable, Column, TabPanel, TabView, CodeHighlighter, Header, Footer, Dialog, Button, InputText, LoadingIndicator],
   providers: [PayBalanceService]
 })
 

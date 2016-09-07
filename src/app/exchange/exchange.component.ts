@@ -3,12 +3,11 @@ import {FormGroup, FormBuilder, Validators} from '@angular/forms';
 import {Router} from '@angular/router';
 import {ExchangeService} from './exchange.service';
 import {UserService} from '../services/user/user.service';
-import {LoadingIndicator, LoadingService} from '../services/loading';
+import {LoadingService} from '../services/loading';
 
 @Component({
   selector: 'exchange',
-  template: require('./exchange.component.html'),
-  directives: [LoadingIndicator],
+  templateUrl: './exchange.component.html',
   providers: [ExchangeService],
 })
 export class ExchangeComponent {

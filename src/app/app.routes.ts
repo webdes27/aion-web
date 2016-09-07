@@ -1,7 +1,8 @@
-import {WebpackAsyncRoute} from '@angularclass/webpack-toolkit';
-import {RouterConfig} from '@angular/router';
-import {Home} from './home';
-import {NoContent} from './no-content';
+import { Routes, RouterModule } from '@angular/router';
+import { Home } from './home';
+import { About } from './about';
+import { NoContent } from './no-content';
+
 import {IndexComponent} from './index/index.component';
 import {PlayersComponent} from './players/players.component';
 import {AbyssComponent} from './abyss/abyss.component';
@@ -15,12 +16,16 @@ import {CharDetailComponent} from './char/char-detail.component';
 import {ExchangeComponent} from './exchange/exchange.component';
 import {PayBalanceComponent} from './pay-balance/pay-balance.component';
 
-import {DataResolver} from './app.resolver';
+import { DataResolver } from './app.resolver';
 
-export const routes:RouterConfig = [
-  {path: '', component: IndexComponent},
-  {path: 'home', component: Home},
 
+export const ROUTES: Routes = [
+  { path: '',      component: IndexComponent },
+  { path: 'home',  component: Home },
+  { path: 'about', component: About },
+  {
+    path: 'detail', loadChildren: () => System.import('./+detail')
+  },
   {path: 'index', component: IndexComponent},
   {path: 'signup', component: SignupComponent},
   {path: 'players', component: PlayersComponent},
@@ -33,44 +38,5 @@ export const routes:RouterConfig = [
   {path: 'char/detail/:id', component: CharDetailComponent},
   {path: 'exchange', component: ExchangeComponent},
   {path: 'pay-balance', component: PayBalanceComponent},
-
-  // make sure you match the component type string to the require in asyncRoutes
-  {
-    path: 'about', component: 'About',
-    resolve: {
-      'yourData': DataResolver
-    }
-  },
-  // async components with children routes must use WebpackAsyncRoute
-  {
-    path: 'detail', component: 'Detail',
-    canActivate: [WebpackAsyncRoute],
-    children: [
-      {path: '', component: 'Index'}  // must be included
-    ]
-  },
-  {path: '**', component: NoContent},
+  { path: '**',    component: NoContent },
 ];
-
-// Async load a component using Webpack's require with es6-promise-loader and webpack `require`
-// asyncRoutes is needed for our @angularclass/webpack-toolkit that will allow us to resolve
-// the component correctly
-
-export const asyncRoutes:AsyncRoutes = {
-  // we have to use the alternative syntax for es6-promise-loader to grab the routes
-  'About': require('es6-promise-loader!./about'),
-  'Detail': require('es6-promise-loader!./+detail'),
-  'Index': require('es6-promise-loader!./+detail'), // must be exported with detail/index.ts
-};
-
-
-// Optimizations for initial loads
-// An array of callbacks to be invoked after bootstrap to prefetch async routes
-export const prefetchRouteCallbacks:Array<IdleCallbacks> = [
-  asyncRoutes['About'],
-  asyncRoutes['Detail'],
-  // es6-promise-loader returns a function
-];
-
-
-// Es6PromiseLoader and AsyncRoutes interfaces are defined in custom-typings

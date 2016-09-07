@@ -1,6 +1,6 @@
-<loading-indicator></loading-indicator>
 <div class="row">
   <div class="col-sm-6">
+  
     <h1>Обмен валют</h1>
 
     <div class="alert alert-danger" role="alert" *ngIf="errorMessage">{{errorMessage}}</div>
@@ -17,6 +17,7 @@
       </div>
 
       <button type="submit" [disabled]="!form.valid" class="btn btn-primary">Обменять</button>
+
     </form>
   </div>
 </div>

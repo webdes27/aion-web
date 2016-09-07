@@ -2,28 +2,14 @@ import {Component, Inject}  from '@angular/core';
 import {FormControl, FormGroup, FormBuilder, Validators} from '@angular/forms';
 import {validateEmail} from './../services/validate/validate.service';
 import {SignupService} from './signup.service';
-import {LoadingIndicator, LoadingService} from '../services/loading';
-
-class User {
-  public name:string;
-  public password:string;
-  public password_repeat:string;
-  public email:string;
-}
-
-class Result {
-  public err_name:string;
-  public err_password:string;
-  public err_email:string;
-  public message:string;
-  public success:boolean;
-}
+import {LoadingService} from '../services/loading';
+import {User} from './user';
+import {Result} from './result';
 
 @Component({
-  selector: 'my-app',
-  template: require('./signup.html'),
+  selector: 'signup',
+  templateUrl: './signup.component.html',
   providers: [SignupService],
-  directives: [LoadingIndicator],
 })
 
 export class SignupComponent {
@@ -72,10 +58,9 @@ export class SignupComponent {
 
   clear() {
     for (let c in this.signupForm.controls) {
-      (<FormControl>this.signupForm.controls[c]).updateValue('');
+      (<FormControl>this.signupForm.controls[c]).setValue('');
       (<FormControl>this.signupForm.controls[c]).setErrors(null);
     }
-    ;
   }
 
 }

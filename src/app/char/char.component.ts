@@ -1,13 +1,16 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnInit, NgModule} from '@angular/core';
 import {Router}            from '@angular/router';
 import {Char}                from './char';
 import {CharService}         from './char.service';
 import {CharDetailComponent} from './char-detail.component';
 
+@NgModule({
+  declarations: [CharDetailComponent],
+})
+
 @Component({
   selector: 'char',
   template: require('./char.component.html'),
-  directives: [CharDetailComponent],
   providers: [CharService]
 })
 export class CharComponent implements OnInit {

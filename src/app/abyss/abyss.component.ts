@@ -1,5 +1,4 @@
 import {Component, OnInit}  from '@angular/core';
-import {JSONP_PROVIDERS}  from '@angular/http';
 import {Observable}       from 'rxjs/Observable';
 import {BaseService} from './../services/base.service';
 import {Rank, Ranks} from './ranks';
@@ -7,7 +6,7 @@ import {Rank, Ranks} from './ranks';
 @Component({
   selector: 'my-app',
   template: require('./abyss.html'),
-  providers: [JSONP_PROVIDERS, BaseService]
+  providers: [BaseService]
 })
 
 export class AbyssComponent implements OnInit {

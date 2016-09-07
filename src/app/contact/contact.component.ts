@@ -2,7 +2,7 @@ import {Component, Inject}  from '@angular/core';
 import {FormControl, FormGroup, FormBuilder, Validators} from '@angular/forms';
 import {validateEmail} from './../services/validate/validate.service';
 import {ContactService} from './contact.service'
-import {LoadingIndicator, LoadingService} from '../services/loading';
+import {LoadingService} from '../services/loading';
 ;
 
 class User {
@@ -25,7 +25,6 @@ class Result {
   selector: 'contact',
   template: require('./contact.html'),
   providers: [ContactService],
-  directives: [LoadingIndicator]
 })
 export class ContactComponent {
   contactForm:FormGroup;
@@ -74,7 +73,7 @@ export class ContactComponent {
 
   clear() {
     for (let c in this.contactForm.controls) {
-      (<FormControl>this.contactForm.controls[c]).updateValue('');
+      (<FormControl>this.contactForm.controls[c]).setValue('');
       (<FormControl>this.contactForm.controls[c]).setErrors(null);
     }
     ;

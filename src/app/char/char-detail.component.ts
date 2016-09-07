@@ -5,13 +5,12 @@ import {ActivatedRoute} from '@angular/router';
 import {Char}        from './char';
 import {Product}     from './product';
 import {CharService} from './char.service';
-import {LoadingIndicator, LoadingService} from '../services/loading';
+import {LoadingService} from '../services/loading';
 
 @Component({
   selector: 'char-detail',
   template: require('./char-detail.component.html'),
   providers: [CharService],
-  directives: [LoadingIndicator]
 })
 
 export class CharDetailComponent implements OnInit {
