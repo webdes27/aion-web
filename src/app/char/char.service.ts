@@ -26,7 +26,7 @@ export class CharService {
       .then(chars => chars.filter(char => char.id === id)[0]);
   }
 
-  getProducts():Promise<Product[]> {
+  getProducts():Promise<any> {
     let url = this.config.apiPayShop;
     let headers = this.requestService.getAuthHeaders();
     return this.http.get(url, {headers: headers})

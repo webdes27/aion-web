@@ -1,0 +1,55 @@
+<h1 class="page-header">Управление магазоном</h1>
+
+<div class="alert alert-danger" role="alert" *ngIf="errorMessage">{{errorMessage}}</div>
+<p>
+  <button type="button" class="btn btn-primary" (click)="showDialogToAdd()" label="Add"><i class="fa fa-plus"></i>
+    Добавить
+  </button>
+</p>
+
+<p-dataTable [value]="items" [lazy]="true" [rows]="perPage" [paginator]="true" [totalRecords]="totalRecords"
+             (onLazyLoad)="loadData($event)" selectionMode="single" [(selection)]="selectedItem"
+             (onRowSelect)="onRowSelect($event)">
+  <p-column field="id" header="ID" [sortable]="true" [filter]="true"></p-column>
+  <p-column field="type" header="Type" [sortable]="true" [filter]="true"></p-column>
+  <p-column field="pic" header="Pic" [sortable]="true" [filter]="true"></p-column>
+  <p-column field="item_name" header="Item name" [sortable]="true" [filter]="true"></p-column>
+  <p-column field="description" header="Description" [sortable]="true" [filter]="true"></p-column>
+  <p-column field="price" header="Price" [sortable]="true" [filter]="true"></p-column>
+  <p-column field="status" header="Status" [sortable]="true" [filter]="true"></p-column>
+</p-dataTable>
+
+<p-dialog header="Details" [(visible)]="displayDialog" [responsive]="true" showEffect="fade" [modal]="true">
+  <div class="ui-grid ui-grid-responsive ui-fluid" *ngIf="item">
+    <div class="ui-grid-row">
+      <div class="ui-grid-col-4"><label for="type">Type</label></div>
+      <div class="ui-grid-col-8"><input pInputText id="type" required [(ngModel)]="item.type"/></div>
+    </div>
+    <div class="ui-grid-row">
+      <div class="ui-grid-col-4"><label for="pic">Pic</label></div>
+      <div class="ui-grid-col-8"><input pInputText id="pic" [(ngModel)]="item.pic"/></div>
+    </div>
+    <div class="ui-grid-row">
+      <div class="ui-grid-col-4"><label for="item_name">Item name</label></div>
+      <div class="ui-grid-col-8"><input pInputText id="item_name" [(ngModel)]="item.item_name"/></div>
+    </div>
+    <div class="ui-grid-row">
+      <div class="ui-grid-col-4"><label for="description">Description</label></div>
+      <div class="ui-grid-col-8"><input pInputText id="description" [(ngModel)]="item.description"/></div>
+    </div>
+    <div class="ui-grid-row">
+      <div class="ui-grid-col-4"><label for="price">Price</label></div>
+      <div class="ui-grid-col-8"><input pInputText id="price" [(ngModel)]="item.price"/></div>
+    </div>
+    <div class="ui-grid-row">
+      <div class="ui-grid-col-4"><label for="status">Status</label></div>
+      <div class="ui-grid-col-8"><input pInputText id="status" [(ngModel)]="item.status"/></div>
+    </div>
+  </div>
+  <footer>
+    <div class="ui-dialog-buttonpane ui-widget-content ui-helper-clearfix">
+      <button type="button" pButton icon="fa-close" (click)="delete()" label="Delete"></button>
+      <button type="button" pButton icon="fa-check" (click)="save()" label="Save"></button>
+    </div>
+  </footer>
+</p-dialog>

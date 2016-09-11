@@ -50,8 +50,10 @@ import {AccountComponent} from './account/account.component';
 import {CharComponent} from './char/char.component';
 import {CharDetailComponent} from './char/char-detail.component';
 import {ExchangeComponent} from './exchange/exchange.component';
-import {PayBalanceComponent} from './pay-balance/pay-balance.component';
-
+import {PayBalanceComponent} from './balances/balances.component';
+import {ShopComponent} from './shop/shop.component';
+import {TransactionsComponent} from './transactions/transactions.component';
+import {HistoryComponent} from './history/history.component'
 
 // Application wide providers
 const APP_PROVIDERS = [
@@ -85,7 +87,10 @@ const APP_PROVIDERS = [
     CharComponent,
     CharDetailComponent,
     ExchangeComponent,
-    PayBalanceComponent
+    PayBalanceComponent,
+    ShopComponent,
+    TransactionsComponent,
+    HistoryComponent,
   ],
   imports: [ // import Angular's modules
     BrowserModule,

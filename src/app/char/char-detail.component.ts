@@ -1,38 +1,36 @@
-import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
-
-import {ActivatedRoute} from '@angular/router';
+import {Component, OnInit} from '@angular/core';
+import {ActivatedRoute, Params} from '@angular/router';
 
 import {Char}        from './char';
 import {Product}     from './product';
 import {CharService} from './char.service';
 import {LoadingService} from '../services/loading';
+import {UserService} from '../services/user/user.service';
 
 @Component({
   selector: 'char-detail',
-  template: require('./char-detail.component.html'),
+  templateUrl: './char-detail.component.html',
   providers: [CharService],
 })
 
 export class CharDetailComponent implements OnInit {
-  @Input() char:Char;
-  @Output() close = new EventEmitter();
+  char:Char;
   errorMessage:string;
-  navigated = false; // true if navigated here
   products:Product[];
   result:boolean;
   resultMessage:string;
-  sub:any;
 
   constructor(private charService:CharService,
               private route:ActivatedRoute,
-              private loadingService:LoadingService) {
+              private loadingService:LoadingService,
+              private user:UserService,) {
   }
 
   getProducts() {
     this.charService
       .getProducts()
       .then(data => {
-        this.products = data;
+        this.products = data.items;
       })
       .catch(error => {
         this.errorMessage = JSON.stringify(error);
@@ -46,6 +44,7 @@ export class CharDetailComponent implements OnInit {
       this.loadingService.hide();
       this.result = data.result;
       this.resultMessage = data.resultMessage;
+      this.user.setUpdateStatus(true);
       console.log(data);
     }).catch(error => {
       this.loadingService.hide();
@@ -54,29 +53,16 @@ export class CharDetailComponent implements OnInit {
     });
   }
 
-  ngOnInit() {
-    this.sub = this.route.params.subscribe(params => {
-      if (params['id'] !== undefined) {
-        let id = +params['id'];
-        this.navigated = true;
-        this.charService.getChar(id)
-          .then(char => this.char = char);
-        this.getProducts();
-      } else {
-        this.navigated = false;
-        this.char = new Char();
-      }
+  ngOnInit(): void {
+    this.route.params.forEach((params: Params) => {
+      let id = +params['id'];
+      this.charService.getChar(id)
+        .then(char => this.char = char);
+      this.getProducts();
     });
   }
 
-  ngOnDestroy() {
-    this.sub.unsubscribe();
-  }
-
-  goBack(savedChar:Char = null) {
-    this.close.emit(savedChar);
-    if (this.navigated) {
+  goBack() {
       window.history.back();
-    }
   }
 }

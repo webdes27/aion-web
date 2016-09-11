@@ -1,16 +1,16 @@
 import {Component, OnInit}  from '@angular/core';
 import {LazyLoadEvent} from 'primeng/primeng';
-import {Item, PrimeItem} from './pay-balance';
-import {PayBalanceService} from './pay-balance.service';
+import {Item, PrimeItem} from './transactions';
+import {TransactionsService} from './transactions.service';
 import {LoadingService} from '../services/loading';
 
 @Component({
-  selector: 'my-app',
-  template: require('./pay-balance.component.html'),
-  providers: [PayBalanceService]
+  selector: 'transactions',
+  template: require('./transactions.component.html'),
+  providers: [TransactionsService]
 })
 
-export class PayBalanceComponent implements OnInit {
+export class TransactionsComponent implements OnInit {
 
   items:Item[];
   totalRecords:number = 0;
@@ -23,7 +23,7 @@ export class PayBalanceComponent implements OnInit {
 
   errorMessage:string;
 
-  constructor(private service:PayBalanceService, private loadingService:LoadingService) {
+  constructor(private service:TransactionsService, private loadingService:LoadingService) {
   }
 
   getItems() {

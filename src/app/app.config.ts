@@ -16,20 +16,24 @@ export interface Config {
   apiBuyitem:string,
   apiExchange:string,
   apiPayBalance:string,
+  apiTransactions:string,
 }
+
+let host = 'http://host3';
 
 export const CONFIG:Config = {
   title: 'AION Kristall',
-  apiGetData: 'http://host3/data/status',
-  apiGetStat: 'http://host3/data/stat',
-  apiSignup: 'http://host3/auth/signup',
-  apiLogin: 'http://host3/auth/login',
-  apiContact: 'http://host3/auth/contact',
-  apiGetBalance: 'http://host3/data/balanse',
-  apiAccount: 'http://host3/account-datas',
-  apiMychars: 'http://host3/data/mychars',
-  apiPayShop: 'http://host3/pay-shop',
-  apiBuyitem: 'http://host3/data/buyitem',
-  apiExchange: 'http://host3/data/exchange',
-  apiPayBalance: 'http://host3/pay-balances',
+  apiGetData: host + '/data/status',
+  apiGetStat: host + '/data/stat',
+  apiSignup: host +'/auth/signup',
+  apiLogin: host +'/auth/login',
+  apiContact: host +'/auth/contact',
+  apiGetBalance: host +'/data/balanse',
+  apiAccount: host +'/account-datas',
+  apiMychars: host +'/data/mychars',
+  apiPayShop: host +'/pay-shop',
+  apiBuyitem: host +'/data/buyitem',
+  apiExchange: host +'/data/exchange',
+  apiPayBalance: host +'/pay-balances',
+  apiTransactions: host +'/pay-transactions',
 };

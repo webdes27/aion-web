@@ -16,16 +16,19 @@
             <li><a [routerLink]="['contact']">Контакты</a></li>
           </ul>
           <ul class="nav navbar-nav navbar-right">
-            <li dropdown>
+            <li dropdown *ngIf="isAdmin()">
               <a href="#" dropdownToggle>Админка <span class="caret"></span></a>
               <ul class="dropdown-menu" dropdownMenu role="menu">
                 <li><a [routerLink]="['account']" *ngIf="isAdmin()">Аккаунты</a></li>
-                <li><a [routerLink]="['pay-balance']" *ngIf="isAdmin()">Балансы</a></li>
+                <li><a [routerLink]="['balances']" *ngIf="isAdmin()">Балансы</a></li>
+                <li><a [routerLink]="['shop']" *ngIf="isAdmin()">Магазин</a></li>
+                <li><a [routerLink]="['transactions']" *ngIf="isAdmin()">Транзакции</a></li>
               </ul>
             </li>
             <li><a [routerLink]="['signup']" *ngIf="!(getLoggedIn() | async)">Регистрация</a></li>
             <li><a [routerLink]="['exchange']" *ngIf="getLoggedIn() | async">Обменник</a></li>
             <li><a [routerLink]="['char']" *ngIf="getLoggedIn() | async">Мои персонажи</a></li>
+            <li><a [routerLink]="['history']" *ngIf="getLoggedIn() | async">История</a></li>
             <li><a [routerLink]="['login']" *ngIf="!(getLoggedIn() | async)">Вход</a></li>
             <li><a href="#" (click)="logout()" *ngIf="getLoggedIn() | async">Выход ({{getUserName()}})</a></li>
           </ul>
