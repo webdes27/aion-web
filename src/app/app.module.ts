@@ -34,7 +34,7 @@ import {RequestService} from './services/request/request.service';
 import {CONFIG, Config, APP_CONFIG} from './app.config';
 import {LoadingService} from './services/loading';
 
-import { LoadingIndicator } from './services/loading';
+import {LoadingIndicator} from './services/loading';
 import {StatComponent} from './stat/stat.component';
 import {MenuComponent} from './menu/menu.component';
 import {BalanceComponent} from './balance/balance.component';

@@ -6,7 +6,7 @@ import {LoadingService} from '../services/loading';
 
 @Component({
   selector: 'history',
-  template: require('./history.component.html'),
+  templateUrl: './history.component.html',
   providers: [HistoryService]
 })
 

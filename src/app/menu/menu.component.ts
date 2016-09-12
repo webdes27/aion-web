@@ -5,7 +5,7 @@ import {Config, APP_CONFIG} from './../app.config';
 
 @Component({
   selector: 'top-menu',
-  template: require('./menu.html'),
+  templateUrl: './menu.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class MenuComponent {

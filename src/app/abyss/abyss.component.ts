@@ -4,8 +4,8 @@ import {BaseService} from './../services/base.service';
 import {Rank, Ranks} from './ranks';
 
 @Component({
-  selector: 'my-app',
-  template: require('./abyss.html'),
+  selector: 'abyss',
+  templateUrl: './abyss.component.html',
   providers: [BaseService]
 })
 

@@ -6,7 +6,7 @@ import {LoadingService} from '../services/loading';
 
 @Component({
   selector: 'my-app',
-  template: require('./account.component.html'),
+  templateUrl: './account.component.html',
   providers: [AccountService]
 })
 

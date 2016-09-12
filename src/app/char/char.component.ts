@@ -10,7 +10,7 @@ import {CharDetailComponent} from './char-detail.component';
 
 @Component({
   selector: 'char',
-  template: require('./char.component.html'),
+  templateUrl: './char.component.html',
   providers: [CharService]
 })
 export class CharComponent implements OnInit {

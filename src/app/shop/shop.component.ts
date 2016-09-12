@@ -6,7 +6,7 @@ import {LoadingService} from '../services/loading';
 
 @Component({
   selector: 'shop',
-  template: require('./shop.component.html'),
+  templateUrl: './shop.component.html',
   providers: [ShopService]
 })
 

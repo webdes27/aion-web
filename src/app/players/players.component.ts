@@ -6,8 +6,8 @@ import {Title, Titles} from './titles';
 import {World, Worlds} from './worlds';
 
 @Component({
-  selector: 'my-app',
-  template: require('./players.html'),
+  selector: 'players',
+  templateUrl: './players.component.html',
   providers: [BaseService]
 })
 

@@ -23,7 +23,7 @@ class Result {
 
 @Component({
   selector: 'contact',
-  template: require('./contact.html'),
+  templateUrl: './contact.component.html',
   providers: [ContactService],
 })
 export class ContactComponent {

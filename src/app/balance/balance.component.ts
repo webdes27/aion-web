@@ -7,7 +7,7 @@ import {Subscription} from 'rxjs/Subscription';
 
 @Component({
   selector: 'my-balance',
-  template: require('./balance.component.html'),
+  templateUrl: './balance.component.html',
   providers: [BalanceService]
 })
 

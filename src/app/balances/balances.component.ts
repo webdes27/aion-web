@@ -5,8 +5,8 @@ import {PayBalanceService} from './balances.service';
 import {LoadingService} from '../services/loading';
 
 @Component({
-  selector: 'my-app',
-  template: require('./balances.component.html'),
+  selector: 'balances',
+  templateUrl: './balances.component.html',
   providers: [PayBalanceService]
 })
 

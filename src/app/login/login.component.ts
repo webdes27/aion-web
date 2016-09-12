@@ -6,7 +6,7 @@ import {UserService} from '../services/user/user.service';
 
 @Component({
   selector: 'login',
-  template: require('./login.html'),
+  templateUrl: './login.component.html',
   providers: [LoginService],
 })
 export class LoginComponent {

@@ -3,8 +3,8 @@ import {Observable}       from 'rxjs/Observable';
 import {BaseService} from './../services/base.service';
 
 @Component({
-  selector: 'my-app',
-  template: require('./legions.html'),
+  selector: 'legions',
+  templateUrl: './legions.component.html',
   providers: [BaseService]
 })
 

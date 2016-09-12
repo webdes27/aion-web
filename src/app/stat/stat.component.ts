@@ -6,7 +6,7 @@ import {Stat} from './stat';
 
 @Component({
   selector: 'my-stat',
-  template: require('./stat.html'),
+  templateUrl: './stat.component.html',
   providers: [StatService]
 })
 
