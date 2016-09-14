@@ -21,9 +21,6 @@ import '@angularclass/hmr';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/mergeMap';
 
-// PrimeNG
-import 'script!primeui/primeui-ng-all.min.js';
-
 if ('production' === ENV) {
   // Production
 

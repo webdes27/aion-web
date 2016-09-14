@@ -19,7 +19,12 @@ export interface Config {
   apiTransactions:string,
 }
 
-let host = 'http://host3';
+let host;
+if ('production' === ENV) {
+  host = '';
+} else {
+  host = 'http://host3';
+}
 
 export const CONFIG:Config = {
   title: 'AION Kristall',
