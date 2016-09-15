@@ -1,0 +1,8 @@
+<div class="list-group" *ngIf="getLoggedIn() | async">
+<ul class="nav nav-pills nav-stacked">
+    <li [routerLinkActive]="['active']"><a [routerLink]="['exchange']" *ngIf="getLoggedIn() | async">Обменник</a></li>
+    <li [routerLinkActive]="['active']"><a [routerLink]="['history']" *ngIf="getLoggedIn() | async">История</a></li>
+    <li [routerLinkActive]="['active']"><a [routerLink]="['pay']" *ngIf="getLoggedIn() | async">Пополнить баланс</a></li>
+    <li [routerLinkActive]="['active']"><a [routerLink]="['getbonus']" *ngIf="getLoggedIn() | async">Бонус</a></li>
+</ul>
+</div>

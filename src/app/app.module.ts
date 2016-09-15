@@ -38,6 +38,7 @@ import {LoadingIndicator} from './services/loading';
 import {StatComponent} from './stat/stat.component';
 import {MenuComponent} from './menu/menu.component';
 import {BalanceComponent} from './balance/balance.component';
+import {UsermenuComponent} from './usermenu/usermenu.component';
 
 import {IndexComponent} from './index/index.component';
 import {PlayersComponent} from './players/players.component';
@@ -76,6 +77,7 @@ const APP_PROVIDERS = [
     StatComponent, 
     MenuComponent, 
     BalanceComponent,
+    UsermenuComponent,
     IndexComponent,
     PlayersComponent,
     AbyssComponent,

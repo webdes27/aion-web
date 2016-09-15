@@ -5,7 +5,7 @@ import {Stat} from './stat';
 
 
 @Component({
-  selector: 'my-stat',
+  selector: 'stat',
   templateUrl: './stat.component.html',
   providers: [StatService]
 })
