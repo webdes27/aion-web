@@ -14,6 +14,7 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 const ForkCheckerPlugin = require('awesome-typescript-loader').ForkCheckerPlugin;
 const HtmlElementsPlugin = require('./html-elements-plugin');
 const AssetsPlugin = require('assets-webpack-plugin');
+const ContextReplacementPlugin = require('webpack/lib/ContextReplacementPlugin'); 
 
 /*
  * Webpack Constants
@@ -222,6 +223,19 @@ module.exports = function(options) {
         name: ['polyfills', 'vendor'].reverse()
       }),
 
+      /**
+       * Plugin: ContextReplacementPlugin
+       * Description: Provides context to Angular's use of System.import
+       * 
+       * See: https://webpack.github.io/docs/list-of-plugins.html#contextreplacementplugin
+       * See: https://github.com/angular/angular/issues/11580
+       */
+      new ContextReplacementPlugin(
+        // The (\\|\/) piece accounts for path separators in *nix and Windows
+        /angular(\\|\/)core(\\|\/)(esm(\\|\/)src|src)(\\|\/)linker/,
+        helpers.root('src') // location of your src
+      ),
+
       /*
        * Plugin: CopyWebpackPlugin
        * Description: Copy files and directories in webpack.
@@ -230,23 +244,23 @@ module.exports = function(options) {
        *
        * See: https://www.npmjs.com/package/copy-webpack-plugin
        */
-      new CopyWebpackPlugin([{
-          from: 'src/assets',
-          to: 'assets'
-        },
-        {
-          from: 'node_modules/primeng/resources/themes/bootstrap/theme.css',
-          to: 'assets/primeng/resources/themes/bootstrap/theme.css'
-        },
-        {
-          from: 'node_modules/primeng/resources/themes/bootstrap/images/',
-          to: 'assets/primeng/resources/themes/bootstrap/images'
-        },
-        {
-          from: 'node_modules/primeng/resources/primeng.min.css',
-          to: 'assets/primeng/resources/primeng.min.css'
-        }
-      ]),
+	    new CopyWebpackPlugin([{
+	      from: 'src/assets',
+	      to: 'assets'
+	    },
+	    {
+	    from: 'node_modules/primeng/resources/themes/bootstrap/theme.css',
+	    to: 'assets/primeng/resources/themes/bootstrap/theme.css'
+	    },
+	    {
+	      from: 'node_modules/primeng/resources/themes/bootstrap/images/',
+	      to: 'assets/primeng/resources/themes/bootstrap/images'
+	    },
+	    {
+	      from: 'node_modules/primeng/resources/primeng.min.css',
+	      to: 'assets/primeng/resources/primeng.min.css'
+	    }
+	    ]),
 
       /*
        * Plugin: HtmlWebpackPlugin

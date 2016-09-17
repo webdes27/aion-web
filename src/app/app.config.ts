@@ -17,6 +17,8 @@ export interface Config {
   apiExchange:string,
   apiPayBalance:string,
   apiTransactions:string,
+  apiPass:string,
+  apiBonus:string,
 }
 
 let host;
@@ -41,4 +43,6 @@ export const CONFIG:Config = {
   apiExchange: host +'/data/exchange',
   apiPayBalance: host +'/pay-balances',
   apiTransactions: host +'/pay-transactions',
+  apiPass: host +'/auth/pass',
+  apiBonus: host +'/data/getbonus',
 };

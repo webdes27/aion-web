@@ -54,7 +54,8 @@ import {ExchangeComponent} from './exchange/exchange.component';
 import {PayBalanceComponent} from './balances/balances.component';
 import {ShopComponent} from './shop/shop.component';
 import {TransactionsComponent} from './transactions/transactions.component';
-import {HistoryComponent} from './history/history.component'
+import {HistoryComponent} from './history/history.component';
+import {PassComponent} from './pass/pass.component';
 
 // Application wide providers
 const APP_PROVIDERS = [
@@ -93,6 +94,7 @@ const APP_PROVIDERS = [
     ShopComponent,
     TransactionsComponent,
     HistoryComponent,
+    PassComponent,
   ],
   imports: [ // import Angular's modules
     BrowserModule,
