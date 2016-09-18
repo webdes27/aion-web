@@ -1,5 +1,6 @@
-import {Component} from '@angular/core';
+import {Component, Inject} from '@angular/core';
 import {AppState} from './app.service';
+import {Config, APP_CONFIG} from './app.config';
 
 @Component({
   selector: 'app',
@@ -7,12 +8,10 @@ import {AppState} from './app.service';
 })
 
 export class App {
-  angularclassLogo = 'assets/img/angularclass-avatar.png';
   loading = false;
-  name = 'AION Kristall';
-  url = 'https://twitter.com/AngularClass';
+  name = this.config.title;
 
-  constructor(public appState:AppState) {
+  constructor(public appState:AppState, @Inject(APP_CONFIG) private config:Config) {
 
   }
 

@@ -5,13 +5,17 @@ import {Config, APP_CONFIG} from '../app.config';
 import 'rxjs/add/operator/toPromise';
 
 @Injectable()
-export class PassService {
+export class PayService {
 
   constructor(private http:Http, private requestService:RequestService, @Inject(APP_CONFIG) private config:Config) {
   }
 
-  updatePassword(credentials) {
-    let url = this.config.apiPass;
+  pay(credentials) {
+    return Promise.resolve('В разработке');
+  }
+
+  exchange(credentials) {
+    let url = this.config.apiExchange;
     let headers = this.requestService.getAuthHeaders();
     return this.http
       .post(url, JSON.stringify(credentials), {headers: headers})

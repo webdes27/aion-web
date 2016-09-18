@@ -3,6 +3,6 @@
     <li [routerLinkActive]="['active']"><a [routerLink]="['exchange']" *ngIf="getLoggedIn() | async">Обменник</a></li>
     <li [routerLinkActive]="['active']"><a [routerLink]="['history']" *ngIf="getLoggedIn() | async">История</a></li>
     <li [routerLinkActive]="['active']"><a [routerLink]="['pay']" *ngIf="getLoggedIn() | async">Пополнить баланс</a></li>
-    <li [routerLinkActive]="['active']"><a [routerLink]="['getbonus']" *ngIf="getLoggedIn() | async">Бонус</a></li>
+    <li [routerLinkActive]="['active']"><a [routerLink]="['bonus']" *ngIf="getLoggedIn() | async">Бонус</a></li>
 </ul>
 </div>

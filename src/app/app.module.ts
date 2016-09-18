@@ -56,6 +56,9 @@ import {ShopComponent} from './shop/shop.component';
 import {TransactionsComponent} from './transactions/transactions.component';
 import {HistoryComponent} from './history/history.component';
 import {PassComponent} from './pass/pass.component';
+import {BonusComponent} from './bonus/bonus.component';
+import {PayComponent} from './pay/pay.component';
+import {RatesComponent} from './rates/rates.component';
 
 // Application wide providers
 const APP_PROVIDERS = [
@@ -95,6 +98,9 @@ const APP_PROVIDERS = [
     TransactionsComponent,
     HistoryComponent,
     PassComponent,
+    BonusComponent,
+    PayComponent,
+    RatesComponent,
   ],
   imports: [ // import Angular's modules
     BrowserModule,

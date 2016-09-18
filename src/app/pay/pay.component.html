@@ -1,0 +1,23 @@
+<div class="row">
+  <div class="col-sm-6">
+  
+    <h1>Пополнить баланс</h1>
+
+    <div class="alert alert-danger" role="alert" *ngIf="errorMessage">{{errorMessage}}</div>
+    <div class="alert alert-success" role="alert" *ngIf="resultMessage">{{resultMessage}}</div>
+
+    <form (ngSubmit)="onSubmit(form.value)" [formGroup]="form" #f="ngForm" class="pay-form">
+
+      <div class="form-group">
+        <label for="pay-count">Сумма платежа</label>
+        <input type="text" formControlName="count" class="form-control" id="pay-count">
+      </div>
+      <div *ngIf="form.controls['count'].hasError('required') && form.controls['count'].touched"
+           class="alert alert-danger">count is invalid
+      </div>
+
+      <button type="submit" [disabled]="!form.valid" class="btn btn-primary">Пополнить</button>
+
+    </form>
+  </div>
+</div>

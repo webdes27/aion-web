@@ -1,0 +1,15 @@
+<div class="row">
+  <div class="col-sm-6">
+  
+    <h1>Получить бонус</h1>
+
+    <div class="alert alert-danger" role="alert" *ngIf="errorMessage">{{errorMessage}}</div>
+    <div class="alert alert-success" role="alert" *ngIf="resultMessage">{{resultMessage}}</div>
+
+    <form (ngSubmit)="onSubmit(form.value)" [formGroup]="form" #f="ngForm" class="bonus-form">
+
+      <button type="submit" [disabled]="bonusReceived" class="btn btn-primary">Получить бонус 24</button>
+
+    </form>
+  </div>
+</div>

@@ -19,6 +19,8 @@ import {ShopComponent} from './shop/shop.component';
 import {TransactionsComponent} from './transactions/transactions.component';
 import {HistoryComponent} from './history/history.component';
 import {PassComponent} from './pass/pass.component';
+import {BonusComponent} from './bonus/bonus.component';
+import {PayComponent} from './pay/pay.component';
 
 import { DataResolver } from './app.resolver';
 
@@ -46,5 +48,7 @@ export const ROUTES: Routes = [
   {path: 'transactions', component: TransactionsComponent},
   {path: 'history', component: HistoryComponent},
   {path: 'pass', component: PassComponent},
+  {path: 'bonus', component: BonusComponent},
+  {path: 'pay', component: PayComponent},
   { path: '**',    component: NoContent },
 ];
