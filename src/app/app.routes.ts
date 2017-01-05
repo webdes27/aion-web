@@ -1,7 +1,9 @@
 import { Routes, RouterModule } from '@angular/router';
-import { Home } from './home';
-import { About } from './about';
-import { NoContent } from './no-content';
+import { HomeComponent } from './home';
+import { AboutComponent } from './about';
+import { NoContentComponent } from './no-content';
+
+import { DataResolver } from './app.resolver';
 
 import {IndexComponent} from './index/index.component';
 import {PlayersComponent} from './players/players.component';
@@ -22,16 +24,12 @@ import {PassComponent} from './pass/pass.component';
 import {BonusComponent} from './bonus/bonus.component';
 import {PayComponent} from './pay/pay.component';
 
-import { DataResolver } from './app.resolver';
-
-
 export const ROUTES: Routes = [
   { path: '',      component: IndexComponent },
-  { path: 'home',  component: Home },
-  { path: 'about', component: About },
-  {
-    path: 'detail', loadChildren: () => System.import('./+detail')
-  },
+  { path: 'home',  component: HomeComponent },
+  { path: 'about', component: AboutComponent },
+  { path: 'detail', loadChildren: './+detail/index#DetailModule'},
+  
   {path: 'index', component: IndexComponent},
   {path: 'signup', component: SignupComponent},
   {path: 'players', component: PlayersComponent},
@@ -50,5 +48,6 @@ export const ROUTES: Routes = [
   {path: 'pass', component: PassComponent},
   {path: 'bonus', component: BonusComponent},
   {path: 'pay', component: PayComponent},
-  { path: '**',    component: NoContent },
+
+  { path: '**',    component: NoContentComponent },
 ];

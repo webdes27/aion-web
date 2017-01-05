@@ -17,7 +17,7 @@ export class BalanceService {
     let headers = this.requestService.getAuthHeaders();
     return this.http.get(this.url, {headers: headers})
       .map(this.extractData)
-      .catch(this.handleError).cache();
+      .catch(this.handleError);
   }
 
   private extractData(res:Response) {

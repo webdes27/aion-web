@@ -7,7 +7,7 @@ import {Config, APP_CONFIG} from './app.config';
   templateUrl: './app.component.html'
 })
 
-export class App {
+export class AppComponent {
   loading = false;
   name = this.config.title;
 
