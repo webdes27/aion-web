@@ -9,6 +9,7 @@ import {Config, APP_CONFIG} from './../app.config';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class MenuComponent {
+  public isCollapsed:boolean = true;
 
   constructor(private userService:UserService, private router:Router, @Inject(APP_CONFIG) private config:Config) {
   }

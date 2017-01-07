@@ -36,7 +36,8 @@ import {
   ButtonModule,
   InputTextModule
 } from 'primeng/primeng';
-import {DropdownModule} from 'ng2-bootstrap/ng2-bootstrap';
+import { DropdownModule } from 'ng2-bootstrap/dropdown';
+import { CollapseModule } from 'ng2-bootstrap/collapse';
 
 import {UserService} from './services/user/user.service';
 import {StorageService} from './services/storage/storage.service';
@@ -130,7 +131,8 @@ type StoreType = {
     DialogModule,
     InputTextModule,
     ButtonModule,
-    DropdownModule,
+    DropdownModule.forRoot(),
+    CollapseModule.forRoot()
   ],
   providers: [ // expose our Services and Providers into Angular's dependency injection
     ENV_PROVIDERS,
