@@ -19,10 +19,10 @@
             <li dropdown *ngIf="isAdmin()">
               <a href="#" dropdownToggle>Админка <span class="caret"></span></a>
               <ul class="dropdown-menu" dropdownMenu role="menu">
-                <li [routerLinkActive]="['active']"><a [routerLink]="['account']" *ngIf="isAdmin()">Аккаунты</a></li>
-                <li [routerLinkActive]="['active']"><a [routerLink]="['balances']" *ngIf="isAdmin()">Балансы</a></li>
-                <li [routerLinkActive]="['active']"><a [routerLink]="['shop']" *ngIf="isAdmin()">Магазин</a></li>
-                <li [routerLinkActive]="['active']"><a [routerLink]="['transactions']" *ngIf="isAdmin()">Транзакции</a></li>
+                <li [routerLinkActive]="['active']"><a [routerLink]="['/admin/account']" *ngIf="isAdmin()">Аккаунты</a></li>
+                <li [routerLinkActive]="['active']"><a [routerLink]="['/admin/balances']" *ngIf="isAdmin()">Балансы</a></li>
+                <li [routerLinkActive]="['active']"><a [routerLink]="['/admin/shop']" *ngIf="isAdmin()">Магазин</a></li>
+                <li [routerLinkActive]="['active']"><a [routerLink]="['/admin/transactions']" *ngIf="isAdmin()">Транзакции</a></li>
               </ul>
             </li>
             <li [routerLinkActive]="['active']"><a [routerLink]="['char']" *ngIf="getLoggedIn() | async">Мои персонажи</a></li>

@@ -29,13 +29,7 @@ import { AboutComponent } from './about';
 import { NoContentComponent } from './no-content';
 import { XLargeDirective } from './home/x-large';
 
-import {
-  DataTableModule,
-  SharedModule,
-  DialogModule,
-  ButtonModule,
-  InputTextModule
-} from 'primeng/primeng';
+import { DataTableModule } from 'primeng/primeng';
 import { DropdownModule } from 'ng2-bootstrap/dropdown';
 import { CollapseModule } from 'ng2-bootstrap/collapse';
 
@@ -58,13 +52,9 @@ import {LegionsComponent} from './legions/legions.component';
 import {SignupComponent} from './signup/signup.component';
 import {LoginComponent} from './login/login.component';
 import {ContactComponent} from './contact/contact.component';
-import {AccountComponent} from './account/account.component';
 import {CharComponent} from './char/char.component';
 import {CharDetailComponent} from './char/char-detail.component';
 import {ExchangeComponent} from './exchange/exchange.component';
-import {PayBalanceComponent} from './balances/balances.component';
-import {ShopComponent} from './shop/shop.component';
-import {TransactionsComponent} from './transactions/transactions.component';
 import {HistoryComponent} from './history/history.component';
 import {PassComponent} from './pass/pass.component';
 import {BonusComponent} from './bonus/bonus.component';
@@ -106,13 +96,9 @@ type StoreType = {
     SignupComponent,
     LoginComponent,
     ContactComponent,
-    AccountComponent,
     CharComponent,
     CharDetailComponent,
     ExchangeComponent,
-    PayBalanceComponent,
-    ShopComponent,
-    TransactionsComponent,
     HistoryComponent,
     PassComponent,
     BonusComponent,
@@ -127,10 +113,6 @@ type StoreType = {
     JsonpModule,
     RouterModule.forRoot(ROUTES, { useHash: true, preloadingStrategy: PreloadAllModules }),
     DataTableModule,
-    SharedModule,
-    DialogModule,
-    InputTextModule,
-    ButtonModule,
     DropdownModule.forRoot(),
     CollapseModule.forRoot()
   ],
