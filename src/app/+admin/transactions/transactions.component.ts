@@ -107,7 +107,7 @@ export class TransactionsComponent implements OnInit {
     this.items.splice(this.findSelectedItemIndex(), 1);
     this.loadingService.show();
     this.service
-      .delete(this.item)
+      .delete(this.selectedItem)
       .then(res => {
         this.loadingService.hide();
         this.items = this.items.filter(h => h !== this.item);

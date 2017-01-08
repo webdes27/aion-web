@@ -1,5 +1,6 @@
 import {Component, OnInit}  from '@angular/core';
 import {LazyLoadEvent} from 'primeng/primeng';
+import {MenuItem} from 'primeng/primeng';
 import {Item, PrimeItem} from './account';
 import {AccountService} from './account.service';
 import {LoadingService} from '../../services/loading';
@@ -20,7 +21,7 @@ export class AccountComponent implements OnInit {
   item:Item = new PrimeItem();
   selectedItem:Item;
   newItem:boolean;
-
+  contextMenu: MenuItem[];
   errorMessage:string;
 
   constructor(private service:AccountService, private loadingService:LoadingService) {
@@ -43,6 +44,10 @@ export class AccountComponent implements OnInit {
 
   ngOnInit() {
     this.getItems();
+    this.contextMenu = [
+      {label: 'Update', icon: 'fa-edit', command: (event) => this.updateItem(this.selectedItem)},
+      {label: 'Delete', icon: 'fa-close', command: (event) => this.deleteItem(this.selectedItem)}
+    ];
   }
 
   loadData(event:LazyLoadEvent) {
@@ -107,7 +112,7 @@ export class AccountComponent implements OnInit {
     this.items.splice(this.findSelectedItemIndex(), 1);
     this.loadingService.show();
     this.service
-      .delete(this.item)
+      .delete(this.selectedItem)
       .then(res => {
         this.loadingService.hide();
         this.items = this.items.filter(h => h !== this.item);
@@ -126,7 +131,7 @@ export class AccountComponent implements OnInit {
   onRowSelect(event) {
     this.newItem = false;
     this.item = this.cloneItem(event.data);
-    this.displayDialog = true;
+    //this.displayDialog = true;
   }
 
   cloneItem(c:Item):Item {
@@ -139,6 +144,14 @@ export class AccountComponent implements OnInit {
 
   findSelectedItemIndex():number {
     return this.items.indexOf(this.selectedItem);
+  }
+
+  updateItem(item:Item) {
+    this.displayDialog = true;
+  }
+
+  deleteItem(item:Item) {
+    this.delete();
   }
 
 }

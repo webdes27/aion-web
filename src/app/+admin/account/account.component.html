@@ -7,7 +7,8 @@
 
 <p-dataTable [value]="items" [lazy]="true" [rows]="perPage" [paginator]="true" [totalRecords]="totalRecords"
              (onLazyLoad)="loadData($event)" selectionMode="single" [(selection)]="selectedItem"
-             (onRowSelect)="onRowSelect($event)">
+             (onRowSelect)="onRowSelect($event)"
+             [contextMenu]="cm">
   <p-column field="id" header="ID" [sortable]="true" [filter]="true"></p-column>
   <p-column field="name" header="Name" [sortable]="true" [filter]="true"></p-column>
   <p-column field="activated" header="Activated" [sortable]="true" [filter]="true"></p-column>
@@ -41,3 +42,5 @@
     </div>
   </footer>
 </p-dialog>
+
+<p-contextMenu #cm [model]="contextMenu"></p-contextMenu>

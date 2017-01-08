@@ -6,7 +6,8 @@ import {
   DataTableModule,
   SharedModule,
   DialogModule,
-  InputTextModule
+  InputTextModule,
+  ContextMenuModule
 } from 'primeng/primeng';
 
 import {AdminRoutingModule} from './admin.routing';
@@ -25,11 +26,12 @@ import {TransactionsComponent} from './transactions/transactions.component';
     SharedModule,
     DialogModule,
     InputTextModule,
+    ContextMenuModule
   ],
   exports: [],
   declarations: [
-	AdminComponent,
- 	AccountComponent,
+    AdminComponent,
+    AccountComponent,
     PayBalanceComponent,
     ShopComponent,
     TransactionsComponent,
