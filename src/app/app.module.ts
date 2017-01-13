@@ -29,6 +29,9 @@ import { AboutComponent } from './about';
 import { NoContentComponent } from './no-content';
 import { XLargeDirective } from './home/x-large';
 
+import '../styles/styles.scss';
+import '../styles/headings.css';
+
 import { DataTableModule } from 'primeng/primeng';
 import { DropdownModule } from 'ng2-bootstrap/dropdown';
 import { CollapseModule } from 'ng2-bootstrap/collapse';
