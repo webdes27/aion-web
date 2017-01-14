@@ -6,7 +6,6 @@ import {
   DataTableModule,
   SharedModule,
   DialogModule,
-  InputTextModule,
   ContextMenuModule
 } from 'primeng/primeng';
 
@@ -25,7 +24,6 @@ import {TransactionsComponent} from './transactions/transactions.component';
     DataTableModule,
     SharedModule,
     DialogModule,
-    InputTextModule,
     ContextMenuModule
   ],
   exports: [],

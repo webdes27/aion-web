@@ -20,19 +20,19 @@
   <div class="ui-grid ui-grid-responsive ui-fluid" *ngIf="item">
     <div class="ui-grid-row">
       <div class="ui-grid-col-4"><label for="name">Name</label></div>
-      <div class="ui-grid-col-8"><input pInputText id="name" required [(ngModel)]="item.name"/></div>
+      <div class="ui-grid-col-8"><input type="text" id="name" [(ngModel)]="item.name"/></div>
     </div>
     <div class="ui-grid-row">
       <div class="ui-grid-col-4"><label for="activated">Activated</label></div>
-      <div class="ui-grid-col-8"><input pInputText id="activated" [(ngModel)]="item.activated"/></div>
+      <div class="ui-grid-col-8"><input type="text" id="activated" [(ngModel)]="item.activated"/></div>
     </div>
     <div class="ui-grid-row">
       <div class="ui-grid-col-4"><label for="access_level">Access_level</label></div>
-      <div class="ui-grid-col-8"><input pInputText id="access_level" [(ngModel)]="item.access_level"/></div>
+      <div class="ui-grid-col-8"><input type="text" id="access_level" [(ngModel)]="item.access_level"/></div>
     </div>
     <div class="ui-grid-row">
       <div class="ui-grid-col-4"><label for="membership">Membership</label></div>
-      <div class="ui-grid-col-8"><input pInputText id="membership" [(ngModel)]="item.membership"/></div>
+      <div class="ui-grid-col-8"><input type="text" id="membership" [(ngModel)]="item.membership"/></div>
     </div>
   </div>
   <footer>

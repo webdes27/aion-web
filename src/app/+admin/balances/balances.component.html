@@ -17,11 +17,11 @@
   <div class="ui-grid ui-grid-responsive ui-fluid" *ngIf="item">
     <div class="ui-grid-row">
       <div class="ui-grid-col-4"><label for="login">Login</label></div>
-      <div class="ui-grid-col-8"><input pInputText id="login" required [(ngModel)]="item.login"/></div>
+      <div class="ui-grid-col-8"><input type="text" id="login" [(ngModel)]="item.login"/></div>
     </div>
     <div class="ui-grid-row">
       <div class="ui-grid-col-4"><label for="balance">Balance</label></div>
-      <div class="ui-grid-col-8"><input pInputText id="balance" [(ngModel)]="item.balance"/></div>
+      <div class="ui-grid-col-8"><input type="text" id="balance" [(ngModel)]="item.balance"/></div>
     </div>
   </div>
   <footer>
