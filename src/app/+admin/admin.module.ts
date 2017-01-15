@@ -4,9 +4,7 @@ import { FormsModule } from '@angular/forms';
 
 import {
   DataTableModule,
-  SharedModule,
-  DialogModule,
-  ContextMenuModule
+  DialogModule
 } from 'primeng/primeng';
 
 import {AdminRoutingModule} from './admin.routing';
@@ -22,9 +20,7 @@ import {TransactionsComponent} from './transactions/transactions.component';
     FormsModule,
     AdminRoutingModule,
     DataTableModule,
-    SharedModule,
-    DialogModule,
-    ContextMenuModule
+    DialogModule
   ],
   exports: [],
   declarations: [

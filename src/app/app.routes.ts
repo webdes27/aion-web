@@ -24,8 +24,8 @@ export const ROUTES: Routes = [
   { path: '',      component: IndexComponent },
   { path: 'home',  component: HomeComponent },
   { path: 'about', component: AboutComponent },
-  { path: 'detail', loadChildren: './+detail#DetailModule'},
-  { path: 'barrel', loadChildren: './+barrel#BarrelModule'},
+  //{ path: 'detail', loadChildren: './+detail#DetailModule'},
+  //{ path: 'barrel', loadChildren: './+barrel#BarrelModule'},
 
   {path: 'index', component: IndexComponent},
   {path: 'signup', component: SignupComponent},

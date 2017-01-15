@@ -131,7 +131,7 @@ export class AccountComponent implements OnInit {
   onRowSelect(event) {
     this.newItem = false;
     this.item = this.cloneItem(event.data);
-    //this.displayDialog = true;
+    this.displayDialog = true;
   }
 
   cloneItem(c:Item):Item {
