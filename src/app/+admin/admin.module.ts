@@ -6,6 +6,10 @@ import {
   DataTableModule,
   DialogModule
 } from 'primeng/primeng';
+import { PaginationModule } from 'ng2-bootstrap/pagination';
+
+import { NgTableFilteringDirective } from '../shared/directives/table-filtering.directive';
+import { NgTableSortingDirective } from '../shared/directives/table-sorting.directive';
 
 import {AdminRoutingModule} from './admin.routing';
 import {AdminComponent}   from './admin.component';
@@ -20,7 +24,8 @@ import {TransactionsComponent} from './transactions/transactions.component';
     FormsModule,
     AdminRoutingModule,
     DataTableModule,
-    DialogModule
+    DialogModule,
+    PaginationModule.forRoot()
   ],
   exports: [],
   declarations: [
@@ -29,6 +34,8 @@ import {TransactionsComponent} from './transactions/transactions.component';
     PayBalanceComponent,
     ShopComponent,
     TransactionsComponent,
+    NgTableFilteringDirective,
+    NgTableSortingDirective
   ],
   providers: [
   ],

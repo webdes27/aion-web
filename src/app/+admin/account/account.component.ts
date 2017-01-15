@@ -1,40 +1,55 @@
 import {Component, OnInit}  from '@angular/core';
 import {LazyLoadEvent} from 'primeng/primeng';
-import {MenuItem} from 'primeng/primeng';
 import {Item, PrimeItem} from './account';
 import {AccountService} from './account.service';
 import {LoadingService} from '../../services/loading';
 
 @Component({
   selector: 'my-app',
-  templateUrl: './account.component.html',
+  templateUrl: './account.component2.html',
   providers: [AccountService]
 })
 
 export class AccountComponent implements OnInit {
 
   items:Item[];
-  totalRecords:number = 0;
-  perPage:number = 10;
-
   displayDialog:boolean;
   item:Item = new PrimeItem();
   selectedItem:Item;
   newItem:boolean;
-  contextMenu: MenuItem[];
   errorMessage:string;
+
+  public itemsPerPage: number = 10;
+  public totalItems: number = 0;
+  public currentPage: number = 1;
+
+  public columns:Array<any> = [
+    {title: 'Id', name: 'id', sort: '', filtering: {filterString: ''}},
+    {title: 'Name', name: 'name', sort: '', filtering: {filterString: ''}},
+    {title: 'Activated.', name: 'activated', sort: '', filtering: {filterString: ''}},
+    {title: 'Access_level.', name: 'access_level', sort: '', filtering: {filterString: ''}},
+    {title: 'Membership.', name: 'membership', sort: '', filtering: {filterString: ''}},
+  ];
+
+  public config:any = {
+    sorting: {columns: this.columns},
+    filtering: {filterString: ''}
+  };
+  public filters: {[s: string]: any;} = {};
+  public sortField:string;
+  public sortOrder:number;
 
   constructor(private service:AccountService, private loadingService:LoadingService) {
   }
 
   getItems() {
     this.loadingService.show();
-    this.service.getItems()
+    this.service.getItems(this.currentPage, this.filters, this.sortField, this.sortOrder)
       .then(data => {
         this.loadingService.hide();
         this.items = data.items;
-        this.totalRecords = data._meta.totalCount;
-        this.perPage = data._meta.perPage;
+        this.totalItems = data._meta.totalCount;
+        this.itemsPerPage = data._meta.perPage;
       })
       .catch(error => {
         this.loadingService.hide();
@@ -44,10 +59,11 @@ export class AccountComponent implements OnInit {
 
   ngOnInit() {
     this.getItems();
-    this.contextMenu = [
-      {label: 'Update', icon: 'fa-edit', command: (event) => this.updateItem(this.selectedItem)},
-      {label: 'Delete', icon: 'fa-close', command: (event) => this.deleteItem(this.selectedItem)}
-    ];
+  }
+
+  public pageChanged(event: any): void {
+    this.currentPage = event.page;
+    this.getItems();
   }
 
   loadData(event:LazyLoadEvent) {
@@ -57,13 +73,13 @@ export class AccountComponent implements OnInit {
     //event.sortOrder = Sort order as number, 1 for asc and -1 for dec
     //filters: FilterMetadata object having field as key and filter value, filter matchMode as value
     //console.log(event);
-    let page = (event.first / this.perPage) + 1;
+    let page = (event.first / this.itemsPerPage) + 1;
     this.loadingService.show();
     this.service.getItems(page, event.filters, event.sortField, event.sortOrder)
       .then(data => {
         this.loadingService.hide();
         this.items = data.items;
-        this.totalRecords = data._meta.totalCount;
+        this.totalItems = data._meta.totalCount;
       })
       .catch(error => {
         this.loadingService.hide();
@@ -146,6 +162,10 @@ export class AccountComponent implements OnInit {
     return this.items.indexOf(this.selectedItem);
   }
 
+  viewDetails(item:Item) {
+    this.displayDialog = true;
+  }
+
   updateItem(item:Item) {
     this.displayDialog = true;
   }
@@ -153,5 +173,51 @@ export class AccountComponent implements OnInit {
   deleteItem(item:Item) {
     this.delete();
   }
+
+  public onChangeTable(config:any):any {
+    let sort:string;
+
+    if(config.sort !== undefined) {
+      this.sortField = config.name;
+      this.sortOrder = (config.sort === 'desc') ? -1 : (config.sort === 'asc') ? 1 : 0;
+      sort = config.sort;
+    }
+
+    if (config.filtering) {
+      Object.assign(this.config.filtering, config.filtering);
+    }
+
+    if (config.sorting) {
+      Object.assign(this.config.sorting, config.sorting);
+    }
+
+    this.columns.forEach((column:any) => {
+      this.filter(column.filtering.filterString, column.name, '');
+      column.sort = '';
+      if(column.name === this.sortField) {
+        column.sort = sort;
+      }
+    });
+
+    this.getItems();
+  }
+
+    filter(value, field, matchMode) {
+        if(!this.isFilterBlank(value))
+            this.filters[field] = {value: value, matchMode: matchMode};
+        else if(this.filters[field])
+            delete this.filters[field];
+    }
+    
+    isFilterBlank(filter: any): boolean {
+        if(filter !== null && filter !== undefined) {
+            if((typeof filter === 'string' && filter.trim().length == 0) || (filter instanceof Array && filter.length == 0))
+                return true;
+            else
+                return false;
+        } 
+        return true;
+    }
+
 
 }

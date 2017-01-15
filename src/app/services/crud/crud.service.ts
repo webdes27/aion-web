@@ -104,8 +104,10 @@ export class CrudService {
     if (sortField) {
       if (sortOrder > 0) {
         return '&sort=' + sortField;
-      } else {
+      } else if(sortOrder < 0) {
         return '&sort=-' + sortField;
+      } else {
+        return '';  
       }
     } else {
       return '';

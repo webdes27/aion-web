@@ -1,0 +1,37 @@
+<h1 class="page-header">Аккаунты</h1>
+<div class="alert alert-danger" role="alert" *ngIf="errorMessage">{{errorMessage}}</div>
+<p>
+    <button type="button" class="btn btn-primary" (click)="showDialogToAdd()"><i class="fa fa-plus"></i> Добавить</button>
+</p>
+<table class="table table-hover table table-bordered">
+    <thead>
+        <tr>
+            <th *ngFor="let column of columns" [ngTableSorting]="config" [column]="column" (sortChanged)="onChangeTable($event)">
+                {{column.title}}
+                <i *ngIf="config && column.sort" class="pull-right fa" [ngClass]="{'fa-chevron-down': column.sort === 'desc', 'fa-chevron-up': column.sort === 'asc'}"></i>
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td *ngFor="let column of columns">
+                <input *ngIf="column.filtering" [ngTableFiltering]="column.filtering" class="form-control" (tableChanged)="onChangeTable(config)" />
+            </td>
+            <td></td>
+        </tr>
+        <tr *ngFor="let item of items">
+            <td>{{item.id}}</td>
+            <td>{{item.name}}</td>
+            <td>{{item.activated}}</td>
+            <td>{{item.access_level}}</td>
+            <td>{{item.membership}}</td>
+            <td class="action-column">
+                <a (click)="viewDetails(item.id)" title="Просмотр" aria-label="Просмотр"><span class="glyphicon glyphicon-eye-open"></span></a>
+                <a [routerLink]="['/account',item.id,'edit']" title="Редактировать" aria-label="Редактировать"><span class="glyphicon glyphicon-pencil"></span></a>
+                <a (click)="deleteItem(item)" title="Удалить" aria-label="Удалить" data-confirm="Вы уверены, что хотите удалить этот элемент?"><span class="glyphicon glyphicon-trash"></span></a>
+            </td>
+        </tr>
+    </tbody>
+</table>
+<pagination [boundaryLinks]="true" [totalItems]="totalItems" [itemsPerPage]="itemsPerPage" [(ngModel)]="currentPage" previousText="&lsaquo;" nextText="&rsaquo;" firstText="&laquo;" lastText="&raquo;" (pageChanged)="pageChanged($event)"></pagination>
