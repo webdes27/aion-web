@@ -1,19 +1,21 @@
-import {Component, OnInit}  from '@angular/core';
-import {LazyLoadEvent} from 'primeng/primeng';
+import {Component, OnInit, ViewChild}  from '@angular/core';
+import { ModalDirective } from 'ng2-bootstrap';
+
 import {Item, PrimeItem} from './account';
 import {AccountService} from './account.service';
 import {LoadingService} from '../../services/loading';
 
 @Component({
   selector: 'my-app',
-  templateUrl: './account.component2.html',
+  templateUrl: './account.component.html',
   providers: [AccountService]
 })
 
 export class AccountComponent implements OnInit {
 
+  @ViewChild('childModal') public childModal:ModalDirective;  
+
   items:Item[];
-  displayDialog:boolean;
   item:Item = new PrimeItem();
   selectedItem:Item;
   newItem:boolean;
@@ -66,33 +68,6 @@ export class AccountComponent implements OnInit {
     this.getItems();
   }
 
-  loadData(event:LazyLoadEvent) {
-    //event.first = First row offset
-    //event.rows = Number of rows per page
-    //event.sortField = Field name to sort with
-    //event.sortOrder = Sort order as number, 1 for asc and -1 for dec
-    //filters: FilterMetadata object having field as key and filter value, filter matchMode as value
-    //console.log(event);
-    let page = (event.first / this.itemsPerPage) + 1;
-    this.loadingService.show();
-    this.service.getItems(page, event.filters, event.sortField, event.sortOrder)
-      .then(data => {
-        this.loadingService.hide();
-        this.items = data.items;
-        this.totalItems = data._meta.totalCount;
-      })
-      .catch(error => {
-        this.loadingService.hide();
-        this.errorMessage = error;
-      });
-  }
-
-  showDialogToAdd() {
-    this.newItem = true;
-    this.item = new PrimeItem();
-    this.displayDialog = true;
-  }
-
   save() {
     this.loadingService.show();
     if (this.newItem) {
@@ -114,6 +89,8 @@ export class AccountComponent implements OnInit {
           this.loadingService.hide();
           this.item = item;
           this.items[this.findSelectedItemIndex()] = this.item;
+          console.log(this.item.id);
+          console.log(this.items.indexOf(this.item));
         })
         .catch(error => {
           this.loadingService.hide();
@@ -121,7 +98,7 @@ export class AccountComponent implements OnInit {
         });
     }
     this.item = null;
-    this.displayDialog = false;
+    this.childModal.hide();
   }
 
   delete() {
@@ -141,13 +118,12 @@ export class AccountComponent implements OnInit {
         this.errorMessage = error;
       });
     this.item = null;
-    this.displayDialog = false;
+    this.childModal.hide();
   }
 
-  onRowSelect(event) {
+  onRowSelect(item:Item) {
     this.newItem = false;
-    this.item = this.cloneItem(event.data);
-    this.displayDialog = true;
+    this.item = this.cloneItem(item);
   }
 
   cloneItem(c:Item):Item {
@@ -162,12 +138,20 @@ export class AccountComponent implements OnInit {
     return this.items.indexOf(this.selectedItem);
   }
 
+  createItem() {
+    this.newItem = true;
+    this.item = new PrimeItem();
+    this.childModal.show();
+  }
+
   viewDetails(item:Item) {
-    this.displayDialog = true;
+    this.childModal.show();
   }
 
   updateItem(item:Item) {
-    this.displayDialog = true;
+    this.newItem = false;
+    this.item = this.cloneItem(item);
+    this.childModal.show();
   }
 
   deleteItem(item:Item) {
@@ -219,5 +203,12 @@ export class AccountComponent implements OnInit {
         return true;
     }
 
+  public hideChildModal():void {
+    this.childModal.hide();
+  }
+
+  public modalTitle() {
+    return (this.newItem) ? 'Добавить' : 'Редактировать';
+  }
 
 }

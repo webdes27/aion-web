@@ -1,43 +1,62 @@
 <h1 class="page-header">Аккаунты</h1>
-
 <div class="alert alert-danger" role="alert" *ngIf="errorMessage">{{errorMessage}}</div>
 <p>
-  <button type="button" class="btn btn-primary" (click)="showDialogToAdd()"><i class="fa fa-plus"></i> Добавить</button>
+    <button type="button" class="btn btn-primary" (click)="createItem()"><i class="fa fa-plus"></i> Добавить</button>
 </p>
-
-<p-dataTable [value]="items" [lazy]="true" [rows]="perPage" [paginator]="true" [totalRecords]="totalRecords"
-             (onLazyLoad)="loadData($event)" selectionMode="single" [(selection)]="selectedItem"
-             (onRowSelect)="onRowSelect($event)">
-  <p-column field="id" header="ID" [sortable]="true" [filter]="true"></p-column>
-  <p-column field="name" header="Name" [sortable]="true" [filter]="true"></p-column>
-  <p-column field="activated" header="Activated" [sortable]="true" [filter]="true"></p-column>
-  <p-column field="access_level" header="Access_level" [sortable]="true" [filter]="true"></p-column>
-  <p-column field="membership" header="Membership" [sortable]="true" [filter]="true"></p-column>
-</p-dataTable>
-
-<p-dialog header="Details" [(visible)]="displayDialog" [responsive]="true" showEffect="fade" [modal]="true">
-  <div class="ui-grid ui-grid-responsive ui-fluid" *ngIf="item">
-    <div class="ui-grid-row">
-      <div class="ui-grid-col-4"><label for="name">Name</label></div>
-      <div class="ui-grid-col-8"><input type="text" id="name" [(ngModel)]="item.name"/></div>
+<table class="table table-hover table table-bordered">
+    <thead>
+        <tr>
+            <th *ngFor="let column of columns" [ngTableSorting]="config" [column]="column" (sortChanged)="onChangeTable($event)">
+                {{column.title}}
+                <i *ngIf="config && column.sort" class="pull-right fa" [ngClass]="{'fa-chevron-down': column.sort === 'desc', 'fa-chevron-up': column.sort === 'asc'}"></i>
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td *ngFor="let column of columns">
+                <input *ngIf="column.filtering" [ngTableFiltering]="column.filtering" class="form-control" (tableChanged)="onChangeTable(config)" />
+            </td>
+            <td></td>
+        </tr>
+        <tr *ngFor="let item of items">
+            <td *ngFor="let column of columns">{{item[column.name]}}</td>
+            <td class="action-column">
+                <a [routerLink]="['/admin/account',item.id,'detail']" title="Просмотр" aria-label="Просмотр"><span class="glyphicon glyphicon-eye-open"></span></a>
+                <a (click)="updateItem(item)" title="Редактировать" aria-label="Редактировать"><span class="glyphicon glyphicon-pencil"></span></a>
+                <a (click)="deleteItem(item)" title="Удалить" aria-label="Удалить" data-confirm="Вы уверены, что хотите удалить этот элемент?"><span class="glyphicon glyphicon-trash"></span></a>
+            </td>
+        </tr>
+    </tbody>
+</table>
+<pagination [boundaryLinks]="true" [totalItems]="totalItems" [itemsPerPage]="itemsPerPage" [(ngModel)]="currentPage" previousText="&lsaquo;" nextText="&rsaquo;" firstText="&laquo;" lastText="&raquo;" (pageChanged)="pageChanged($event)"></pagination>
+<div bsModal #childModal="bs-modal" [config]="{backdrop: 'static'}" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title pull-left">{{modalTitle()}}</h4>
+                <button type="button" class="close pull-right" aria-label="Close" (click)="hideChildModal()">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group" *ngIf="item">
+                    <label for="name">Name</label>
+                    <input class="form-control" type="text" id="name" [(ngModel)]="item.name" />
+                    <label for="activated">Activated</label>
+                    <input class="form-control" type="text" id="activated" [(ngModel)]="item.activated" />
+                    <label for="access_level">Access_level</label>
+                    <input class="form-control" type="text" id="access_level" [(ngModel)]="item.access_level" />
+                    <label for="membership">Membership</label>
+                    <input class="form-control" type="text" id="membership" [(ngModel)]="item.membership" />
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" (click)="delete()"><i class="fa fa-close"></i> Удалить</button>
+                    <button type="button" class="btn btn-primary" (click)="save()"><i class="fa fa-check"></i> Сохранить</button>
+                    <button type="button" class="btn btn-primary" (click)="hideChildModal()">Закрыть</button>
+                </div>
+            </div>
+        </div>
     </div>
-    <div class="ui-grid-row">
-      <div class="ui-grid-col-4"><label for="activated">Activated</label></div>
-      <div class="ui-grid-col-8"><input type="text" id="activated" [(ngModel)]="item.activated"/></div>
-    </div>
-    <div class="ui-grid-row">
-      <div class="ui-grid-col-4"><label for="access_level">Access_level</label></div>
-      <div class="ui-grid-col-8"><input type="text" id="access_level" [(ngModel)]="item.access_level"/></div>
-    </div>
-    <div class="ui-grid-row">
-      <div class="ui-grid-col-4"><label for="membership">Membership</label></div>
-      <div class="ui-grid-col-8"><input type="text" id="membership" [(ngModel)]="item.membership"/></div>
-    </div>
-  </div>
-  <footer>
-    <div class="ui-dialog-buttonpane ui-widget-content ui-helper-clearfix">
-      <button type="button" class="btn btn-primary" (click)="delete()"><i class="fa fa-close"></i> Удалить</button>
-      <button type="button" class="btn btn-primary" (click)="save()"><i class="fa fa-check"></i> Сохранить</button>
-    </div>
-  </footer>
-</p-dialog>
+</div>
