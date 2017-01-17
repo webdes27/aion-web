@@ -46,6 +46,7 @@ export class AccountComponent implements OnInit {
 
   getItems() {
     this.loadingService.show();
+    this.errorMessage = null;
     this.service.getItems(this.currentPage, this.filters, this.sortField, this.sortOrder)
       .then(data => {
         this.loadingService.hide();
@@ -70,6 +71,7 @@ export class AccountComponent implements OnInit {
 
   save() {
     this.loadingService.show();
+    this.errorMessage = null;
     if (this.newItem) {
       this.service
         .post(this.item)
@@ -87,37 +89,30 @@ export class AccountComponent implements OnInit {
         .put(this.item)
         .then(item => {
           this.loadingService.hide();
-          this.item = item;
-          this.items[this.findSelectedItemIndex()] = this.item;
-          console.log(this.item.id);
-          console.log(this.items.indexOf(this.item));
+          this.items[this.findSelectedItemIndex()] = item;
         })
         .catch(error => {
           this.loadingService.hide();
           this.errorMessage = error;
         });
     }
-    this.item = null;
     this.childModal.hide();
   }
 
   delete() {
-    this.items.splice(this.findSelectedItemIndex(), 1);
     this.loadingService.show();
+    this.errorMessage = null;
     this.service
-      .delete(this.selectedItem)
+      .delete(this.item)
       .then(res => {
         this.loadingService.hide();
-        this.items = this.items.filter(h => h !== this.item);
-        if (this.selectedItem === this.item) {
-          this.selectedItem = null;
-        }
+        this.items.splice(this.findSelectedItemIndex(), 1);
+        this.item = null;
       })
       .catch(error => {
         this.loadingService.hide();
         this.errorMessage = error;
       });
-    this.item = null;
     this.childModal.hide();
   }
 
@@ -126,16 +121,19 @@ export class AccountComponent implements OnInit {
     this.item = this.cloneItem(item);
   }
 
-  cloneItem(c:Item):Item {
-    let item = new PrimeItem();
-    for (let prop in c) {
-      item[prop] = c[prop];
+  cloneItem(item:Item):Item {
+    let clone = new PrimeItem();
+    for (let prop in item) {
+      clone[prop] = item[prop];
     }
-    return item;
+    this.selectedItem = Object.assign({}, item);
+    return clone;
   }
 
   findSelectedItemIndex():number {
-    return this.items.indexOf(this.selectedItem);
+    let obj = this.items.find(x => JSON.stringify(x) === JSON.stringify(this.selectedItem));
+    let index = this.items.indexOf(obj);
+    return index;
   }
 
   createItem() {
@@ -155,6 +153,7 @@ export class AccountComponent implements OnInit {
   }
 
   deleteItem(item:Item) {
+    this.item = this.cloneItem(item);
     this.delete();
   }
 
