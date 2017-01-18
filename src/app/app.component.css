@@ -1,8 +1,14 @@
-html, body{
-  height: 100%;
-  font-family: Arial, Helvetica, sans-serif
+table.m-grid th {
+    background-color: #9bc2e6;
 }
 
-a.active {
-  background-color: gray;
+table.m-grid th:hover {
+    background-color: #5b9bd5;
+    cursor: pointer;
+}
+.ng-valid[required] {
+  border-left: 5px solid #42A948; /* green */
+}
+.ng-invalid[required], .ng-invalid[required]:focus {
+  border-left: 5px solid #a94442; /* red */
 }

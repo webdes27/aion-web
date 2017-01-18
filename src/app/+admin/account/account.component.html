@@ -3,7 +3,7 @@
 <p>
     <button type="button" class="btn btn-primary" (click)="createItem()"><i class="fa fa-plus"></i> Добавить</button>
 </p>
-<table class="table table-hover table table-bordered">
+<table class="table table-hover table table-bordered m-grid">
     <thead>
         <tr>
             <th *ngFor="let column of columns" [ngTableSorting]="config" [column]="column" (sortChanged)="onChangeTable($event)">
@@ -25,7 +25,6 @@
             <td class="action-column">
                 <a [routerLink]="['/admin/account',item.id,'detail']" title="Просмотр" aria-label="Просмотр"><span class="glyphicon glyphicon-eye-open"></span></a>
                 <a (click)="updateItem(item)" title="Редактировать" aria-label="Редактировать"><span class="glyphicon glyphicon-pencil"></span></a>
-                <a (click)="deleteItem(item)" title="Удалить" aria-label="Удалить" data-confirm="Вы уверены, что хотите удалить этот элемент?"><span class="glyphicon glyphicon-trash"></span></a>
             </td>
         </tr>
     </tbody>
@@ -52,9 +51,9 @@
                     <input class="form-control" type="text" id="membership" [(ngModel)]="item.membership" />
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-primary" (click)="delete()"><i class="fa fa-close"></i> Удалить</button>
-                    <button type="button" class="btn btn-primary" (click)="save()"><i class="fa fa-check"></i> Сохранить</button>
-                    <button type="button" class="btn btn-primary" (click)="hideChildModal()">Закрыть</button>
+                    <button type="button" class="btn btn-danger pull-left" *ngIf="!newItem" (click)="delete()"><i class="fa fa-close"></i> Удалить</button>
+                    <button type="button" class="btn btn-success" (click)="save()"><i class="fa fa-check"></i> Сохранить</button>
+                    <button type="button" class="btn btn-primary" (click)="hideChildModal()"> <i class="fa fa-arrow-circle-left"></i> Закрыть</button>
                 </div>
             </div>
         </div>
