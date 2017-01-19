@@ -239,19 +239,7 @@ module.exports = function (options) {
        */
       new CopyWebpackPlugin([
         { from: 'src/assets', to: 'assets' },
-        { from: 'src/meta'},
-        {
-        from: 'node_modules/primeng/resources/themes/bootstrap/theme.css',
-        to: 'assets/primeng/resources/themes/bootstrap/theme.css'
-        },
-        {
-          from: 'node_modules/primeng/resources/themes/bootstrap/images/',
-          to: 'assets/primeng/resources/themes/bootstrap/images'
-        },
-        {
-          from: 'node_modules/primeng/resources/primeng.min.css',
-          to: 'assets/primeng/resources/primeng.min.css'
-        }
+        { from: 'src/meta'}
       ]),
 
 
