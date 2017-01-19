@@ -28,9 +28,9 @@ export class AccountComponent implements OnInit {
   public columns:Array<any> = [
     {title: 'Id', name: 'id', sort: '', filtering: {filterString: ''}},
     {title: 'Name', name: 'name', sort: '', filtering: {filterString: ''}},
-    {title: 'Activated.', name: 'activated', sort: '', filtering: {filterString: ''}},
-    {title: 'Access_level.', name: 'access_level', sort: '', filtering: {filterString: ''}},
-    {title: 'Membership.', name: 'membership', sort: '', filtering: {filterString: ''}},
+    {title: 'Activated', name: 'activated', sort: '', filtering: {filterString: ''}},
+    {title: 'Access_level', name: 'access_level', sort: '', filtering: {filterString: ''}},
+    {title: 'Membership', name: 'membership', sort: '', filtering: {filterString: ''}},
   ];
 
   public config:any = {

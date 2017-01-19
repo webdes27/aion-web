@@ -1,19 +1,28 @@
 <h1 class="page-header">История</h1>
-
 <div class="alert alert-danger" role="alert" *ngIf="errorMessage">{{errorMessage}}</div>
 
-<p-dataTable [value]="items" [lazy]="true" [rows]="perPage" [paginator]="true" [totalRecords]="totalRecords"
-             (onLazyLoad)="loadData($event)" selectionMode="single" [(selection)]="selectedItem"
-             (onRowSelect)="onRowSelect($event)">
-  <p-column field="id" header="ID" [sortable]="true" [filter]="true"></p-column>
-  <p-column field="ip" header="Ip" [sortable]="true" [filter]="true"></p-column>
-  <p-column field="login" header="Login" [sortable]="true" [filter]="true"></p-column>
-  <p-column field="char_name" header="Char name" [sortable]="true" [filter]="true"></p-column>
-  <p-column field="item_type" header="Item type" [sortable]="true" [filter]="true"></p-column>
-  <p-column field="item_name" header="Item name" [sortable]="true" [filter]="true"></p-column>
-  <p-column field="count" header="Count" [sortable]="true" [filter]="true"></p-column>
-  <p-column field="price_one" header="Price one" [sortable]="true" [filter]="true"></p-column>
-  <p-column field="price_final" header="Price final" [sortable]="true" [filter]="true"></p-column>
-  <p-column field="trans_date" header="Trans date" [sortable]="true" [filter]="true"></p-column>
-</p-dataTable>
-
+<table class="table table-hover table table-bordered m-grid">
+    <thead>
+        <tr>
+            <th *ngFor="let column of columns" [ngTableSorting]="config" [column]="column" (sortChanged)="onChangeTable($event)">
+                {{column.title}}
+                <i *ngIf="config && column.sort" class="pull-right fa" [ngClass]="{'fa-chevron-down': column.sort === 'desc', 'fa-chevron-up': column.sort === 'asc'}"></i>
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td *ngFor="let column of columns">
+                <input *ngIf="column.filtering" [ngTableFiltering]="column.filtering" class="form-control" (tableChanged)="onChangeTable(config)" />
+            </td>
+            <td></td>
+        </tr>
+        <tr *ngFor="let item of items">
+            <td *ngFor="let column of columns">{{item[column.name]}}</td>
+            <td class="action-column">
+            </td>
+        </tr>
+    </tbody>
+</table>
+<pagination [boundaryLinks]="true" [totalItems]="totalItems" [itemsPerPage]="itemsPerPage" [(ngModel)]="currentPage" previousText="&lsaquo;" nextText="&rsaquo;" firstText="&laquo;" lastText="&raquo;" (pageChanged)="pageChanged($event)"></pagination>

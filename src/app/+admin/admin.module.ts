@@ -2,15 +2,9 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from "@angular/common";
 import { FormsModule } from '@angular/forms';
 
-import {
-  DataTableModule,
-  DialogModule
-} from 'primeng/primeng';
+import {TableModule} from '../shared/table';
 import { PaginationModule } from 'ng2-bootstrap/pagination';
 import { ModalModule } from 'ng2-bootstrap/modal';
-
-import { NgTableFilteringDirective } from '../shared/directives/table-filtering.directive';
-import { NgTableSortingDirective } from '../shared/directives/table-sorting.directive';
 
 import {AdminRoutingModule} from './admin.routing';
 import {AdminComponent}   from './admin.component';
@@ -25,10 +19,9 @@ import {TransactionsComponent} from './transactions/transactions.component';
   	CommonModule,
     FormsModule,
     AdminRoutingModule,
-    DataTableModule,
-    DialogModule,
+    TableModule,
     PaginationModule.forRoot(),
-    ModalModule.forRoot()
+    ModalModule.forRoot(),
   ],
   exports: [],
   declarations: [
@@ -38,8 +31,6 @@ import {TransactionsComponent} from './transactions/transactions.component';
     PayBalanceComponent,
     ShopComponent,
     TransactionsComponent,
-    NgTableFilteringDirective,
-    NgTableSortingDirective
   ],
   providers: [
   ],

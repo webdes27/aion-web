@@ -32,9 +32,10 @@ import { XLargeDirective } from './home/x-large';
 import '../styles/styles.scss';
 import '../styles/headings.css';
 
-import { DataTableModule } from 'primeng/primeng';
 import { DropdownModule } from 'ng2-bootstrap/dropdown';
 import { CollapseModule } from 'ng2-bootstrap/collapse';
+import { PaginationModule } from 'ng2-bootstrap/pagination';
+import { ModalModule } from 'ng2-bootstrap/modal';
 
 import {UserService} from './services/user/user.service';
 import {StorageService} from './services/storage/storage.service';
@@ -63,6 +64,8 @@ import {PassComponent} from './pass/pass.component';
 import {BonusComponent} from './bonus/bonus.component';
 import {PayComponent} from './pay/pay.component';
 import {RatesComponent} from './rates/rates.component';
+
+import {TableModule} from './shared/table';
 
 // Application wide providers
 const APP_PROVIDERS = [
@@ -115,9 +118,11 @@ type StoreType = {
     HttpModule,
     JsonpModule,
     RouterModule.forRoot(ROUTES, { useHash: true, preloadingStrategy: PreloadAllModules }),
-    DataTableModule,
     DropdownModule.forRoot(),
-    CollapseModule.forRoot()
+    CollapseModule.forRoot(),
+    PaginationModule.forRoot(),
+    ModalModule.forRoot(),
+    TableModule,
   ],
   providers: [ // expose our Services and Providers into Angular's dependency injection
     ENV_PROVIDERS,
