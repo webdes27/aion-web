@@ -64,6 +64,7 @@ import {PassComponent} from './pass/pass.component';
 import {BonusComponent} from './bonus/bonus.component';
 import {PayComponent} from './pay/pay.component';
 import {RatesComponent} from './rates/rates.component';
+import {UserModule} from './users';
 
 import {TableModule} from './shared/table';
 
@@ -123,6 +124,7 @@ type StoreType = {
     PaginationModule.forRoot(),
     ModalModule.forRoot(),
     TableModule,
+    UserModule,
   ],
   providers: [ // expose our Services and Providers into Angular's dependency injection
     ENV_PROVIDERS,

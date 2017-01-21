@@ -26,7 +26,6 @@ export const ROUTES: Routes = [
   { path: 'about', component: AboutComponent },
   //{ path: 'detail', loadChildren: './+detail#DetailModule'},
   //{ path: 'barrel', loadChildren: './+barrel#BarrelModule'},
-
   {path: 'index', component: IndexComponent},
   {path: 'signup', component: SignupComponent},
   {path: 'players', component: PlayersComponent},
