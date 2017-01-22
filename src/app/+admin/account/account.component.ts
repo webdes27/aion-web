@@ -16,9 +16,9 @@ export class AccountComponent implements OnInit {
 
   @ViewChild('childModal') public childModal:ModalDirective;  
 
-  items:Item[];
-  item:Item = new PrimeItem();
-  selectedItem:Item;
+  items:any[];
+  item:any = new PrimeItem();
+  selectedItem:any;
   newItem:boolean;
   errorMessage:string;
   onDetailView: boolean = false;
@@ -28,23 +28,21 @@ export class AccountComponent implements OnInit {
   public currentPage: number = 1;
 
   public columns:Array<any> = [
-    {title: 'Id', name: 'id', sort: '', filtering: {filterString: ''}},
-    {title: 'Name', name: 'name', sort: '', filtering: {filterString: ''}},
-    {title: 'Activated', name: 'activated', sort: '', filtering: {filterString: ''}},
-    {title: 'Access_level', name: 'access_level', sort: '', filtering: {filterString: ''}},
-    {title: 'Membership', name: 'membership', sort: '', filtering: {filterString: ''}},
+    {title: 'Id', name: 'id', sortable: true, filtering: {filterString: ''}},
+    {title: 'Name', name: 'name', sortable: true, filtering: {filterString: ''}},
+    {title: 'Activated', name: 'activated', sortable: true, filtering: {filterString: ''}},
+    {title: 'Access_level', name: 'access_level', sortable: true, filtering: {filterString: ''}},
+    {title: 'Membership', name: 'membership', sortable: true, filtering: {filterString: ''}},
   ];
 
-  public config:any = {
-    sorting: {columns: this.columns},
-    filtering: {filterString: ''}
-  };
   public filters: {[s: string]: any;} = {};
   public sortField:string;
   public sortOrder:number;
+  public filterTimeout: any;
+  public filterDelay: number = 300;
 
-  constructor(private service:CrudService, private loadingService:LoadingService, @Inject(APP_CONFIG) private settings:Config) {
-  	service.url = this.settings.apiAccount;
+  constructor(private service:CrudService, private loadingService:LoadingService, @Inject(APP_CONFIG) private config:Config) {
+  	service.url = this.config.apiAccount;
   }
 
   getItems() {
@@ -120,12 +118,12 @@ export class AccountComponent implements OnInit {
     this.childModal.hide();
   }
 
-  onRowSelect(item:Item) {
+  onRowSelect(item:any) {
     this.newItem = false;
     this.item = this.cloneItem(item);
   }
 
-  cloneItem(item:Item):Item {
+  cloneItem(item:any) {
     let clone = new PrimeItem();
     for (let prop in item) {
       clone[prop] = item[prop];
@@ -146,18 +144,18 @@ export class AccountComponent implements OnInit {
     this.childModal.show();
   }
 
-  updateItem(item:Item) {
+  updateItem(item:any) {
     this.newItem = false;
     this.item = this.cloneItem(item);
     this.childModal.show();
   }
 
-  deleteItem(item:Item) {
+  deleteItem(item:any) {
     this.item = this.cloneItem(item);
     this.delete();
   }
 
-  viewDetails(item:Item) {
+  viewDetails(item:any) {
     this.item = this.cloneItem(item);
     this.onDetailView = true;
   }
@@ -166,39 +164,28 @@ export class AccountComponent implements OnInit {
     this.onDetailView = false;
   }
 
-  public onChangeTable(config:any):any {
-    let sort:string;
+	onFilterInputClick(event) {
+	    event.stopPropagation();
+	}
 
-    if(config.sort !== undefined) {
-      this.sortField = config.name;
-      this.sortOrder = (config.sort === 'desc') ? -1 : (config.sort === 'asc') ? 1 : 0;
-      sort = config.sort;
+    onFilterKeyup(value, field, matchMode) {
+        if(this.filterTimeout) {
+            clearTimeout(this.filterTimeout);
+        }
+
+        this.filterTimeout = setTimeout(() => {
+            this.filter(value, field, matchMode);
+            this.filterTimeout = null;            
+        }, this.filterDelay);
     }
-
-    if (config.filtering) {
-      Object.assign(this.config.filtering, config.filtering);
-    }
-
-    if (config.sorting) {
-      Object.assign(this.config.sorting, config.sorting);
-    }
-
-    this.columns.forEach((column:any) => {
-      this.filter(column.filtering.filterString, column.name, '');
-      column.sort = '';
-      if(column.name === this.sortField) {
-        column.sort = sort;
-      }
-    });
-
-    this.getItems();
-  }
 
     filter(value, field, matchMode) {
         if(!this.isFilterBlank(value))
             this.filters[field] = {value: value, matchMode: matchMode};
         else if(this.filters[field])
             delete this.filters[field];
+
+        this.getItems();
     }
     
     isFilterBlank(filter: any): boolean {
@@ -209,6 +196,20 @@ export class AccountComponent implements OnInit {
                 return false;
         } 
         return true;
+    }
+
+	sort(event, column: any) {
+        this.sortOrder = (this.sortField === column.name) ? this.sortOrder * -1 : 1;
+        this.sortField = column.name;
+        this.getItems();
+	}
+
+    getSortOrder(column: any) {
+        let order = 0;
+        if(this.sortField && this.sortField === column.name) {
+            order = this.sortOrder;
+        }
+        return order;
     }
 
   public hideChildModal():void {

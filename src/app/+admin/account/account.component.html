@@ -1,39 +1,37 @@
 <h1 class="page-header">Аккаунты</h1>
 <div class="alert alert-danger" role="alert" *ngIf="errorMessage">{{errorMessage}}</div>
-
 <div class="grid-view" *ngIf="!onDetailView">
-<p>
-    <button type="button" class="btn btn-primary" (click)="createItem()"><i class="fa fa-plus"></i> Добавить</button>
-</p>
-<table class="table table-hover table table-bordered m-grid" *ngIf="!onDetailView">
-    <thead>
-        <tr>
-            <th *ngFor="let column of columns" [ngTableSorting]="config" [column]="column" (sortChanged)="onChangeTable($event)">
-                {{column.title}}
-                <i *ngIf="config && column.sort" class="pull-right fa" [ngClass]="{'fa-chevron-down': column.sort === 'desc', 'fa-chevron-up': column.sort === 'asc'}"></i>
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-        <tr>
-            <td *ngFor="let column of columns">
-                <input *ngIf="column.filtering" [ngTableFiltering]="column.filtering" class="form-control" (tableChanged)="onChangeTable(config)" />
-            </td>
-            <td></td>
-        </tr>
-        <tr *ngFor="let item of items">
-            <td *ngFor="let column of columns">{{item[column.name]}}</td>
-            <td class="action-column">
-                <a (click)="viewDetails(item)" title="Просмотр" aria-label="Просмотр"><span class="glyphicon glyphicon-eye-open"></span></a>
-                <a (click)="updateItem(item)" title="Редактировать" aria-label="Редактировать"><span class="glyphicon glyphicon-pencil"></span></a>
-            </td>
-        </tr>
-    </tbody>
-</table>
-<pagination [boundaryLinks]="true" [totalItems]="totalItems" [itemsPerPage]="itemsPerPage" [(ngModel)]="currentPage" previousText="&lsaquo;" nextText="&rsaquo;" firstText="&laquo;" lastText="&raquo;" (pageChanged)="pageChanged($event)"></pagination>
+    <p>
+        <button type="button" class="btn btn-primary" (click)="createItem()"><i class="fa fa-plus"></i> Добавить</button>
+    </p>
+    <table class="table table-hover table table-bordered m-grid" *ngIf="!onDetailView">
+        <thead>
+            <tr>
+                <th *ngFor="let column of columns" (click)="sort($event,column)">
+                    {{column.title}}
+                    <i *ngIf="column.sortable" class="pull-right fa" [ngClass]="{'fa-chevron-down': (getSortOrder(column) == -1), 'fa-chevron-up': (getSortOrder(column) == 1)}"></i>
+                </th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td *ngFor="let column of columns">
+                    <input type="text" class="form-control m-grid-filter" [attr.placeholder]="column.name" *ngIf="column.filtering" [value]="filters[column.name] ? filters[column.name].value : ''" (click)="onFilterInputClick($event)" (keyup)="onFilterKeyup($event.target.value, column.name, column.filterMatchMode)" />
+                </td>
+                <td></td>
+            </tr>
+            <tr *ngFor="let item of items">
+                <td *ngFor="let column of columns">{{item[column.name]}}</td>
+                <td class="action-column">
+                    <a (click)="viewDetails(item)" title="Просмотр" aria-label="Просмотр"><span class="glyphicon glyphicon-eye-open"></span></a>
+                    <a (click)="updateItem(item)" title="Редактировать" aria-label="Редактировать"><span class="glyphicon glyphicon-pencil"></span></a>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <pagination [boundaryLinks]="true" [totalItems]="totalItems" [itemsPerPage]="itemsPerPage" [(ngModel)]="currentPage" previousText="&lsaquo;" nextText="&rsaquo;" firstText="&laquo;" lastText="&raquo;" (pageChanged)="pageChanged($event)"></pagination>
 </div>
-
 <div bsModal #childModal="bs-modal" [config]="{backdrop: 'static'}" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
@@ -59,7 +57,6 @@
         </div>
     </div>
 </div>
-
 <div class="detail-view" *ngIf="onDetailView && item">
     <p>
         <a class="btn btn-warning" (click)="updateItem(item)" title="Редактировать" aria-label="Редактировать"><span class="glyphicon glyphicon-pencil"></span></a>
