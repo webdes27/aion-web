@@ -1,10 +1,6 @@
 import { NgModule } from '@angular/core';
-import { CommonModule } from "@angular/common";
-import { FormsModule } from '@angular/forms';
 
-import {TableModule} from '../shared/table';
-import { PaginationModule } from 'ng2-bootstrap/pagination';
-import { ModalModule } from 'ng2-bootstrap/modal';
+import { CrudTableModule } from '../shared/crud-table';
 
 import {AdminRoutingModule} from './admin.routing';
 import {AdminComponent}   from './admin.component';
@@ -15,12 +11,8 @@ import {TransactionsComponent} from './transactions/transactions.component';
 
 @NgModule({
   imports: [
-  	CommonModule,
-    FormsModule,
     AdminRoutingModule,
-    TableModule,
-    PaginationModule.forRoot(),
-    ModalModule.forRoot(),
+    CrudTableModule
   ],
   exports: [],
   declarations: [

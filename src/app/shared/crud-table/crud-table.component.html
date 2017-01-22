@@ -1,10 +1,9 @@
-<h1 class="page-header">Аккаунты</h1>
 <div class="alert alert-danger" role="alert" *ngIf="errorMessage">{{errorMessage}}</div>
 <div class="grid-view" *ngIf="!onDetailView">
     <p>
         <button type="button" class="btn btn-primary" (click)="createItem()"><i class="fa fa-plus"></i> Добавить</button>
     </p>
-    <table class="table table-hover table table-bordered m-grid" *ngIf="!onDetailView">
+    <table class="table table-hover table table-bordered crud-table" *ngIf="!onDetailView">
         <thead>
             <tr>
                 <th *ngFor="let column of columns" (click)="sort($event,column)">
@@ -17,7 +16,7 @@
         <tbody>
             <tr>
                 <td *ngFor="let column of columns">
-                    <input type="text" class="form-control m-grid-filter" [attr.placeholder]="column.name" *ngIf="column.filtering" [value]="filters[column.name] ? filters[column.name].value : ''" (click)="onFilterInputClick($event)" (keyup)="onFilterKeyup($event.target.value, column.name, column.filterMatchMode)" />
+                    <input type="text" class="form-control" [attr.placeholder]="column.name" *ngIf="column.filter" [value]="filters[column.name] ? filters[column.name].value : ''" (click)="onFilterInputClick($event)" (keyup)="onFilterKeyup($event.target.value, column.name, column.filterMatchMode)" />
                 </td>
                 <td></td>
             </tr>
