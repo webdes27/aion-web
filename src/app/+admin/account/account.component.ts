@@ -1,14 +1,15 @@
-import {Component, OnInit, ViewChild}  from '@angular/core';
+import {Component, OnInit, ViewChild, Inject}  from '@angular/core';
 import { ModalDirective } from 'ng2-bootstrap';
 
 import {Item, PrimeItem} from './account';
-import {AccountService} from './account.service';
 import {LoadingService} from '../../services/loading';
+import {CrudService} from '../../services/crud/crud.service';
+import {Config, APP_CONFIG} from '../../app.config';
 
 @Component({
   selector: 'my-app',
   templateUrl: './account.component.html',
-  providers: [AccountService]
+  providers: [CrudService]
 })
 
 export class AccountComponent implements OnInit {
@@ -20,6 +21,7 @@ export class AccountComponent implements OnInit {
   selectedItem:Item;
   newItem:boolean;
   errorMessage:string;
+  onDetailView: boolean = false;
 
   public itemsPerPage: number = 10;
   public totalItems: number = 0;
@@ -41,7 +43,8 @@ export class AccountComponent implements OnInit {
   public sortField:string;
   public sortOrder:number;
 
-  constructor(private service:AccountService, private loadingService:LoadingService) {
+  constructor(private service:CrudService, private loadingService:LoadingService, @Inject(APP_CONFIG) private settings:Config) {
+  	service.url = this.settings.apiAccount;
   }
 
   getItems() {
@@ -108,6 +111,7 @@ export class AccountComponent implements OnInit {
         this.loadingService.hide();
         this.items.splice(this.findSelectedItemIndex(), 1);
         this.item = null;
+        this.onDetailView = false;
       })
       .catch(error => {
         this.loadingService.hide();
@@ -142,10 +146,6 @@ export class AccountComponent implements OnInit {
     this.childModal.show();
   }
 
-  viewDetails(item:Item) {
-    this.childModal.show();
-  }
-
   updateItem(item:Item) {
     this.newItem = false;
     this.item = this.cloneItem(item);
@@ -155,6 +155,15 @@ export class AccountComponent implements OnInit {
   deleteItem(item:Item) {
     this.item = this.cloneItem(item);
     this.delete();
+  }
+
+  viewDetails(item:Item) {
+    this.item = this.cloneItem(item);
+    this.onDetailView = true;
+  }
+
+  closeDetails() {
+    this.onDetailView = false;
   }
 
   public onChangeTable(config:any):any {
@@ -208,6 +217,10 @@ export class AccountComponent implements OnInit {
 
   public modalTitle() {
     return (this.newItem) ? 'Добавить' : 'Редактировать';
+  }
+
+  public elemEnabled(name: string) : boolean {
+    return (name === 'id') ? false : true;
   }
 
 }

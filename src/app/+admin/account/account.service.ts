@@ -12,6 +12,5 @@ export class AccountService extends CrudService {
   }
 
   url = this.config.apiAccount;
-;
 
 }

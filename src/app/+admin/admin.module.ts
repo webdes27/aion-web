@@ -9,7 +9,6 @@ import { ModalModule } from 'ng2-bootstrap/modal';
 import {AdminRoutingModule} from './admin.routing';
 import {AdminComponent}   from './admin.component';
 import {AccountComponent} from './account/account.component';
-import {AccountDetailComponent} from './account/account-detail.component';
 import {PayBalanceComponent} from './balances/balances.component';
 import {ShopComponent} from './shop/shop.component';
 import {TransactionsComponent} from './transactions/transactions.component';
@@ -27,7 +26,6 @@ import {TransactionsComponent} from './transactions/transactions.component';
   declarations: [
     AdminComponent,
     AccountComponent,
-    AccountDetailComponent,
     PayBalanceComponent,
     ShopComponent,
     TransactionsComponent,
