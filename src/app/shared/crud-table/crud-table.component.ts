@@ -1,7 +1,6 @@
 import { Component, OnInit, ViewChild, Input }  from '@angular/core';
 import { ModalDirective } from 'ng2-bootstrap';
 
-import { LoadingService } from '../../services/loading';
 import { CrudService } from './crud.service';
 
 @Component({
@@ -25,6 +24,8 @@ export class CrudTableComponent implements OnInit {
   errorMessage: string;
   onDetailView: boolean = false;
 
+  public loading: boolean = false;
+
   public itemsPerPage: number = 10;
   public totalItems: number = 0;
   public currentPage: number = 1;
@@ -35,21 +36,29 @@ export class CrudTableComponent implements OnInit {
   public filterTimeout: any;
   public filterDelay: number = 300;
 
-  constructor(private service:CrudService, private loadingService:LoadingService) {
+  constructor(private service:CrudService) {
+  }
+
+  loadingShow() {
+    this.loading = true;
+  }
+
+  loadingHide() {
+   this.loading = false; 
   }
 
   getItems() {
-    this.loadingService.show();
+    this.loadingShow();
     this.errorMessage = null;
     this.service.getItems(this.currentPage, this.filters, this.sortField, this.sortOrder)
       .then(data => {
-        this.loadingService.hide();
+        this.loadingHide();
         this.items = data.items;
         this.totalItems = data._meta.totalCount;
         this.itemsPerPage = data._meta.perPage;
       })
       .catch(error => {
-        this.loadingService.hide();
+        this.loadingHide();
         this.errorMessage = error;
       });
   }
@@ -65,29 +74,29 @@ export class CrudTableComponent implements OnInit {
   }
 
   save() {
-    this.loadingService.show();
+    this.loadingShow();
     this.errorMessage = null;
     if (this.newItem) {
       this.service
         .post(this.item)
         .then(item => {
-          this.loadingService.hide();
+          this.loadingHide();
           this.item = item;
           this.items.push(this.item);
         })
         .catch(error => {
-          this.loadingService.hide();
+          this.loadingHide();
           this.errorMessage = error;
         });
     } else {
       this.service
         .put(this.item)
         .then(item => {
-          this.loadingService.hide();
+          this.loadingHide();
           this.items[this.findSelectedItemIndex()] = item;
         })
         .catch(error => {
-          this.loadingService.hide();
+          this.loadingHide();
           this.errorMessage = error;
         });
     }
@@ -95,18 +104,18 @@ export class CrudTableComponent implements OnInit {
   }
 
   delete() {
-    this.loadingService.show();
+    this.loadingShow();
     this.errorMessage = null;
     this.service
       .delete(this.item)
       .then(res => {
-        this.loadingService.hide();
+        this.loadingHide();
         this.items.splice(this.findSelectedItemIndex(), 1);
         this.item = null;
         this.onDetailView = false;
       })
       .catch(error => {
-        this.loadingService.hide();
+        this.loadingHide();
         this.errorMessage = error;
       });
     this.childModal.hide();

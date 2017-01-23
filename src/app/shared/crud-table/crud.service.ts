@@ -1,22 +1,30 @@
 import { Injectable } from '@angular/core';
-import { Http, Response, URLSearchParams } from '@angular/http';
+import { Http, Response, URLSearchParams, Headers } from '@angular/http';
 import 'rxjs/add/operator/toPromise';
-import { RequestService } from '../../services/request/request.service';
 
 @Injectable()
 export class CrudService {
 
   public url;
-  private http:Http;
-  private request:RequestService;
 
-  constructor(http:Http, request:RequestService) {
-    this.http = http;
-    this.request = request;
+  constructor(private http:Http) {
+  }
+
+  getJsonHeaders() {
+    let headers = new Headers();
+    headers.append('Content-Type', 'application/json');
+    return headers;
+  }
+
+  getAuthHeaders() {
+    let headers = this.getJsonHeaders();
+    let authToken = localStorage.getItem('auth_token');
+    headers.append('Authorization', `Bearer ${authToken}`);
+    return headers;
   }
 
   getItems(page:number = 1, filters?:{[s:string]:any;}, sortField?:string, sortOrder?:number):Promise<any> {
-    let headers = this.request.getAuthHeaders();
+    let headers = this.getAuthHeaders();
     let url = this.url + "?page=" + page + this.urlEncode(filters) + this.urlSort(sortField, sortOrder)
     //console.log(url);
     return this.http.get(url, {headers: headers})
@@ -41,7 +49,7 @@ export class CrudService {
   }
 
   delete(item:any) {
-    let headers = this.request.getAuthHeaders();
+    let headers = this.getAuthHeaders();
     ;
     let url = `${this.url}/${item.id}`;
     return this.http
@@ -52,7 +60,7 @@ export class CrudService {
 
   // Add new
   post(item:any):Promise<any> {
-    let headers = this.request.getAuthHeaders();
+    let headers = this.getAuthHeaders();
     ;
     return this.http
       .post(this.url, JSON.stringify(item), {headers: headers})
@@ -63,7 +71,7 @@ export class CrudService {
 
   // Update existing
   put(item:any) {
-    let headers = this.request.getAuthHeaders();
+    let headers = this.getAuthHeaders();
     ;
     let url = `${this.url}/${item.id}`;
     return this.http

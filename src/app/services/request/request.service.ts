@@ -6,12 +6,12 @@ import {StorageService} from '../storage/storage.service';
 @Injectable()
 export class RequestService {
 
-  constructor(private _storage:StorageService) {
+  constructor(private storage:StorageService) {
   }
 
   getAuthHeaders() {
     let headers = this.getJsonHeaders();
-    let authToken = this._storage.getAuthToken();
+    let authToken = this.storage.getAuthToken();
 
     headers.append('Authorization', `Bearer ${authToken}`);
     return headers;

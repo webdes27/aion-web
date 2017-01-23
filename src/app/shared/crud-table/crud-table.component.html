@@ -1,9 +1,11 @@
-<div class="alert alert-danger" role="alert" *ngIf="errorMessage">{{errorMessage}}</div>
+<div class="alert alert-danger" role="alert" *ngIf="errorMessage">
+    {{errorMessage}}</div>
 <div class="grid-view" *ngIf="!onDetailView">
     <p>
         <button type="button" class="btn btn-primary" (click)="createItem()"><i class="fa fa-plus"></i> Добавить</button>
     </p>
-    <table class="table table-hover table table-bordered crud-table" *ngIf="!onDetailView">
+    <div class="loader" [style.visibility]="(!loading) ? 'hidden' : 'visible' "></div>
+    <table class="table table-hover table-bordered crud-table" *ngIf="!onDetailView">
         <thead>
             <tr>
                 <th *ngFor="let column of columns" (click)="sort($event,column)">
