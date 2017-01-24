@@ -26,7 +26,6 @@ export class CrudService {
   getItems(page:number = 1, filters?:{[s:string]:any;}, sortField?:string, sortOrder?:number):Promise<any> {
     let headers = this.getAuthHeaders();
     let url = this.url + "?page=" + page + this.urlEncode(filters) + this.urlSort(sortField, sortOrder)
-    //console.log(url);
     return this.http.get(url, {headers: headers})
       .toPromise()
       .then(this.extractData)
@@ -86,15 +85,24 @@ export class CrudService {
     return body;
   }
 
-  private handleError(error:any) {
-    let errMsg = 'An error occurred. ';
-    let messages = error.json();
-    errMsg += (error.message) ? error.message : error.status ? `${error.status} - ${error.statusText}` : 'Server error';
-    if (messages) {
-      errMsg += ' ' + JSON.stringify(messages);
+  private handleError(response: Response | any) {
+    let errMsg: string;
+    let errors : any;
+    let fieldErrors: any;
+    if (response instanceof Response) {
+      const body = response.json() || '';
+      const err = body.error || JSON.stringify(body);
+      errMsg = `${response.status} - ${response.statusText || ''} ${err}`;
+    } else {
+      errMsg = response.message ? response.message : response.toString();
     }
-    console.error('An error occurred', error);
-    return Promise.reject(errMsg);
+
+    if (response.status === 422) {
+      fieldErrors = response.json();
+    }
+    errors = {'errMsg': errMsg, 'fieldErrors': fieldErrors};
+    console.error(response);
+    return Promise.reject(errors);
   }
 
   private urlEncode(obj:{[s:string]:any;}):string {

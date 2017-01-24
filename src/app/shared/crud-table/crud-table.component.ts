@@ -21,7 +21,7 @@ export class CrudTableComponent implements OnInit {
   item: any;
   selectedItem: any;
   newItem: boolean;
-  errorMessage: string;
+  errors: any;
   onDetailView: boolean = false;
 
   public loading: boolean = false;
@@ -49,7 +49,7 @@ export class CrudTableComponent implements OnInit {
 
   getItems() {
     this.loadingShow();
-    this.errorMessage = null;
+    this.errors = null;
     this.service.getItems(this.currentPage, this.filters, this.sortField, this.sortOrder)
       .then(data => {
         this.loadingHide();
@@ -59,7 +59,7 @@ export class CrudTableComponent implements OnInit {
       })
       .catch(error => {
         this.loadingHide();
-        this.errorMessage = error;
+        this.errors = error;
       });
   }
 
@@ -75,7 +75,7 @@ export class CrudTableComponent implements OnInit {
 
   save() {
     this.loadingShow();
-    this.errorMessage = null;
+    this.errors = null;
     if (this.newItem) {
       this.service
         .post(this.item)
@@ -86,7 +86,7 @@ export class CrudTableComponent implements OnInit {
         })
         .catch(error => {
           this.loadingHide();
-          this.errorMessage = error;
+          this.errors = error;
         });
     } else {
       this.service
@@ -97,7 +97,7 @@ export class CrudTableComponent implements OnInit {
         })
         .catch(error => {
           this.loadingHide();
-          this.errorMessage = error;
+          this.errors = error;
         });
     }
     this.childModal.hide();
@@ -105,7 +105,7 @@ export class CrudTableComponent implements OnInit {
 
   delete() {
     this.loadingShow();
-    this.errorMessage = null;
+    this.errors = null;
     this.service
       .delete(this.item)
       .then(res => {
@@ -116,7 +116,7 @@ export class CrudTableComponent implements OnInit {
       })
       .catch(error => {
         this.loadingHide();
-        this.errorMessage = error;
+        this.errors = error;
       });
     this.childModal.hide();
   }
@@ -156,6 +156,7 @@ export class CrudTableComponent implements OnInit {
   }
 
   viewDetails(item:any) {
+    this.errors = null;
     this.item = this.cloneItem(item);
     this.onDetailView = true;
   }
