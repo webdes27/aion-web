@@ -28,11 +28,30 @@ import { Component, Output, EventEmitter, Input } from "@angular/core";
 export class PaginationComponent {
 
     protected _currentPage: number = 1;
-
-    @Input() public itemsPerPage: number = 10;
-    @Input() public totalItems: number = 0;
+    protected _itemsPerPage: number = 10;
+    protected _totalItems: number = 0;
 
     @Output() pageChanged = new EventEmitter();
+
+    @Input()
+    public get itemsPerPage(): number {
+        return this._itemsPerPage;
+    }
+
+    public set itemsPerPage(value: number) {
+        this._itemsPerPage = value;
+        this.setPage(this.currentPage);
+    }
+
+    @Input()
+    public get totalItems(): number {
+        return this._totalItems;
+    }
+
+    public set totalItems(value: number) {
+        this._totalItems = value;
+        this.setPage(this.currentPage);
+    }
 
     @Input()
     public get currentPage(): number {
