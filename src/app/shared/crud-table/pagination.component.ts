@@ -78,12 +78,6 @@ export class PaginationComponent {
             let target: any = event.target;
             target.blur();
         }
-        if (page < 1 || page > this.calculateTotalPages()) {
-            return;
-        }
-        if ((this.currentPage === 1 && page === 1) || (this.currentPage === this.calculateTotalPages() && page === this.calculateTotalPages())) {
-            return;
-        }
         this.currentPage = page;
     }
 
