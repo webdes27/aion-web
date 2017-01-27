@@ -65,8 +65,7 @@ import {BonusComponent} from './bonus/bonus.component';
 import {PayComponent} from './pay/pay.component';
 import {RatesComponent} from './rates/rates.component';
 import {UserModule} from './users';
-
-import {TableModule} from './shared/table';
+import {CrudTableModule} from './shared/crud-table';
 
 // Application wide providers
 const APP_PROVIDERS = [
@@ -123,8 +122,8 @@ type StoreType = {
     CollapseModule.forRoot(),
     PaginationModule.forRoot(),
     ModalModule.forRoot(),
-    TableModule,
     UserModule,
+    CrudTableModule
   ],
   providers: [ // expose our Services and Providers into Angular's dependency injection
     ENV_PROVIDERS,

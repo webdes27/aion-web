@@ -31,8 +31,10 @@
             </tr>
         </tbody>
     </table>
-    <pagination [boundaryLinks]="true" [totalItems]="totalItems" [itemsPerPage]="itemsPerPage" [(ngModel)]="currentPage" previousText="&lsaquo;" nextText="&rsaquo;" firstText="&laquo;" lastText="&raquo;" (pageChanged)="pageChanged($event)"></pagination>
+    <pagination [totalItems]="totalItems" [itemsPerPage]="itemsPerPage" [(currentPage)]="currentPage" (pageChanged)="pageChanged($event)"></pagination>
+
 </div>
+
 <div bsModal #childModal="bs-modal" [config]="{backdrop: 'static'}" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
