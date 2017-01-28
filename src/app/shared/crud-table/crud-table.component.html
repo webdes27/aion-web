@@ -75,3 +75,23 @@
         </tbody>
     </table>
 </div>
+
+
+<button type="button" (click)="modal.show()">test</button>
+
+  <div (click)="hide()" class="modal fade" tabindex="-1" [ngClass]="{'in': visibleAnimate}"
+       [ngStyle]="{'display': visible ? 'block' : 'none', 'opacity': visibleAnimate ? 1 : 0}">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="app-modal-header">
+          header
+        </div>
+        <div class="app-modal-body">
+          Whatever content you like, form fields, anything
+        </div>
+        <div class="app-modal-footer">
+          <button type="button" class="btn btn-default" (click)="modal.hide()">Close</button>
+          <button type="button" class="btn btn-primary">Save changes</button>
+        </div>
+      </div>
+    </div>
