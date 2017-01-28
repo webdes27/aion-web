@@ -4,8 +4,7 @@ import {Config, APP_CONFIG} from '../../app.config';
 
 @Component({
   selector: 'my-app',
-  template: `<h1 class="page-header">Магазин</h1>
-             <crud-table [api]="api" [columns]="columns"></crud-table>`
+  template: `<crud-table [api]="api" [columns]="columns" [settings]="settings"></crud-table>`
 })
 
 export class ShopComponent implements OnInit {
@@ -20,6 +19,10 @@ export class ShopComponent implements OnInit {
     {title: 'Price', name: 'price', sortable: true, filter: true},
     {title: 'Status', name: 'status', sortable: true, filter: true},
   ];
+  public settings:any = {
+    crud: true,
+    pageHeader: 'Магазин',
+  };
 
   constructor(@Inject(APP_CONFIG) private config:Config) {
   }

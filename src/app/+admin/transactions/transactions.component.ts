@@ -4,8 +4,7 @@ import {Config, APP_CONFIG} from '../../app.config';
 
 @Component({
   selector: 'my-app',
-  template: `<h1 class="page-header">Транзакции</h1>
-             <crud-table [api]="api" [columns]="columns"></crud-table>`
+  template: `<crud-table [api]="api" [columns]="columns" [settings]="settings"></crud-table>`
 })
 
 export class TransactionsComponent implements OnInit {
@@ -23,6 +22,10 @@ export class TransactionsComponent implements OnInit {
     {title: 'Price_final', name: 'price_final', sortable: true, filter: true},
     {title: 'Trans_date', name: 'trans_date', sortable: true, filter: true},
   ];
+  public settings:any = {
+    crud: true,
+    pageHeader: 'Транзакции',
+  };
 
   constructor(@Inject(APP_CONFIG) private config:Config) {
   }

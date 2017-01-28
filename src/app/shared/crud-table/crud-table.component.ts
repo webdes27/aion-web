@@ -15,7 +15,8 @@ export class CrudTableComponent implements OnInit {
     @ViewChild('childModal') public childModal: ModalDirective;
 
     @Input() public api: string;
-    @Input() public columns: Array < any > ;
+    @Input() public columns: Array <any>;
+    @Input() public settings: Array <any>;
 
     items: any[];
     item: any;
