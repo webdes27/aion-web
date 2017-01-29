@@ -42,7 +42,7 @@
     </div>
 </div>
 
-<div bsModal #childModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+<app-modal #childModal>
     <div class="modal-dialog modal-lg" *ngIf="userSchedulesLoaded">
         <div class="modal-content">
             <div class="modal-header">
@@ -75,4 +75,4 @@
             </div>
         </div>
     </div>
-</div>
+</app-modal>

@@ -9,7 +9,7 @@ import { IUser } from './user';
 import { UserService } from './user.service';
 import { ItemsService } from './items.service';
 
-import { ModalDirective } from 'ng2-bootstrap';
+import { ModalComponent } from './modal.component';
 
 @Component({
     selector: 'user-card',
@@ -34,7 +34,9 @@ import { ModalDirective } from 'ng2-bootstrap';
     ]
 })
 export class UserCardComponent implements OnInit {
-    @ViewChild('childModal') public childModal: ModalDirective;
+    @ViewChild('childModal')
+    public readonly childModal: ModalComponent;
+
     @Input() user: IUser;
     @Output() removeUser = new EventEmitter();
     @Output() userCreated = new EventEmitter();

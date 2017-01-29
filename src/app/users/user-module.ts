@@ -5,7 +5,7 @@ import { RouterModule } from '@angular/router';
 
 import { routes } from './user.routes';
 
-import { ModalModule } from 'ng2-bootstrap/modal';
+import { ModalComponent } from './modal.component';
 
 import { UserListComponent } from './user-list.component';
 import { UserCardComponent } from './user-card.component';
@@ -17,9 +17,8 @@ import { ItemsService } from './items.service';
   	CommonModule,
     FormsModule,
     RouterModule.forChild(routes),
-    ModalModule.forRoot(),
   ],
-  declarations: [UserListComponent, UserCardComponent],
+  declarations: [UserListComponent, UserCardComponent, ModalComponent],
   exports: [UserCardComponent, UserCardComponent],
   providers: [UserService, ItemsService]
 })

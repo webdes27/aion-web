@@ -29,14 +29,13 @@ import { AboutComponent } from './about';
 import { NoContentComponent } from './no-content';
 import { XLargeDirective } from './home/x-large';
 
-import { DropdownModule } from 'ng2-bootstrap/dropdown';
-import { CollapseModule } from 'ng2-bootstrap/collapse';
-
 import {UserService} from './services/user/user.service';
 import {StorageService} from './services/storage/storage.service';
 import {RequestService} from './services/request/request.service';
 import {CONFIG, Config, APP_CONFIG} from './app.config';
 import {LoadingService} from './services/loading';
+import {CollapseDirective} from './shared/directives/collapse.directive';
+import {DropdownDirective} from './shared/directives/dropdown.directive';
 
 import {LoadingIndicator} from './services/loading';
 import {StatComponent} from './stat/stat.component';
@@ -105,6 +104,8 @@ type StoreType = {
     BonusComponent,
     PayComponent,
     RatesComponent,
+    CollapseDirective,
+    DropdownDirective,
   ],
   imports: [ // import Angular's modules
     BrowserModule,
@@ -113,8 +114,6 @@ type StoreType = {
     HttpModule,
     JsonpModule,
     RouterModule.forRoot(ROUTES, { useHash: true, preloadingStrategy: PreloadAllModules }),
-    DropdownModule.forRoot(),
-    CollapseModule.forRoot(),
     UserModule,
     CrudTableModule
   ],
