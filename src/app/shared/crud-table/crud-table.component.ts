@@ -1,7 +1,7 @@
 import { Component, OnInit, ViewChild, Input } from '@angular/core';
-import { ModalDirective } from 'ng2-bootstrap';
 
 import { CrudService } from './crud.service';
+import { ModalComponent } from './modal.component';
 
 @Component({
     selector: 'crud-table',
@@ -12,11 +12,12 @@ import { CrudService } from './crud.service';
 
 export class CrudTableComponent implements OnInit {
 
-    @ViewChild('childModal') public childModal: ModalDirective;
+    @ViewChild('childModal')
+    public readonly childModal: ModalComponent;
 
     @Input() public api: string;
-    @Input() public columns: Array <any>;
-    @Input() public settings: Array <any>;
+    @Input() public columns: Array < any > ;
+    @Input() public settings: Array < any > ;
 
     items: any[];
     item: any;
@@ -32,7 +33,8 @@ export class CrudTableComponent implements OnInit {
     public currentPage: number = 1;
 
     public filters: {
-        [s: string]: any; } = {};
+        [s: string]: any;
+    } = {};
     public sortField: string;
     public sortOrder: number;
     public filterTimeout: any;
@@ -217,10 +219,6 @@ export class CrudTableComponent implements OnInit {
         return order;
     }
 
-    public hideChildModal(): void {
-        this.childModal.hide();
-    }
-
     public modalTitle() {
         return (this.newItem) ? 'Добавить' : 'Редактировать';
     }
@@ -228,18 +226,5 @@ export class CrudTableComponent implements OnInit {
     public elemEnabled(name: string): boolean {
         return (name === 'id') ? false : true;
     }
-
-  public visible = false;
-  private visibleAnimate = false;
-
-  public show(): void {
-    this.visible = true;
-    setTimeout(() => this.visibleAnimate = true);
-  }
-
-  public hide(): void {
-    this.visibleAnimate = false;
-    setTimeout(() => this.visible = false, 300);
-  }
 
 }

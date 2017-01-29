@@ -33,34 +33,30 @@
         </tbody>
     </table>
     <pagination [totalItems]="totalItems" [itemsPerPage]="itemsPerPage" (pageChanged)="pageChanged($event)"></pagination>
-
 </div>
 
-<div bsModal #childModal="bs-modal" [config]="{backdrop: 'static'}" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h4 class="modal-title pull-left">{{modalTitle()}}</h4>
-                <button type="button" class="close pull-right" aria-label="Close" (click)="hideChildModal()">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                <div *ngIf="item">
-                    <div class="form-group" *ngFor="let column of columns">
-                        <label *ngIf="elemEnabled(column.name)" [attr.for]="column.name">{{column.title}}</label>
-                        <input *ngIf="elemEnabled(column.name)" class="form-control" type="text" [id]="column.name" [(ngModel)]="item[column.name]" />
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-danger pull-left" *ngIf="!newItem" (click)="delete()"><i class="fa fa-close"></i> Удалить</button>
-                    <button type="button" class="btn btn-success" (click)="save()"><i class="fa fa-check"></i> Сохранить</button>
-                    <button type="button" class="btn btn-primary" (click)="hideChildModal()"> <i class="fa fa-arrow-circle-left"></i> Закрыть</button>
-                </div>
+<app-modal #childModal>
+    <div class="app-modal-header">
+        <h4 class="modal-title pull-left">{{modalTitle()}}</h4>
+        <button type="button" class="close pull-right" aria-label="Close" (click)="childModal.hide()">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <div class="app-modal-body">
+        <div *ngIf="item">
+            <div class="form-group" *ngFor="let column of columns">
+                <label *ngIf="elemEnabled(column.name)" [attr.for]="column.name">{{column.title}}</label>
+                <input *ngIf="elemEnabled(column.name)" class="form-control" type="text" [id]="column.name" [(ngModel)]="item[column.name]" />
             </div>
         </div>
     </div>
-</div>
+    <div class="app-modal-footer">
+        <button type="button" class="btn btn-danger pull-left" *ngIf="!newItem" (click)="delete()"><i class="fa fa-close"></i> Удалить</button>
+        <button type="button" class="btn btn-success" (click)="save()"><i class="fa fa-check"></i> Сохранить</button>
+        <button type="button" class="btn btn-primary" (click)="childModal.hide()"> <i class="fa fa-arrow-circle-left"></i> Закрыть</button>
+    </div>
+</app-modal>
+
 <div class="detail-view" *ngIf="onDetailView && item">
     <p>
         <a *ngIf="settings.crud" class="btn btn-warning" (click)="updateItem(item)" title="Редактировать" aria-label="Редактировать"><span class="glyphicon glyphicon-pencil"></span></a>
@@ -75,23 +71,3 @@
         </tbody>
     </table>
 </div>
-
-
-<button type="button" (click)="modal.show()">test</button>
-
-  <div (click)="hide()" class="modal fade" tabindex="-1" [ngClass]="{'in': visibleAnimate}"
-       [ngStyle]="{'display': visible ? 'block' : 'none', 'opacity': visibleAnimate ? 1 : 0}">
-    <div class="modal-dialog">
-      <div class="modal-content">
-        <div class="app-modal-header">
-          header
-        </div>
-        <div class="app-modal-body">
-          Whatever content you like, form fields, anything
-        </div>
-        <div class="app-modal-footer">
-          <button type="button" class="btn btn-default" (click)="modal.hide()">Close</button>
-          <button type="button" class="btn btn-primary">Save changes</button>
-        </div>
-      </div>
-    </div>

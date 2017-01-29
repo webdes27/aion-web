@@ -29,13 +29,8 @@ import { AboutComponent } from './about';
 import { NoContentComponent } from './no-content';
 import { XLargeDirective } from './home/x-large';
 
-import '../styles/styles.scss';
-import '../styles/headings.css';
-
 import { DropdownModule } from 'ng2-bootstrap/dropdown';
 import { CollapseModule } from 'ng2-bootstrap/collapse';
-import { PaginationModule } from 'ng2-bootstrap/pagination';
-import { ModalModule } from 'ng2-bootstrap/modal';
 
 import {UserService} from './services/user/user.service';
 import {StorageService} from './services/storage/storage.service';
@@ -120,8 +115,6 @@ type StoreType = {
     RouterModule.forRoot(ROUTES, { useHash: true, preloadingStrategy: PreloadAllModules }),
     DropdownModule.forRoot(),
     CollapseModule.forRoot(),
-    PaginationModule.forRoot(),
-    ModalModule.forRoot(),
     UserModule,
     CrudTableModule
   ],

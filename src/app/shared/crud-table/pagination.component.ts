@@ -23,7 +23,8 @@ import { Component, Output, EventEmitter, Input } from "@angular/core";
     <li class="pagination-last page-item"
         [class.disabled]="currentPage===calculateTotalPages()">
       <a class="page-link" href (click)="setPage(calculateTotalPages(), $event)">&raquo;</a></li>
-  </ul>`
+  </ul>
+  `
 })
 export class PaginationComponent {
 

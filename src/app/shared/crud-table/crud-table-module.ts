@@ -2,20 +2,17 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 
-import { ModalModule } from 'ng2-bootstrap/modal';
-
 import { PaginationComponent } from './pagination.component';
-
+import { ModalComponent } from './modal.component';
 import { CrudTableComponent } from './crud-table.component';
 import { CrudService } from './crud.service';
 
 @NgModule({
   imports: [
   	CommonModule,
-    FormsModule,
-    ModalModule.forRoot()
+    FormsModule
   ],
-  declarations: [CrudTableComponent, PaginationComponent],
+  declarations: [CrudTableComponent, PaginationComponent, ModalComponent],
   exports: [CrudTableComponent],
   providers: [CrudService]
 })
