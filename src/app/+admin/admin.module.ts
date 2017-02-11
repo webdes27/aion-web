@@ -8,6 +8,7 @@ import {AccountComponent} from './account/account.component';
 import {PayBalanceComponent} from './balances/balances.component';
 import {ShopComponent} from './shop/shop.component';
 import {TransactionsComponent} from './transactions/transactions.component';
+import {PlayersComponent} from './players/players.component';
 
 @NgModule({
   imports: [
@@ -21,6 +22,7 @@ import {TransactionsComponent} from './transactions/transactions.component';
     PayBalanceComponent,
     ShopComponent,
     TransactionsComponent,
+    PlayersComponent,
   ],
   providers: [
   ],

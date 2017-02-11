@@ -23,6 +23,7 @@
                 <li [routerLinkActive]="['active']"><a [routerLink]="['/admin/balances']" *ngIf="isAdmin()">Балансы</a></li>
                 <li [routerLinkActive]="['active']"><a [routerLink]="['/admin/shop']" *ngIf="isAdmin()">Магазин</a></li>
                 <li [routerLinkActive]="['active']"><a [routerLink]="['/admin/transactions']" *ngIf="isAdmin()">Транзакции</a></li>
+                <li [routerLinkActive]="['active']"><a [routerLink]="['/admin/players']" *ngIf="isAdmin()">Персонажи</a></li>
                 <li [routerLinkActive]="['active']"><a [routerLink]="['/user']" *ngIf="isAdmin()">Пользователи</a></li>
               </ul>
             </li>
