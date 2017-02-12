@@ -1,7 +1,7 @@
-import {Component, Inject, ChangeDetectionStrategy} from '@angular/core';
+import {Component, ChangeDetectionStrategy} from '@angular/core';
 import {Router} from '@angular/router';
 import {UserService} from './../services/user/user.service';
-import {Config, APP_CONFIG} from './../app.config';
+import {CONFIG} from './../app.config';
 
 @Component({
   selector: 'top-menu',
@@ -11,10 +11,10 @@ import {Config, APP_CONFIG} from './../app.config';
 export class MenuComponent {
   public isCollapsed:boolean = true;
 
-  constructor(private userService:UserService, private router:Router, @Inject(APP_CONFIG) private config:Config) {
+  constructor(private userService:UserService, private router:Router) {
   }
 
-  title = this.config.title;
+  title = CONFIG.title;
 
   getLoggedIn() {
     return this.userService.getLoggedIn();

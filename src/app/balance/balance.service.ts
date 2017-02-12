@@ -1,17 +1,17 @@
-import {Injectable, Inject}     from '@angular/core';
+import {Injectable}     from '@angular/core';
 import {Http, Response} from '@angular/http';
 import {Balance}           from './balance';
 import {Observable}     from 'rxjs/Observable';
-import {Config, APP_CONFIG} from '../app.config';
+import {CONFIG} from '../app.config';
 import {RequestService} from '../services/request/request.service';
 
 @Injectable()
 export class BalanceService {
 
-  constructor(private http:Http, private requestService:RequestService, @Inject(APP_CONFIG) private config:Config) {
+  constructor(private http:Http, private requestService:RequestService) {
   }
 
-  private url = this.config.apiGetBalance;
+  private url = CONFIG.apiGetBalance;
 
   getData():Observable<Balance> {
     let headers = this.requestService.getAuthHeaders();

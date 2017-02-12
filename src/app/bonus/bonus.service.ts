@@ -1,17 +1,17 @@
-import {Injectable, Inject} from '@angular/core';
+import {Injectable} from '@angular/core';
 import {Http} from '@angular/http';
 import {RequestService} from '../services/request/request.service';
-import {Config, APP_CONFIG} from '../app.config';
+import {CONFIG} from '../app.config';
 import 'rxjs/add/operator/toPromise';
 
 @Injectable()
 export class BonusService {
 
-  constructor(private http:Http, private requestService:RequestService, @Inject(APP_CONFIG) private config:Config) {
+  constructor(private http:Http, private requestService:RequestService) {
   }
 
   getBonus(credentials) {
-    let url = this.config.apiBonus;
+    let url = CONFIG.apiBonus;
     let headers = this.requestService.getAuthHeaders();
     return this.http
       .post(url, JSON.stringify(credentials), {headers: headers})

@@ -1,15 +1,15 @@
-import {Injectable, Inject} from '@angular/core';
+import {Injectable} from '@angular/core';
 import {Http, Response} from '@angular/http';
 import {Observable} from 'rxjs/Observable';
-import {Config, APP_CONFIG} from '../app.config';
+import {CONFIG} from '../app.config';
 
 @Injectable()
 export class BaseService {
-  constructor(private http:Http, @Inject(APP_CONFIG) private config:Config) {
+  constructor(private http:Http) {
   }
 
   search(term:string) {
-    let url = this.config.apiGetData + '?type=' + term;
+    let url = CONFIG.apiGetData + '?type=' + term;
     return this.http
       .get(url)
       .map(this.extractData)

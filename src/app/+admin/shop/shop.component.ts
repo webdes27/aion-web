@@ -1,6 +1,6 @@
-import {Component, OnInit, Inject}  from '@angular/core';
+import {Component, OnInit}  from '@angular/core';
 
-import {Config, APP_CONFIG} from '../../app.config';
+import {CONFIG} from '../../app.config';
 
 @Component({
   selector: 'my-app',
@@ -24,11 +24,11 @@ export class ShopComponent implements OnInit {
     pageHeader: 'Магазин',
   };
 
-  constructor(@Inject(APP_CONFIG) private config:Config) {
+  constructor() {
   }
 
   ngOnInit() {
-    this.api = this.config.apiPayShop;
+    this.api = CONFIG.apiPayShop;
   }
 
 }

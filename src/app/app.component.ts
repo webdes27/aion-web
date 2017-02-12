@@ -1,5 +1,5 @@
-import {Component, Inject, OnInit, ViewEncapsulation} from '@angular/core';
-import {Config, APP_CONFIG} from './app.config';
+import {Component, OnInit, ViewEncapsulation} from '@angular/core';
+import {CONFIG} from './app.config';
 
 @Component({
   selector: 'app-root',
@@ -11,8 +11,8 @@ import {Config, APP_CONFIG} from './app.config';
 export class AppComponent {
   public name: string
 
-  constructor(@Inject(APP_CONFIG) private config:Config) {
-  	this.name = this.config.title;
+  constructor() {
+  	this.name = CONFIG.title;
   }
 
   ngOnInit() {

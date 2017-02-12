@@ -1,19 +1,19 @@
-import {Injectable, Inject} from '@angular/core';
+import {Injectable} from '@angular/core';
 import {Http} from '@angular/http';
 import {RequestService} from '../services/request/request.service';
-import {Config, APP_CONFIG} from '../app.config';
+import {CONFIG} from '../app.config';
 import 'rxjs/add/operator/toPromise';
 
 @Injectable()
 export class SignupService {
 
-  constructor(private _http:Http, private _requestService:RequestService, @Inject(APP_CONFIG) private _config:Config) {
+  constructor(private _http:Http, private _requestService:RequestService) {
   }
 
   signup(credentials) {
     let headers = this._requestService.getJsonHeaders();
     return this._http
-      .post(this._config.apiSignup, JSON.stringify(credentials), {headers: headers})
+      .post(CONFIG.apiSignup, JSON.stringify(credentials), {headers: headers})
       .toPromise()
       .then(res => res.json())
       .catch(this.handleError);

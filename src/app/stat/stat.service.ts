@@ -1,15 +1,15 @@
-import {Injectable, Inject}     from '@angular/core';
+import {Injectable}     from '@angular/core';
 import {Http, Response} from '@angular/http';
 import {Stat}           from './stat';
 import {Observable}     from 'rxjs/Observable';
-import {Config, APP_CONFIG} from '../app.config';
+import {CONFIG} from '../app.config';
 
 @Injectable()
 export class StatService {
-  constructor(private http:Http, @Inject(APP_CONFIG) private _config:Config) {
+  constructor(private http:Http) {
   }
 
-  private url = this._config.apiGetStat;
+  private url = CONFIG.apiGetStat;
 ;  // URL to web API
 
   getStat():Observable<Stat> {
