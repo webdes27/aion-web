@@ -1,7 +1,5 @@
 import { Injectable } from '@angular/core';
 
-import * as _ from 'lodash';
-
 interface Predicate<T> {
     (item: T): boolean
 }
@@ -15,23 +13,18 @@ export class ItemsService {
     Removes an item from an array using the lodash library
     */
     removeItemFromArray<T>(array: Array<T>, item: any) {
-        _.remove(array, function (current) {
-            //console.log(current);
-            return JSON.stringify(current) === JSON.stringify(item);
-        });
     }
 
     removeItems<T>(array: Array<T>, predicate: Predicate<T>) {
-        _.remove(array, predicate);
     }
 
     /*
     Finds a specific item in an array using a predicate and repsaces it
     */
     setItem<T>(array: Array<T>, predicate: Predicate<T>, item: T) {
-        var _oldItem = _.find(array, predicate);
+        var _oldItem = array.find(predicate);
         if(_oldItem){
-            var index = _.indexOf(array, _oldItem);
+            var index = array.indexOf(_oldItem);
             array.splice(index, 1, item);
         } else {
             array.push(item);
@@ -50,7 +43,7 @@ export class ItemsService {
     */
     getPropertyValues<T, R>(array: Array<T>, property : string) : R
     {
-        var result = _.map(array, property);
+        var result;
         return <R><any>result;
     }
 

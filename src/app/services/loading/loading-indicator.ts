@@ -5,7 +5,7 @@ import {Subscription} from 'rxjs/Rx';
 @Component({
   selector: 'loading-indicator',
   template: `<div [style.visibility]="isLoading ? 'visible': 'hidden'" class="loading"></div>`,
-  styles: [require('./loading.css')],
+  styles: ['./loading.css'],
 })
 export class LoadingIndicator implements OnInit, OnDestroy {
   isLoading = false;

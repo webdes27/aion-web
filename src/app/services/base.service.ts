@@ -1,25 +1,38 @@
 import {Injectable, Inject} from '@angular/core';
-import {Http, Jsonp, URLSearchParams} from '@angular/http';
-import 'rxjs/Rx';
+import {Http, Response} from '@angular/http';
+import {Observable} from 'rxjs/Observable';
 import {Config, APP_CONFIG} from '../app.config';
 
 @Injectable()
 export class BaseService {
-  constructor(private jsonp:Jsonp, @Inject(APP_CONFIG) private config:Config) {
+  constructor(private http:Http, @Inject(APP_CONFIG) private config:Config) {
   }
 
   search(term:string) {
-    let url = this.config.apiGetData;
-    var params = new URLSearchParams();
-    params.set('type', term);
-    params.set('action', 'opensearch');
-    params.set('format', 'json');
-    params.set('callback', 'JSONP_CALLBACK');
-    // TODO: Add error handling
-    return this.jsonp
-      .get(url, {search: params})
-      .map(request => request.json());
-    // .do(data => console.log(data));
+    let url = this.config.apiGetData + '?type=' + term;
+    return this.http
+      .get(url)
+      .map(this.extractData)
+      .catch(this.handleError);
+  }
+
+  private extractData(res: Response) {
+    let body = res.json();
+    return body || { };
+  }
+
+  private handleError (error: Response | any) {
+    // In a real world app, we might use a remote logging infrastructure
+    let errMsg: string;
+    if (error instanceof Response) {
+      const body = error.json() || '';
+      const err = body.error || JSON.stringify(body);
+      errMsg = `${error.status} - ${error.statusText || ''} ${err}`;
+    } else {
+      errMsg = error.message ? error.message : error.toString();
+    }
+    console.error(errMsg);
+    return Observable.throw(errMsg);
   }
 
 }

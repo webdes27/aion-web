@@ -1,17 +1,16 @@
-# Angular2 Aion
+# Aion web
 
 ### Quick start
 
-npm install typings webpack-dev-server rimraf webpack -g
+npm install -g @angular/cli
 
 npm install
 
-npm run server:dev:hmr
+ng serve
 
-go to [http://0.0.0.0:3000](http://0.0.0.0:3000) or [http://localhost:3000](http://localhost:3000) in your browser
+go to [http://localhost:4200](http://localhost:4200) in your browser
 
 ```bash
 # production
-npm run build:prod
-npm run server:prod
+ng build --prod
 ```
