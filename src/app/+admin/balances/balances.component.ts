@@ -4,18 +4,18 @@ import {CONFIG} from '../../app.config';
 
 @Component({
   selector: 'my-app',
-  template: `<crud-table [api]="api" [columns]="columns" [settings]="settings"></crud-table>`
+  template: `<crud-table [columns]="columns" [settings]="settings"></crud-table>`
 })
 
 export class PayBalanceComponent implements OnInit {
 
-  public api: string; 
   public columns: Array<any> = [
     {title: 'Id', name: 'id', sortable: true, filter: true},
     {title: 'Login', name: 'login', sortable: true, filter: true},
     {title: 'Balance', name: 'balance', sortable: true, filter: true},
   ];
   public settings:any = {
+    api: CONFIG.apiPayBalance,
     crud: true,
     pageHeader: 'Балансы',
   };
@@ -24,7 +24,6 @@ export class PayBalanceComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.api = CONFIG.apiPayBalance;
   }
 
 }

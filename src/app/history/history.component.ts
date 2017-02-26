@@ -4,12 +4,11 @@ import {CONFIG} from '../app.config';
 
 @Component({
   selector: 'my-app',
-  template: `<crud-table [api]="api" [columns]="columns" [settings]="settings"></crud-table>`
+  template: `<crud-table [columns]="columns" [settings]="settings"></crud-table>`
 })
 
 export class HistoryComponent implements OnInit {
 
-  public api: string; 
   public columns: Array<any> = [
     {title: 'Id', name: 'id', sortable: true, filter: true},
     {title: 'Ip', name: 'ip', sortable: true, filter: true},
@@ -23,6 +22,7 @@ export class HistoryComponent implements OnInit {
     {title: 'Trans_date', name: 'trans_date', sortable: true, filter: true},
   ];
   public settings:any = {
+    api: CONFIG.apiTransactions,
     crud: false,
     pageHeader: 'История',
   };
@@ -31,7 +31,6 @@ export class HistoryComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.api = CONFIG.apiTransactions;
   }
 
 }

@@ -4,12 +4,11 @@ import {CONFIG} from '../../app.config';
 
 @Component({
   selector: 'my-app',
-  template: `<crud-table [api]="api" [columns]="columns" [settings]="settings"></crud-table>`
+  template: `<crud-table [columns]="columns" [settings]="settings"></crud-table>`
 })
 
 export class ShopComponent implements OnInit {
 
-  public api: string; 
   public columns: Array<any> = [
     {title: 'Id', name: 'id', sortable: true, filter: true},
     {title: 'Type', name: 'type', sortable: true, filter: true},
@@ -20,6 +19,7 @@ export class ShopComponent implements OnInit {
     {title: 'Status', name: 'status', sortable: true, filter: true},
   ];
   public settings:any = {
+    api: CONFIG.apiPayShop,
     crud: true,
     pageHeader: 'Магазин',
   };
@@ -28,7 +28,6 @@ export class ShopComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.api = CONFIG.apiPayShop;
   }
 
 }

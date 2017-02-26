@@ -4,12 +4,11 @@ import {CONFIG} from '../../app.config';
 
 @Component({
   selector: 'my-app',
-  template: `<crud-table [api]="api" [columns]="columns" [settings]="settings"></crud-table>`
+  template: `<crud-table [columns]="columns" [settings]="settings"></crud-table>`
 })
 
 export class AccountComponent implements OnInit {
 
-  public api: string; 
   public columns: Array<any> = [
     {title: 'Id', name: 'id', sortable: true, filter: true},
     {title: 'Name', name: 'name', sortable: true, filter: true},
@@ -18,6 +17,7 @@ export class AccountComponent implements OnInit {
     {title: 'Membership', name: 'membership', sortable: true, filter: true},
   ];
   public settings:any = {
+    api: CONFIG.apiAccount,
     crud: true,
     pageHeader: 'Аккаунты',
   };
@@ -26,7 +26,6 @@ export class AccountComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.api = CONFIG.apiAccount;
   }
 
 }
