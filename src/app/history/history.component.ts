@@ -19,7 +19,7 @@ export class HistoryComponent implements OnInit {
     {title: 'Count', name: 'count', sortable: true, filter: true},
     {title: 'Price_one', name: 'price_one', sortable: true, filter: true},
     {title: 'Price_final', name: 'price_final', sortable: true, filter: true},
-    {title: 'Trans_date', name: 'trans_date', sortable: true, filter: true},
+    {title: 'Trans_date', name: 'trans_date', sortable: true, filter: true, format: 'date'},
   ];
   public settings:any = {
     api: CONFIG.apiTransactions,

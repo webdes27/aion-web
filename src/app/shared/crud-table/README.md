@@ -1,14 +1,13 @@
 # Angular 2 CRUD table using Yii 2 REST
 
-CRUD table component for Angular 2 using Yii 2 REST backend and Bootstrap 3 CSS.
+CRUD table component for Angular 2 using Yii 2 REST backend and Bootstrap 3 CSS. (<a target="_blank" href="https://mazdik.github.io/ng2-crud-table/">Demo</a>)
 
 ### Configuration
 ```typescript
-import {NgModule} from '@angular/core';
-import {BrowserModule} from '@angular/platform-browser';
-import {CrudTableModule} from './crud-table';
-
-import {AppComponent} from './app.component';
+import { NgModule } from '@angular/core';
+import { BrowserModule } from '@angular/platform-browser';
+import { CrudTableModule } from './crud-table';
+import { AppComponent } from './app.component';
 
 @NgModule({
     declarations: [
@@ -27,7 +26,7 @@ export class AppModule {}
 
 ### Sample
 ```typescript
-import {Component}  from '@angular/core';
+import { Component }  from '@angular/core';
 
 @Component({
   selector: 'my-app',
@@ -60,6 +59,7 @@ export class PlayersComponent {
             ]
         },
         { title: 'Exp', name: 'exp', sortable: true, filter: true },
+        { title: 'Last online', name: 'last_online', sortable: true, filter: true, format: 'date'}
     ];
     public settings: any = {
         api: 'http://host3/players',

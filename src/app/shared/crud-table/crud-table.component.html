@@ -1,22 +1,16 @@
 <h1 class="page-header" *ngIf="settings.pageHeader">{{settings.pageHeader}}</h1>
 <div class="alert alert-danger" role="alert" *ngIf="errors">
     {{errors.errMsg}}</div>
-<div class="grid-view" *ngIf="!onDetailView">
+<div class="grid-view" [style.display]="(!onDetailView) ? 'block' : 'none' ">
     <p *ngIf="settings.crud">
         <button type="button" class="btn btn-primary" (click)="createItem()"><i class="fa fa-plus"></i> Добавить</button>
     </p>
     <div class="loader" [style.visibility]="(!loading) ? 'hidden' : 'visible' "></div>
-    <table class="table table-hover table-bordered crud-table" *ngIf="!onDetailView">
+    <table class="table table-hover table-bordered crud-table">
         <thead datatable-header [columns]="columns" (onSort)="sort($event)" (onFilter)="filter($event)"></thead>
         <tbody>
-            <tr>
-                <td *ngFor="let column of columns">
-                    <span input-filter [column]="column" (onFilter)="filter($event)"></span>
-                </td>
-                <td></td>
-            </tr>
             <tr *ngFor="let item of items">
-                <td *ngFor="let column of columns">{{item[column.name]}}</td>
+                <td *ngFor="let column of columns">{{format(item[column.name], column)}}</td>
                 <td class="action-column">
                     <a (click)="viewDetails(item)" title="Просмотр" aria-label="Просмотр"><span class="glyphicon glyphicon-eye-open"></span></a>
                     <a *ngIf="settings.crud" (click)="updateItem(item)" title="Редактировать" aria-label="Редактировать"><span class="glyphicon glyphicon-pencil"></span></a>

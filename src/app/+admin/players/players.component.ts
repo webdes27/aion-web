@@ -31,6 +31,7 @@ export class PlayersComponent {
             ]
         },
         { title: 'Exp', name: 'exp', sortable: true, filter: true },
+        { title: 'Last online', name: 'last_online', sortable: true, filter: true }
     ];
     public settings: any = {
         api: 'http://host3/players',

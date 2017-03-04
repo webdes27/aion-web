@@ -1,10 +1,10 @@
-import { Test2Page } from './app.po';
+import { Ng2CrudTablePage } from './app.po';
 
-describe('test2 App', function() {
-  let page: Test2Page;
+describe('ng2-crud-table App', () => {
+  let page: Ng2CrudTablePage;
 
   beforeEach(() => {
-    page = new Test2Page();
+    page = new Ng2CrudTablePage();
   });
 
   it('should display message saying app works', () => {

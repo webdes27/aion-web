@@ -1,6 +1,6 @@
 import { browser, element, by } from 'protractor';
 
-export class Test2Page {
+export class Ng2CrudTablePage {
   navigateTo() {
     return browser.get('/');
   }
