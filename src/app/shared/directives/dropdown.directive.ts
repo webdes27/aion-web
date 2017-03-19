@@ -20,7 +20,7 @@ export class DropdownDirective {
     }
 
     @HostListener('click', ['$event'])
-    public toggleDropdown(event: MouseEvent): boolean {
+    public toggleDropdown(event): boolean {
         event.stopPropagation();
 
         this.toggle();

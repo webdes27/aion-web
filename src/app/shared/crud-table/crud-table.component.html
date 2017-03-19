@@ -5,19 +5,63 @@
     <p *ngIf="settings.crud">
         <button type="button" class="btn btn-primary" (click)="createItem()"><i class="fa fa-plus"></i> Добавить</button>
     </p>
-    <div class="loader" [style.visibility]="(!loading) ? 'hidden' : 'visible' "></div>
-    <table class="table table-hover table-bordered crud-table">
-        <thead datatable-header [columns]="columns" (onSort)="sort($event)" (onFilter)="filter($event)"></thead>
-        <tbody>
-            <tr *ngFor="let item of items">
-                <td *ngFor="let column of columns">{{format(item[column.name], column)}}</td>
-                <td class="action-column">
-                    <a (click)="viewDetails(item)" title="Просмотр" aria-label="Просмотр"><span class="glyphicon glyphicon-eye-open"></span></a>
-                    <a *ngIf="settings.crud" (click)="updateItem(item)" title="Редактировать" aria-label="Редактировать"><span class="glyphicon glyphicon-pencil"></span></a>
-                </td>
-            </tr>
-        </tbody>
-    </table>
+    <div class="k-grid" #dataTable [ngStyle]="{'max-width.px': tableWidth+scrollBarWidth}">
+        <loading-indicator [isLoading]="loading"></loading-indicator>
+        <ng-filter #selectFilter [filters]="filters" (onFilter)="filter($event)"></ng-filter>
+        <div class="k-grid-header">
+            <div class="k-grid-header-locked" [ngStyle]="{'width.px': headerLockedWidth}">
+                <table>
+                    <colgroup>
+                        <col style="width:40px">
+                        <col *ngFor="let column of frozenColumns" [ngStyle]="{'width.px': column.width}">
+                    </colgroup>
+                    <thead datatable-header [columns]="frozenColumns" [filters]="filters" (onSort)="sort($event)" (onFilter)="filter($event)" (onShowColumnMenu)="showColumnMenu($event)" [firstColumn]="true" (onClearAllFilters)="selectFilter.clearAllFilters()"></thead>
+                </table>
+            </div>
+            <div class="k-grid-header-wrap" [ngStyle]="{'width.px': headerWrapWidth}">
+                <table>
+                    <colgroup>
+                        <col *ngFor="let column of scrollableColumns" [ngStyle]="{'width.px': column.width}">
+                    </colgroup>
+                    <thead datatable-header [columns]="scrollableColumns" [filters]="filters" (onSort)="sort($event)" (onFilter)="filter($event)" (onShowColumnMenu)="showColumnMenu($event)"></thead>
+                </table>
+            </div>
+            <div class="k-grid-header-block"></div>
+        </div>
+        <div class="k-grid-body">
+        <div class="k-grid-content-locked" [ngStyle]="{'width.px': contentLockedWidth, 'height.px': contentLockedHeight}">
+            <table>
+                <colgroup>
+                    <col style="width:40px">
+                    <col *ngFor="let column of frozenColumns" [ngStyle]="{'width.px': column.width}">
+                </colgroup>
+                <tbody>
+                    <tr *ngFor="let item of items">
+                        <td class="action-column">
+                            <a (click)="viewDetails(item)" title="Просмотр" aria-label="Просмотр"><span class="glyphicon glyphicon-eye-open"></span></a>
+                            <a *ngIf="settings.crud" (click)="updateItem(item)" title="Редактировать" aria-label="Редактировать"><span class="glyphicon glyphicon-pencil"></span></a>
+                        </td>
+                        <td *ngFor="let column of frozenColumns">{{format(item[column.name], column)}}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="k-grid-content" [ngStyle]="{'width.px': contentWidth, 'height.px': contentHeight}">
+            <table>
+                <colgroup>
+                    <col *ngFor="let column of scrollableColumns" [ngStyle]="{'width.px': column.width}">
+                </colgroup>
+                <tbody>
+                  <tr *ngFor="let item of items">
+                    <td *ngFor="let column of scrollableColumns">{{format(item[column.name], column)}}</td>
+                </tr>
+                </tbody>
+            </table>
+            <div class="k-grid-content-expander" *ngIf="totalItems <=0" [ngStyle]="{'width.px': scrollableColumnsWidth}"></div>
+        </div>
+        </div>
+    </div>
+
     <pagination [totalItems]="totalItems" [itemsPerPage]="itemsPerPage" (pageChanged)="pageChanged($event)"></pagination>
 </div>
 <app-modal #childModal>

@@ -1,30 +1,16 @@
-import { Component, Input, Output, OnInit, DoCheck, EventEmitter, ElementRef, Pipe, ViewChild, IterableDiffers } from '@angular/core';
+import { Component, Input, Output, OnInit, EventEmitter, Pipe, ViewChild } from '@angular/core';
 import { ISelectOption, Column, Filter } from '../types/interfaces';
-
-@Pipe({
-    name: 'searchFilter'
-})
-export class SelectSearchFilter {
-    transform(options: Array < ISelectOption > , args: string): Array < ISelectOption > {
-        options = options || [];
-        return options.filter((option: ISelectOption) =>
-            option.name
-            .toLowerCase()
-            .indexOf((args || '').toLowerCase()) > -1);
-    }
-}
 
 @Component({
     selector: 'ng-filter',
     templateUrl: './filter.component.html',
-    styleUrls: ['./filter.css'],
+    styleUrls: ['./filter.component.css'],
 })
-export class FilterComponent implements OnInit, DoCheck {
+export class FilterComponent implements OnInit {
 
-    @Input() column: Column;
-    @Input() activeColumn: string;
     @Input() filters: Filter = {};
 	@Output() onFilter: EventEmitter<any> = new EventEmitter();
+    column: Column = <Column> {};
 
     @ViewChild('selectionSpan') selectionSpan: any;
     @ViewChild('searchFilterInput') searchFilterInput: any;
@@ -37,7 +23,7 @@ export class FilterComponent implements OnInit, DoCheck {
 
     selectionLimit: number = 1;
     selectedOptions: any[];
-    differ: any;
+    columnsSelectedOptions: any[] = [];
     numSelected: number = 0;
     isVisible: boolean = false;
     searchFilterText: string = '';
@@ -45,18 +31,11 @@ export class FilterComponent implements OnInit, DoCheck {
     selectContainerClicked: boolean = false;
     filterTimeout: any;
 
-    constructor(private elementRef: ElementRef, private differs: IterableDiffers) {
-        this.differ = differs.find([]).create(null);
+    constructor() {
     }
 
     ngOnInit() {}
 
-    ngDoCheck() {
-        let changes = this.differ.diff(this.selectedOptions);
-        if (changes) {
-            this.updateNumSelected();
-        }
-    }
 
     clearSearch() {
         this.searchFilterText = '';
@@ -84,7 +63,7 @@ export class FilterComponent implements OnInit, DoCheck {
         }
     }
 
-    setSelected(event: Event, option: ISelectOption) {
+    setSelected(event: any, option: ISelectOption) {
         if (!this.selectedOptions) {
             this.selectedOptions = [];
         }
@@ -134,7 +113,9 @@ export class FilterComponent implements OnInit, DoCheck {
         this.selectContainerClicked = false;
     }
 
-    show(width: number, top: number, left: number) {
+    show(width: number, top: number, left: number, column: Column) {
+        this.column = column;
+        this.selectedOptions = this.columnsSelectedOptions[column.name];
         this.selectContainerClicked = true;
         this.width = width;
         if (this.top === top && this.left === left) {
@@ -147,18 +128,8 @@ export class FilterComponent implements OnInit, DoCheck {
         }
     }
 
-    showColumnMenu(event, column) {
-        let el = event.target.parentNode.parentNode.parentNode;
-        this.show(200, this.getHeight(el), 0);
-    }
-
-    getHeight(el): number {
-        let height = el.offsetHeight;
-        let style = getComputedStyle(el);
-
-        height -= parseFloat(style.paddingTop) + parseFloat(style.paddingBottom) + parseFloat(style.borderTopWidth) + parseFloat(style.borderBottomWidth);
-
-        return height;
+    hide() {
+        this.closeDropdown();
     }
 
     onFilterInputClick(event) {
@@ -183,6 +154,9 @@ export class FilterComponent implements OnInit, DoCheck {
             delete this.filters[field];
 
         this.onFilter.emit(this.filters);
+        this.updateNumSelected();
+        this.columnsSelectedOptions[field] = this.selectedOptions;
+        //console.log(this.columnsSelectedOptions);
     }
 
     isFilterBlank(filter: any): boolean {
@@ -193,6 +167,13 @@ export class FilterComponent implements OnInit, DoCheck {
                 return false;
         }
         return true;
+    }
+
+    clearAllFilters() {
+        this.filters = {};
+        this.selectedOptions = [];
+        this.columnsSelectedOptions = [];
+        this.onFilter.emit(this.filters);
     }
 
 }

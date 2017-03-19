@@ -7,9 +7,9 @@ import { Component } from '@angular/core';
 
 export class PlayersComponent {
 
-    public columns: Array < any > = [
-        { title: 'Id', name: 'id', sortable: true, filter: true },
-        { title: 'Name', name: 'name', sortable: true, filter: true }, 
+    public columns: any[] = [
+        { title: 'Id', name: 'id', sortable: true, filter: true, frozen: true },
+        { title: 'Name', name: 'name', sortable: true, filter: true, frozen: true, width:250 }, 
         {
             title: 'Race',
             name: 'race',
@@ -38,6 +38,9 @@ export class PlayersComponent {
         crud: true,
         pageHeader: 'Players',
         primaryKey: 'id',
+        type: 'yii', // ords or yii (default)
+        tableWidth: 820,
+        scrollHeight: 380,
     };
 
 }

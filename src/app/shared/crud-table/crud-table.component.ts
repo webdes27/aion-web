@@ -1,20 +1,24 @@
-import { Component, OnInit, ViewChild, Input } from '@angular/core';
+import { Component, OnInit, ViewChild, Input, ViewEncapsulation, ElementRef, Renderer, AfterViewInit, OnDestroy  } from '@angular/core';
 
-import { CrudService } from './services/crud.service';
+import { YiiService } from './services/yii.service';
+import { OrdsService } from './services/ords.service';
+import { DemoService } from './services/demo.service';
 import { ModalComponent } from './modal/modal.component';
-import { Column, Filter, Settings } from './types/interfaces';
+import { Column, Filter, Settings, ICrudService } from './types/interfaces';
 
 @Component({
     selector: 'crud-table',
     templateUrl: './crud-table.component.html',
     styleUrls: ['./crud-table.css'],
-    providers: [CrudService]
+    encapsulation: ViewEncapsulation.None,
+    providers: [YiiService, OrdsService, DemoService]
 })
 
-export class CrudTableComponent implements OnInit {
+export class CrudTableComponent implements OnInit, AfterViewInit, OnDestroy {
 
     @ViewChild('childModal')
     public readonly childModal: ModalComponent;
+    @ViewChild('selectFilter') selectFilter: any;
 
     @Input() public columns: Column[];
     @Input() public settings: Settings;
@@ -35,13 +39,95 @@ export class CrudTableComponent implements OnInit {
     public filters: Filter = {};
     public sortField: string;
     public sortOrder: number;
+    private service: ICrudService;
 
-    constructor(private service: CrudService) {}
+    public scrollHeight: number = 380;
+    public tableWidth: number = 820;
+    @ViewChild('dataTable') dataTable: ElementRef;
+    listenFunc: Function;
+    headerLockedWidth: number;
+    headerWrapWidth: number;
+    contentLockedWidth: number;
+    contentWidth: number;
+    contentLockedHeight: number;
+    contentHeight: number;
+
+    frozenColumns: Column[];
+    scrollableColumns: Column[];
+    frozenWidth: number = 0;
+    scrollableColumnsWidth: number = 0;
+    scrollBarWidth: number;
+
+    constructor(private renderer: Renderer, private yiiService: YiiService, private ordsService: OrdsService, private demoService: DemoService) {}
 
     ngOnInit() {
-        this.service.url = this.settings.api;
-        this.service.primaryKey = (this.settings['primaryKey']) ? this.settings['primaryKey'].toLowerCase() : 'id';
+        this.initService();
+        this.initColumns();
+        this.initTableSize() ;
         this.getItems();
+    }
+
+    ngAfterViewInit() {
+        this.initScrolling();
+    }
+
+    ngOnDestroy() {
+        // Removes "listen" listener
+        this.listenFunc();
+    }
+
+    initColumns(): void {
+        this.setColumnDefaults(this.columns);
+       
+        this.scrollableColumns = [];
+        this.columns.forEach((column) => {
+            if(column.frozen) {
+                this.frozenColumns = this.frozenColumns||[];
+                this.frozenColumns.push(column);
+                this.frozenWidth = this.frozenWidth + column.width;
+            } 
+            else {
+                this.scrollableColumns.push(column);
+                this.scrollableColumnsWidth = this.scrollableColumnsWidth + column.width;
+            }
+        });
+    }
+
+    initTableSize() {
+    	this.scrollHeight = this.settings.scrollHeight || this.scrollHeight;
+     	this.tableWidth = this.settings.tableWidth || this.tableWidth;
+        this.scrollBarWidth = this.calculateScrollbarWidth();
+        this.headerLockedWidth = this.frozenWidth + 40;
+        this.headerWrapWidth = this.tableWidth - this.headerLockedWidth ;
+        this.contentLockedWidth = this.headerLockedWidth;
+        this.contentWidth = this.headerWrapWidth + this.scrollBarWidth;
+        this.contentLockedHeight = this.scrollHeight;
+        this.contentHeight = this.contentLockedHeight + this.scrollBarWidth;
+    }
+
+    initScrolling() {
+        let rcBody = this.dataTable.nativeElement.querySelector('.k-grid-content');
+        let fcBody = this.dataTable.nativeElement.querySelector('.k-grid-content-locked');
+        let rcHead = this.dataTable.nativeElement.querySelector('.k-grid-header-wrap');
+        this.listenFunc = this.renderer.listen(rcBody, 'scroll', (event) => {
+            fcBody.scrollTop = rcBody.scrollTop;
+            rcHead.scrollLeft = rcBody.scrollLeft;
+            this.selectFilter.hide();
+        });
+    }
+
+    initService() {
+        if (this.settings.type === 'yii') {
+          this.service = this.yiiService;
+        } else if (this.settings.type === 'ords') {
+          this.service = this.ordsService;
+        } else if (this.settings.type === 'demo') {
+          this.service = this.demoService;
+        } else {
+          this.service = this.yiiService;
+        }
+        this.service.url = this.settings.api;
+        this.service.primaryKey = (this.settings.primaryKey) ? this.settings.primaryKey.toLowerCase() : 'id';
     }
 
     loadingShow() {
@@ -186,6 +272,52 @@ export class CrudTableComponent implements OnInit {
             value = d.toLocaleString('ru');
         }
         return value;
+    }
+
+    calculateScrollbarWidth(): number {
+        let scrollDiv = document.createElement("div");
+        scrollDiv.className = "scrollbar-measure";
+        document.body.appendChild(scrollDiv);
+
+        let scrollbarWidth = scrollDiv.offsetWidth - scrollDiv.clientWidth;
+        document.body.removeChild(scrollDiv);
+        
+        return scrollbarWidth;
+    }
+
+    showColumnMenu(event) {
+        this.selectFilter.show(200, event.top, event.left, event.column);
+    }
+
+    setColumnDefaults(columns: Column[]): Column[] {
+        if (!columns) return;
+
+        let result = columns.map(function(column) {
+
+            if (!column.hasOwnProperty('sortable')) {
+                column.sortable = true;
+            }
+            if (!column.hasOwnProperty('filter')) {
+                column.filter = true;
+            }
+            if (!column.hasOwnProperty('width')) {
+                column.width = 150;
+            }
+            if (!column.hasOwnProperty('frozen')) {
+                column.frozen = false;
+            }
+            return column;
+
+        });
+        return result;
+    }
+
+    columnsTotalWidth(columns: Column[]): number {
+        let totalWidth = 0;
+        for (let column of columns) {
+            totalWidth = totalWidth + column.width;
+        }
+        return totalWidth;
     }
 
 }

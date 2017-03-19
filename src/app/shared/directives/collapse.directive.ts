@@ -40,13 +40,4 @@ export class CollapseDirective implements OnChanges {
         this.expand = true;
     }
 
-    private get elementHeight(): number {
-        let el = this.elementRef.nativeElement;
-        var height = el.offsetHeight;
-        var style = getComputedStyle(el);
-
-        height += parseInt(style.marginTop) + parseInt(style.marginBottom);
-        return height;
-    }
-
 }
