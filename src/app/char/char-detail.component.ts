@@ -45,7 +45,6 @@ export class CharDetailComponent implements OnInit {
       this.result = data.result;
       this.resultMessage = data.resultMessage;
       this.user.setUpdateStatus(true);
-      console.log(data);
     }).catch(error => {
       this.loadingService.hide();
       this.errorMessage = JSON.stringify(error);

@@ -1,14 +1,14 @@
 import {
   animate,
-  AnimationEntryMetadata,
+  AnimationTriggerMetadata,
   state,
   style,
   transition,
   trigger,
-} from '@angular/core';
+} from '@angular/animations';
 
 
-export const fadeInItems: AnimationEntryMetadata = trigger('fadeInItems', [
+export const fadeInItems: AnimationTriggerMetadata = trigger('fadeInItems', [
   state('showing', style({opacity: 1})),
   transition('void => *', [
     style({opacity: 0}),
@@ -16,7 +16,7 @@ export const fadeInItems: AnimationEntryMetadata = trigger('fadeInItems', [
   ])
 ]);
 
-export const flyInOut: AnimationEntryMetadata = trigger('flyInOut', [
+export const flyInOut: AnimationTriggerMetadata = trigger('flyInOut', [
   state('in', style({opacity: 1, transform: 'translateX(0)'})),
   transition('void => *', [
       style({

@@ -40,7 +40,7 @@ export class ModalComponent {
         setTimeout(() => {
             this.visibleAnimate = true;
             this.modalRoot.nativeElement.focus()
-        });
+        }, 1);
     }
 
     public hide(): void {
@@ -48,7 +48,7 @@ export class ModalComponent {
         setTimeout(() => this.visible = false, 300);
     }
 
-    public preventClosing(event: MouseEvent) {
+    public preventClosing(event: any) {
         event.stopPropagation();
     }
 
