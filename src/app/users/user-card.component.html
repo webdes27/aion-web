@@ -15,7 +15,7 @@
                     <input [(ngModel)]="edittedUser.profession" class="form-control" required />
                 </p>
                 <p>
-                    <button class="btn btn-primary" (click)="viewSchedules(edittedUser)" [disabled]="edittedUser.schedulesCreated === 0">
+                    <button class="btn btn-primary" [disabled]="edittedUser.schedulesCreated === 0">
                     <i class="fa fa-calendar-check-o" aria-hidden="true"></i> Schedules <span class="badge"> 
                         {{edittedUser.schedulesCreated}}</span>
                     </button>
@@ -42,7 +42,7 @@
 </div>
 
 <app-modal #childModal>
-    <div class="modal-dialog modal-lg" *ngIf="userSchedulesLoaded">
+    <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" aria-label="Close" (click)="hideChildModal()">

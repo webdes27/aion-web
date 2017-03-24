@@ -11,7 +11,7 @@ export class ModalComponent {
     public modalRoot: ElementRef;
 
     public visible: boolean = false;
-    private visibleAnimate: boolean = false;
+    public visibleAnimate: boolean = false;
     public static: boolean = false;
 
     public show(): void {
