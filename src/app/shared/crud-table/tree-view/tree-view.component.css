@@ -1,0 +1,11 @@
+.tree-view {
+    width: 200px;
+}
+
+.tree-container {
+    height: 100%;
+    margin: 0;
+    overflow: auto;
+    padding: 5px;
+    white-space: nowrap;
+}

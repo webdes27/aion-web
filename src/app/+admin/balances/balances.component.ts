@@ -11,8 +11,8 @@ export class PayBalanceComponent implements OnInit {
 
   public columns: Array<any> = [
     {title: 'Id', name: 'id', sortable: true, filter: true},
-    {title: 'Login', name: 'login', sortable: true, filter: true},
-    {title: 'Balance', name: 'balance', sortable: true, filter: true},
+    {title: 'Login', name: 'login', sortable: true, filter: true, editable: true},
+    {title: 'Balance', name: 'balance', sortable: true, filter: true, editable: true},
   ];
   public settings:any = {
     api: CONFIG.apiPayBalance,

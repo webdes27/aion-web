@@ -19,7 +19,7 @@ export class ModalComponent {
         setTimeout(() => {
             this.visibleAnimate = true;
             this.modalRoot.nativeElement.focus()
-        });
+        }, 1);
     }
 
     public hide(): void {

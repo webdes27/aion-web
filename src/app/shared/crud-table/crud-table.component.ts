@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, Input, ViewEncapsulation, ElementRef, Renderer, AfterViewInit, OnDestroy  } from '@angular/core';
+import { Component, OnInit, ViewChild, Input, ViewEncapsulation, ElementRef, Renderer, AfterViewInit, OnDestroy, HostListener } from '@angular/core';
 
 import { YiiService } from './services/yii.service';
 import { OrdsService } from './services/ords.service';
@@ -42,7 +42,10 @@ export class CrudTableComponent implements OnInit, AfterViewInit, OnDestroy {
 
     public scrollHeight: number = 380;
     public tableWidth: number = 820;
+    public letterWidth: number = 10;
+    public actionColumnWidth: number = 40;
     @ViewChild('dataTable') dataTable: ElementRef;
+    @ViewChild('tableContent') tableContent: ElementRef;
     listenFunc: Function;
     headerLockedWidth: number;
     headerWrapWidth: number;
@@ -68,6 +71,7 @@ export class CrudTableComponent implements OnInit, AfterViewInit, OnDestroy {
 
     ngAfterViewInit() {
         this.initScrolling();
+        this.setContentHeight();
     }
 
     ngOnDestroy() {
@@ -76,7 +80,8 @@ export class CrudTableComponent implements OnInit, AfterViewInit, OnDestroy {
     }
 
     initColumns(): void {
-        this.setColumnDefaults(this.columns);
+        this.letterWidth = this.getTextWidth('M', 'bold 14px arial');
+        this.setColumnsDefaults(this.columns);
        
         this.scrollableColumns = [];
         this.columns.forEach((column) => {
@@ -96,12 +101,12 @@ export class CrudTableComponent implements OnInit, AfterViewInit, OnDestroy {
     	this.scrollHeight = this.settings.scrollHeight || this.scrollHeight;
      	this.tableWidth = this.settings.tableWidth || this.tableWidth;
         this.scrollBarWidth = this.calculateScrollbarWidth();
-        this.headerLockedWidth = this.frozenWidth + 40;
+        this.headerLockedWidth = this.frozenWidth + this.actionColumnWidth;
         this.headerWrapWidth = this.tableWidth - this.headerLockedWidth ;
         this.contentLockedWidth = this.headerLockedWidth;
         this.contentWidth = this.headerWrapWidth + this.scrollBarWidth;
         this.contentLockedHeight = this.scrollHeight;
-        this.contentHeight = this.contentLockedHeight + this.scrollBarWidth;
+        this.contentHeight = this.contentLockedHeight + this.scrollBarWidth;;
     }
 
     initScrolling() {
@@ -164,9 +169,9 @@ export class CrudTableComponent implements OnInit, AfterViewInit, OnDestroy {
         if (this.newItem) {
             this.service
                 .post(this.item)
-                .then(item => {
+                .then(res => {
                     this.loadingHide();
-                    this.item = item;
+                    this.item = res;
                     this.items.push(this.item);
                 })
                 .catch(error => {
@@ -176,9 +181,9 @@ export class CrudTableComponent implements OnInit, AfterViewInit, OnDestroy {
         } else {
             this.service
                 .put(this.item)
-                .then(item => {
+                .then(res => {
                     this.loadingHide();
-                    this.items[this.findSelectedItemIndex()] = item;
+                    this.items[this.findSelectedItemIndex()] = res;
                 })
                 .catch(error => {
                     this.loadingHide();
@@ -235,6 +240,12 @@ export class CrudTableComponent implements OnInit, AfterViewInit, OnDestroy {
         this.childModal.show();
     }
 
+    editItem(item: any) {
+        this.newItem = false;
+        this.item = this.cloneItem(item);
+        this.save();
+    }
+
     deleteItem(item: any) {
         this.item = this.cloneItem(item);
         this.delete();
@@ -264,14 +275,6 @@ export class CrudTableComponent implements OnInit, AfterViewInit, OnDestroy {
         return (this.newItem) ? 'Добавить' : 'Редактировать';
     }
 
-    format(value: any, column: Column) {
-        if(column.format &&  column.format === 'date') {
-            let d = new Date(value*1000);
-            value = d.toLocaleString('ru');
-        }
-        return value;
-    }
-
     calculateScrollbarWidth(): number {
         let scrollDiv = document.createElement("div");
         scrollDiv.className = "scrollbar-measure";
@@ -287,26 +290,32 @@ export class CrudTableComponent implements OnInit, AfterViewInit, OnDestroy {
         this.selectFilter.show(200, event.top, event.left, event.column);
     }
 
-    setColumnDefaults(columns: Column[]): Column[] {
-        if (!columns) return;
-
-        let result = columns.map(function(column) {
-
-            if (!column.hasOwnProperty('sortable')) {
-                column.sortable = true;
-            }
-            if (!column.hasOwnProperty('filter')) {
-                column.filter = true;
-            }
-            if (!column.hasOwnProperty('width')) {
+    setColumnDefaults(column: Column): Column {
+        if (!column.hasOwnProperty('sortable')) {
+            column.sortable = true;
+        }
+        if (!column.hasOwnProperty('filter')) {
+            column.filter = true;
+        }
+        if (!column.hasOwnProperty('width')) {
+            column.width = (column.name.length * this.letterWidth) + 50;
+            if(column.width < 150) {
                 column.width = 150;
             }
-            if (!column.hasOwnProperty('frozen')) {
-                column.frozen = false;
-            }
-            return column;
+        }
+        if (!column.hasOwnProperty('frozen')) {
+            column.frozen = false;
+        }
+        if (!column.hasOwnProperty('type')) {
+            column.type = 'text';
+        }
+        return column;
+    }
 
-        });
+    setColumnsDefaults(columns: Column[]): Column[] {
+        if (!columns) return;
+
+        let result = columns.map(this.setColumnDefaults, this);
         return result;
     }
 
@@ -316,6 +325,28 @@ export class CrudTableComponent implements OnInit, AfterViewInit, OnDestroy {
             totalWidth = totalWidth + column.width;
         }
         return totalWidth;
+    }
+
+	getTextWidth(text, font) {
+	    let canvas = document.createElement("canvas");
+	    let context = canvas.getContext("2d");
+	    context.font = font;
+	    let metrics = context.measureText(text);
+	    return metrics.width;
+	}
+
+    setContentHeight() {
+        let hasHorizontalScrollbar = this.tableContent.nativeElement.scrollWidth > this.tableContent.nativeElement.clientWidth;
+        if(hasHorizontalScrollbar) {
+           this.contentHeight = this.contentLockedHeight + this.scrollBarWidth;
+        } else {
+            this.contentHeight = this.contentLockedHeight;
+        }
+    }
+
+    @HostListener('window:resize', ['$event'])
+    onResize(event) {
+      this.setContentHeight();
     }
 
 }

@@ -3,7 +3,6 @@ import {FormControl, FormGroup, FormBuilder, Validators} from '@angular/forms';
 import {validateEmail} from './../services/validate/validate.service';
 import {ContactService} from './contact.service'
 import {LoadingService} from '../services/loading';
-;
 
 class User {
   public name:string;
