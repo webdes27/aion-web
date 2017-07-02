@@ -1,13 +1,13 @@
-import { Component, Input, Output, EventEmitter, OnInit } from "@angular/core";
+import { Component, Input, Output, EventEmitter, OnInit, HostBinding } from "@angular/core";
 
 export interface ITreeNode {
-    id: number;
+    id: string;
     name: string;
     column: string; 
     children?: ITreeNode[];
     isExpanded?: boolean;
     leaf?: boolean;
-    parent?: ITreeNode[];
+    parent?: ITreeNode;
 }
 
 @Component({
@@ -15,11 +15,11 @@ export interface ITreeNode {
     templateUrl: './tree-node.component.html',
     styleUrls: ['./tree-node.component.css'],
 })
-export class TreeNode implements OnInit {
+export class TreeNodeComponent implements OnInit {
 
 	@Input() node: any;
     @Input() selectedNode: ITreeNode;
-    @Input() parentNode: TreeNode;
+    @Input() parentNode: ITreeNode;
     @Output() onSelectedChanged: EventEmitter<ITreeNode> = new EventEmitter<ITreeNode>();
 
 	ngOnInit() {
@@ -53,11 +53,20 @@ export class TreeNode implements OnInit {
     selector: "tree-view",
     templateUrl: './tree-view.component.html',
     styleUrls: ['./tree-view.component.css'],
+    host: {
+        'style': 'overflow: auto;'
+    }
 })
-export class TreeView {
+export class TreeViewComponent {
 
     @Input() nodes: ITreeNode[];
     @Input() selectedNode: ITreeNode;
+
+    @HostBinding('style.height.px')
+    @Input() height: number;
+
+    @HostBinding('style.width.px')
+    @Input() width: number;
 
     @Output() onSelectedChanged: EventEmitter<ITreeNode> = new EventEmitter<ITreeNode>();
     @Output() onRequestNodes: EventEmitter<ITreeNode> = new EventEmitter<ITreeNode>();

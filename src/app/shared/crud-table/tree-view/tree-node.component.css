@@ -1,5 +1,4 @@
 .indicator {
-    margin-right: 2px;
     cursor: pointer;
 }
 .treenode-content {
@@ -24,5 +23,5 @@
     color: #FFFFFF;
 }
 ul {
-    padding: 0 25px;
+    padding-left: 25px;
 }

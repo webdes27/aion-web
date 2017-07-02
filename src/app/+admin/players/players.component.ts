@@ -2,20 +2,21 @@ import { Component } from '@angular/core';
 
 @Component({
     selector: 'my-app',
-    template: `<crud-table [columns]="columns" [settings]="settings"></crud-table>`
+    template: `<crud-table [columns]="columns" [settings]="settings" [treeNodes]="treeNodes"></crud-table>`
 })
 
 export class PlayersComponent {
 
     public columns: any[] = [
-        { 
+        {
             title: 'Id', 
             name: 'id', 
             sortable: true, 
             filter: true, 
-            frozen: true
+            frozen: true,
+            resizeable: false,
         },
-        { 
+        {
             title: 'Name', 
             name: 'name', 
             sortable: true, 
@@ -24,7 +25,8 @@ export class PlayersComponent {
             width: 250,
             validation: { pattern: '^[a-zA-Z ]+$' },
             editable: true,
-        }, 
+            resizeable: false,
+        },
         {
             title: 'Race',
             name: 'race',
@@ -36,7 +38,23 @@ export class PlayersComponent {
                 { id: 'ELYOS', name: 'ELYOS' },
             ],
             editable: true,
-        }, 
+        },
+        {
+            title: 'Cascading Select',
+            name: 'note',
+            editable: true,
+            type: 'dropdown',
+            options: [
+                { id: 'ASM1', name: 'ASM note 1', parentId: 'ASMODIANS' },
+                { id: 'ASM2', name: 'ASM note 2', parentId: 'ASMODIANS' },
+                { id: 'ASM3', name: 'ASM note 3', parentId: 'ASMODIANS' },
+                { id: 'ASM4', name: 'ASM note 4', parentId: 'ASMODIANS' },
+                { id: 'ELY1', name: 'ELY note 1', parentId: 'ELYOS' },
+                { id: 'ELY2', name: 'ELY note 2', parentId: 'ELYOS' },
+                { id: 'ELY3', name: 'ELY note 3', parentId: 'ELYOS' },
+            ],
+            dependsColumn: 'race',
+        },
         {
             title: 'Gender',
             name: 'gender',
@@ -49,7 +67,7 @@ export class PlayersComponent {
             ],
             editable: true,
         },
-        { 
+        {
             title: 'Exp',
             name: 'exp',
             sortable: true,
@@ -58,7 +76,7 @@ export class PlayersComponent {
             validation: { required: true, minLength: 2, maxLength: 10 },
             editable: true,
         },
-        { 
+        {
             title: 'Last online', 
             name: 'last_online', 
             sortable: true, 
@@ -74,8 +92,8 @@ export class PlayersComponent {
         { title: 'X', name: 'x', editable: true, },
         { title: 'Y', name: 'y', editable: true, },
         { title: 'Z', name: 'z', editable: true, },
-
     ];
+
     public settings: any = {
         api: 'http://host3/players',
         crud: true,
@@ -84,6 +102,42 @@ export class PlayersComponent {
         type: 'yii', // ords or yii (default)
         tableWidth: 820,
         scrollHeight: 380,
+        treeViewWidth: 120,
     };
+
+    public treeNodes: any[] = [
+        {
+            id: 'ASMODIANS',
+            name: 'ASMODIANS',
+            column: 'race',
+            children: [
+            {
+                id: 'MALE',
+                name: 'MALE',
+                column: 'gender',
+            }, 
+            {
+                id: 'FEMALE',
+                name: 'FEMALE',
+                column: 'gender',
+            }],
+        }, 
+        {
+            id: 'ELYOS',
+            name: 'ELYOS',
+            column: 'race',
+            children: [
+            {
+                id: 'MALE',
+                name: 'MALE',
+                column: 'gender',
+            }, 
+            {
+                id: 'FEMALE',
+                name: 'FEMALE',
+                column: 'gender',
+            }],
+        }
+    ];
 
 }

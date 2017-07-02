@@ -1,3 +1,5 @@
+import { EventEmitter } from '@angular/core';
+
 export interface Link {
     self: string;
     next: string;
@@ -20,6 +22,7 @@ export interface Data {
 export interface ISelectOption {
     id: any;
     name: string;
+    parentId?: any;
 }
 
 export interface Column {
@@ -34,6 +37,8 @@ export interface Column {
     type?: 'text' | 'password' | 'number' | 'dropdown' | 'radio' | 'checkbox' | 'textarea' | 'date';
     validation?: IValidation;
     editable?: boolean;
+    resizeable?: boolean;
+    dependsColumn?: string;
 }
 
 export interface Filter {
@@ -48,6 +53,7 @@ export interface Settings {
     type?: string;
     tableWidth?: number;
     scrollHeight?: number;
+    treeViewWidth?: number;
 }
 
 export interface ICrudService {
@@ -71,4 +77,14 @@ export interface IValidation {
     minLength?: number;
     maxLength?: number;
     pattern?: string|RegExp;
+}
+
+export interface MenuItem {
+    label?: string;
+    icon?: string;
+    command?: (event?: any) => void;
+    url?: string;
+    routerLink?: any;
+    eventEmitter?: EventEmitter<any>;
+    disabled?: boolean;
 }

@@ -1,5 +1,5 @@
 import { Component, OnInit, Input, Output, EventEmitter, Renderer, AfterViewInit, OnDestroy } from '@angular/core';
-import { Column } from '../types/interfaces';
+import { Column, MenuItem } from '../types/interfaces';
 
 @Component({
   selector: '[datatable-body]',
@@ -11,10 +11,14 @@ export class BodyComponent implements OnInit, AfterViewInit, OnDestroy {
 	@Input() public columns: Column[];
 	@Input() public items: any;
 	@Input() public enableAction: boolean;
-	@Input() public crud: boolean;
-	@Output() onViewAction: EventEmitter<any> = new EventEmitter();
-	@Output() onUpdateAction: EventEmitter<any> = new EventEmitter();
+    @Input() public actionColumnWidth: number;
+    @Input() public actionMenu: MenuItem[];
+
     @Output() onEditComplete: EventEmitter<any> = new EventEmitter();
+
+    @Input() public selectedRowIndex: number;
+    @Output() selectedRowIndexChange: EventEmitter<number> = new EventEmitter();
+    
 	public editingCell: any;
     public editorClick: boolean;
     public documentClickListener: Function;
@@ -152,12 +156,40 @@ export class BodyComponent implements OnInit, AfterViewInit, OnDestroy {
         }
     }
 
-    viewAction(item: any) {
-    	this.onViewAction.emit(item);
+    rowClick(event: any, rowIndex: number) {
+        this.selectedRowIndex = rowIndex;
+        this.selectedRowIndexChange.emit(this.selectedRowIndex);
     }
 
-    updateAction(item: any) {
-    	this.onUpdateAction.emit(item);
+    getOptions(column: Column, item: any) {
+        if(column.options) {
+            if(column.dependsColumn) {
+                return column.options.filter((value)=> value.parentId == item[column.dependsColumn]);
+            } else {
+                return column.options;
+            }
+        }
+    }
+
+    actionClick(event, item: MenuItem, rowIndex: number) {
+        this.selectedRowIndex = rowIndex;
+        this.selectedRowIndexChange.emit(this.selectedRowIndex);
+
+        if(!item.url) {
+            event.preventDefault();
+        }
+        
+        if(item.command) {
+            if(!item.eventEmitter) {
+                item.eventEmitter = new EventEmitter();
+                item.eventEmitter.subscribe(item.command);
+            }
+            
+            item.eventEmitter.emit({
+                originalEvent: event,
+                item: item
+            });
+        }
     }
 
 }

@@ -12,12 +12,15 @@ import { FormComponent } from './form/form.component';
 import { CrudTableComponent } from './crud-table.component';
 import { LoadingIndicatorComponent } from './loading-indicator/loading-indicator.component';
 import { BodyComponent } from './body/body.component';
+import { TreeViewModule } from './tree-view';
+import { ResizeableDirective } from './directives/resizeable.directive';
 
 
 @NgModule({
   imports: [
   	CommonModule,
-    FormsModule
+    FormsModule,
+    TreeViewModule
   ],
   declarations: [
 	CrudTableComponent, 
@@ -29,7 +32,8 @@ import { BodyComponent } from './body/body.component';
 	FormComponent,
 	SearchFilterPipe,
 	LoadingIndicatorComponent,
-	BodyComponent
+	BodyComponent,
+	ResizeableDirective
   ],
   exports: [CrudTableComponent],
   providers: []
