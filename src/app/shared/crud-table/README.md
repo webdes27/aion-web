@@ -31,7 +31,7 @@ import { Component }  from '@angular/core';
 
 @Component({
   selector: 'my-app',
-  template: `<crud-table [columns]="columns" [settings]="settings" [treeNodes]="treeNodes"></crud-table>`
+  template: `<crud-table [columns]="columns" [settings]="settings"></crud-table>`
 })
 
 export class PlayersComponent {
@@ -111,7 +111,6 @@ export class PlayersComponent {
             sortable: true, 
             filter: true,
             type: 'date',
-            format: 'date',
             editable: true,
         }
     ];
@@ -119,49 +118,12 @@ export class PlayersComponent {
     public settings: any = {
         api: 'http://host3/players',
         crud: true,
-        pageHeader: 'Players',
         primaryKey: 'id',
         type: 'yii', // ords or yii (default)
         tableWidth: 820,
         scrollHeight: 380,
         treeViewWidth: 120,
     };
-
-    public treeNodes: any[] = [
-        {
-            id: 'ASMODIANS',
-            name: 'ASMODIANS',
-            column: 'race',
-            children: [
-            {
-                id: 'MALE',
-                name: 'MALE',
-                column: 'gender',
-            }, 
-            {
-                id: 'FEMALE',
-                name: 'FEMALE',
-                column: 'gender',
-            }],
-        }, 
-        {
-            id: 'ELYOS',
-            name: 'ELYOS',
-            column: 'race',
-            children: [
-            {
-                id: 'MALE',
-                name: 'MALE',
-                column: 'gender',
-            }, 
-            {
-                id: 'FEMALE',
-                name: 'FEMALE',
-                column: 'gender',
-            }],
-        }
-    ];
-
 }
 ```
 
@@ -188,3 +150,4 @@ You will need bootstrap styles
 * Tree view
 * Column Resizing
 * Cascading Select (DropDown)
+* Tree table

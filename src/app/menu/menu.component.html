@@ -25,6 +25,7 @@
                 <li [routerLinkActive]="['active']"><a [routerLink]="['/admin/transactions']" *ngIf="isAdmin()">Транзакции</a></li>
                 <li [routerLinkActive]="['active']"><a [routerLink]="['/admin/players']" *ngIf="isAdmin()">Персонажи</a></li>
                 <li [routerLinkActive]="['active']"><a [routerLink]="['/user']" *ngIf="isAdmin()">Пользователи</a></li>
+                <li [routerLinkActive]="['active']"><a [routerLink]="['/demo']" *ngIf="isAdmin()">Demo</a></li>
               </ul>
             </li>
             <li [routerLinkActive]="['active']"><a [routerLink]="['char']" *ngIf="getLoggedIn() | async">Мои персонажи</a></li>

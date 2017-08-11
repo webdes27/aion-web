@@ -1,31 +1,43 @@
 import { Component } from '@angular/core';
 
 @Component({
-    selector: 'my-app',
-    template: `<crud-table [columns]="columns" [settings]="settings"></crud-table>`
+  selector: 'basic-demo',
+  template: `<crud-table [columns]="columns" [settings]="settings"></crud-table>`
 })
 
-export class PlayersComponent {
+export class BasicDemoComponent {
+
+    constructor() {
+    }
+
+    public settings: any = {
+        api: 'http://host3/players',
+        crud: true,
+        primaryKey: 'id',
+        type: 'demo', // ords or yii (default)
+        tableWidth: 820,
+        scrollHeight: 380,
+        treeViewWidth: 150,
+    };
 
     public columns: any[] = [
-        {
+        { 
             title: 'Id', 
             name: 'id', 
             sortable: true, 
             filter: true, 
             frozen: true,
-            resizeable: false,
+            width: 100,
         },
-        {
+        { 
             title: 'Name', 
             name: 'name', 
             sortable: true, 
             filter: true, 
             frozen: true, 
-            width: 250,
+            width: 200,
             validation: { pattern: '^[a-zA-Z ]+$' },
             editable: true,
-            resizeable: false,
         },
         {
             title: 'Race',
@@ -39,7 +51,7 @@ export class PlayersComponent {
             ],
             editable: true,
         },
-        {
+        { 
             title: 'Cascading Select',
             name: 'note',
             editable: true,
@@ -76,14 +88,16 @@ export class PlayersComponent {
             validation: { required: true, minLength: 2, maxLength: 10 },
             editable: true,
         },
-        {
+        { 
             title: 'Last online', 
             name: 'last_online', 
             sortable: true, 
-            filter: true, 
+            filter: true,
             type: 'date',
             editable: true,
         },
+        { title: 'Account name', name: 'account_name', editable: true, },
+        { title: 'Account id', name: 'account_id', editable: true, },
         { title: 'Player class', name: 'player_class', editable: true, },
         { title: 'Online', name: 'online', editable: true, },
         { title: 'Cube size', name: 'cube_size', editable: true, },
@@ -92,17 +106,25 @@ export class PlayersComponent {
         { title: 'X', name: 'x', editable: true, },
         { title: 'Y', name: 'y', editable: true, },
         { title: 'Z', name: 'z', editable: true, },
+        { title: 'Recoverexp', name: 'recoverexp', editable: true, },
+        { title: 'Heading', name: 'heading', editable: true, },
+        { title: 'World id', name: 'world_id', editable: true, },
+        { title: 'Creation date', name: 'creation_date', editable: true, },
+        { title: 'Stigma slot size', name: 'advanced_stigma_slot_size', editable: true, },
+        { title: 'Warehouse size', name: 'warehouse_size', editable: true, },
+        { title: 'Mailbox Letters', name: 'mailboxLetters', editable: true, },
+        { title: 'Mailbox Un Read Letters', name: 'mailboxUnReadLetters', editable: true, },
+        { title: 'Title id', name: 'title_id', editable: true, },
+        { title: 'Repletion state', name: 'repletionstate', editable: true, },
+        { title: 'Rebirth id', name: 'rebirth_id', editable: true, },
+        { title: 'Member points', name: 'memberpoints', editable: true, },
+        { title: 'Marry player id', name: 'marry_player_id', editable: true, },
+        { title: 'Marry title', name: 'marrytitle', editable: true, },
+        { title: 'Bg points', name: 'bg_points', editable: true, },
+        { title: 'Personal rating', name: 'personal_rating', editable: true, },        
+        { title: 'Arena points', name: 'arena_points', editable: true, },
+        { title: 'Partner id', name: 'partner_id', editable: true, },                        
+        { title: 'Deletion date', name: 'deletion_date', editable: true, },
     ];
-
-    public settings: any = {
-        api: 'http://host3/players',
-        crud: true,
-        pageHeader: 'Players',
-        primaryKey: 'id',
-        type: 'yii', // ords or yii (default)
-        tableWidth: 820,
-        scrollHeight: 380,
-        treeViewWidth: 120,
-    };
 
 }

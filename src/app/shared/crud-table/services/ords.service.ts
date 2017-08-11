@@ -1,54 +1,59 @@
-import { Injectable } from '@angular/core';
-import { Http, Response, URLSearchParams, Headers } from '@angular/http';
+import {Injectable} from '@angular/core';
+import {Http, Response, URLSearchParams, Headers} from '@angular/http';
 import 'rxjs/add/operator/toPromise';
-import { Filter, ICrudService } from '../types/interfaces';
+import {Filter, ICrudService, Settings} from '../types/interfaces';
 
 @Injectable()
 export class OrdsService implements ICrudService {
 
   public url: string;
   public primaryKey: string = 'id';
+  public settings: Settings;
 
   constructor(private http: Http) {
   }
 
   getJsonHeaders() {
-    let headers = new Headers();
+    const headers = new Headers();
     headers.append('Content-Type', 'application/json');
     return headers;
   }
 
   getAuthHeaders() {
-    let headers = this.getJsonHeaders();
-    let authToken = localStorage.getItem('auth_token');
-    if(authToken) {
-        headers.append('Authorization', `Bearer ${authToken}`);
+    const headers = this.getJsonHeaders();
+    const authToken = localStorage.getItem('auth_token');
+    if (authToken) {
+      headers.append('Authorization', `Bearer ${authToken}`);
     }
     return headers;
   }
 
   getItems(page: number = 1, filters?: Filter, sortField?: string, sortOrder?: number): Promise<any> {
-    let headers = this.getAuthHeaders();
-    let url = this.url + "/";
-    if(page > 1) {
-        url = url + "/?offset=" + page;
-    }
-    url = url + this.filterObject(filters, sortField, sortOrder);
-    return this.http.get(url, {headers: headers})
+    const headers = this.getAuthHeaders();
+    const url = this.url;
+    filters = this.filterObject(filters);
+    return this.http.post(url, {
+      process: this.settings.process,
+      limit: 25,
+      page: page,
+      sort_field: sortField,
+      sort: sortOrder,
+      filters: filters
+    }, {headers: headers})
       .toPromise()
       .then(this.extractData)
       .catch(this.handleError);
   }
 
   getItem(id: number): Promise<any> {
-    let filterId = {
+    const filterId = {
       [this.primaryKey]: {value: id}
     };
     return this.getItems(1, filterId)
       .then(data => data.items[0]);
   }
 
-  save(item: any):Promise<any> {
+  save(item: any): Promise<any> {
     if (item[this.primaryKey]) {
       return this.put(item);
     }
@@ -56,10 +61,10 @@ export class OrdsService implements ICrudService {
   }
 
   // Add new
-  post(item: any):Promise<any> {
-    let headers = this.getAuthHeaders();
+  post(item: any): Promise<any> {
+    const headers = this.getAuthHeaders();
     return this.http
-      .post(this.url+'/', JSON.stringify(item), {headers: headers})
+      .post(this.url + '/', JSON.stringify(item), {headers: headers})
       .toPromise()
       .then(res => res.json())
       .catch(this.handleError);
@@ -67,8 +72,8 @@ export class OrdsService implements ICrudService {
 
   // Update existing
   put(item: any) {
-    let headers = this.getAuthHeaders();
-    let url = `${this.url}/${item[this.primaryKey]}`;
+    const headers = this.getAuthHeaders();
+    const url = `${this.url}/${item[this.primaryKey]}`;
     return this.http
       .put(url, JSON.stringify(item), {headers: headers})
       .toPromise()
@@ -77,8 +82,8 @@ export class OrdsService implements ICrudService {
   }
 
   delete(item: any) {
-    let headers = this.getAuthHeaders();
-    let url = `${this.url}/?q={"${this.primaryKey}":${item[this.primaryKey]}}`;
+    const headers = this.getAuthHeaders();
+    const url = `${this.url}?q={"${this.primaryKey}":${item[this.primaryKey]}}`;
     return this.http
       .delete(url, {headers: headers})
       .toPromise()
@@ -87,17 +92,19 @@ export class OrdsService implements ICrudService {
 
   private extractData(res: Response) {
     let body = res.json();
-    let meta = {
-    	"totalCount": body.count, 
-    	"perPage": body.limit
-    	};
-    body = {"items": body.items, "_meta": meta};
+    const count = (body.items[0] && body.items[0].row_cnt) ? body.items[0].row_cnt : 0;
+    const limit = body.limit;
+    const meta = {
+      'totalCount': count,
+      'perPage': limit
+    };
+    body = {'items': body.items, '_meta': meta};
     return body;
   }
 
   private handleError(response: Response | any) {
     let errMsg: string;
-    let errors : any;
+    let errors: any;
     let fieldErrors: any;
     if (response instanceof Response) {
       const body = response.json() || '';
@@ -115,32 +122,15 @@ export class OrdsService implements ICrudService {
     return Promise.reject(errors);
   }
 
-  private filterObject(obj: Filter, sortField?: string, sortOrder?: number): string {
-  	let filterObject = {};
-  	let orderby = {};
-  	let result = '';
+  private filterObject(obj: Filter): any {
+    const filterObjects = [];
 
-  	if(sortField && sortOrder) {
-  		orderby = {[sortField]: sortOrder};
-  	}
-
-    for (let key in obj) {
-      if (obj[key]['value'] && obj[key]['value'].trim()) {
-      	if(typeof obj[key]['value'] === 'string') { // TODO
-      		filterObject[key] = {"$like": obj[key]['value']+'%25'};
-      	} else {
-        	filterObject[key] = {"$eq": obj[key]['value']};
-    	}
+    for (const key in obj) {
+      if (obj[key]['value']) {
+        filterObjects.push({field: key, value: obj[key]['value'], matchMode: obj[key]['matchMode'] || 'eq'});
       }
     }
-
-  	if(Object.keys(orderby).length !== 0) {
-    	filterObject["$orderby"] = orderby;
-  	}
-    if(Object.keys(filterObject).length !== 0) {
-    	result = '?q=' + JSON.stringify(filterObject)
-    }
-    return result;
+    return JSON.stringify({params: filterObjects});
   }
 
 }

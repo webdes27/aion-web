@@ -4,7 +4,7 @@ import 'rxjs/add/operator/toPromise';
 import {Filter, ICrudService, Settings} from '../types/interfaces';
 
 @Injectable()
-export class YiiService implements ICrudService {
+export class OrdsService implements ICrudService {
 
   public url: string;
   public primaryKey: string = 'id';
@@ -22,13 +22,19 @@ export class YiiService implements ICrudService {
   getAuthHeaders() {
     const headers = this.getJsonHeaders();
     const authToken = localStorage.getItem('auth_token');
-    headers.append('Authorization', `Bearer ${authToken}`);
+    if (authToken) {
+      headers.append('Authorization', `Bearer ${authToken}`);
+    }
     return headers;
   }
 
   getItems(page: number = 1, filters?: Filter, sortField?: string, sortOrder?: number): Promise<any> {
     const headers = this.getAuthHeaders();
-    const url = this.url + '?page=' + page + this.urlEncode(filters) + this.urlSort(sortField, sortOrder);
+    let url = this.url + '/';
+    if (page > 1) {
+      url = url + '/?offset=' + page;
+    }
+    url = url + this.filterObject(filters, sortField, sortOrder);
     return this.http.get(url, {headers: headers})
       .toPromise()
       .then(this.extractData)
@@ -54,7 +60,7 @@ export class YiiService implements ICrudService {
   post(item: any): Promise<any> {
     const headers = this.getAuthHeaders();
     return this.http
-      .post(this.url, JSON.stringify(item), {headers: headers})
+      .post(this.url + '/', JSON.stringify(item), {headers: headers})
       .toPromise()
       .then(res => res.json())
       .catch(this.handleError);
@@ -73,7 +79,7 @@ export class YiiService implements ICrudService {
 
   delete(item: any) {
     const headers = this.getAuthHeaders();
-    const url = `${this.url}/${item[this.primaryKey]}`;
+    const url = `${this.url}/?q={"${this.primaryKey}":${item[this.primaryKey]}}`;
     return this.http
       .delete(url, {headers: headers})
       .toPromise()
@@ -81,7 +87,12 @@ export class YiiService implements ICrudService {
   }
 
   private extractData(res: Response) {
-    const body = res.json();
+    let body = res.json();
+    const meta = {
+      'totalCount': body.count,
+      'perPage': body.limit
+    };
+    body = {'items': body.items, '_meta': meta};
     return body;
   }
 
@@ -105,29 +116,32 @@ export class YiiService implements ICrudService {
     return Promise.reject(errors);
   }
 
-  private urlEncode(obj: Filter): string {
-    const urlSearchParams = new URLSearchParams();
-    for (const key in obj) {
-      if (obj[key]['value']) {
-        urlSearchParams.append(key, obj[key]['value']);
-      }
-    }
-    const url = urlSearchParams.toString();
-    return (url) ? '&' + url : '';
-  }
+  private filterObject(obj: Filter, sortField?: string, sortOrder?: number): string {
+    const filterObject = {};
+    let orderby = {};
+    let result = '';
 
-  private urlSort(sortField: string, sortOrder: number): string {
-    if (sortField) {
-      if (sortOrder > 0) {
-        return '&sort=' + sortField;
-      } else if (sortOrder < 0) {
-        return '&sort=-' + sortField;
-      } else {
-        return '';
-      }
-    } else {
-      return '';
+    if (sortField && sortOrder) {
+      orderby = {[sortField]: sortOrder};
     }
+
+    for (const key in obj) {
+      if (obj[key]['value'] && obj[key]['value'].trim()) {
+        if (typeof obj[key]['value'] === 'string') { // TODO
+          filterObject[key] = {'$like': obj[key]['value'] + '%25'};
+        } else {
+          filterObject[key] = {'$eq': obj[key]['value']};
+        }
+      }
+    }
+
+    if (Object.keys(orderby).length !== 0) {
+      filterObject['$orderby'] = orderby;
+    }
+    if (Object.keys(filterObject).length !== 0) {
+      result = '?q=' + JSON.stringify(filterObject);
+    }
+    return result;
   }
 
 }

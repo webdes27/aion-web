@@ -40,6 +40,8 @@ import {PayComponent} from './pay/pay.component';
 import {RatesComponent} from './rates/rates.component';
 import {UserModule} from './users';
 import {CrudTableModule} from './shared/crud-table';
+import {DemoComponent} from './demo/demo.component';
+import {DemoCrudTableModule} from './shared/crud-table/demo/demo-crud-table.module';
 
 @NgModule({
   declarations: [
@@ -67,6 +69,7 @@ import {CrudTableModule} from './shared/crud-table';
     RatesComponent,
     CollapseDirective,
     DropdownDirective,
+    DemoComponent,
   ],
   imports: [
     BrowserModule,
@@ -76,7 +79,8 @@ import {CrudTableModule} from './shared/crud-table';
     RouterModule.forRoot(ROUTES, { useHash: true, preloadingStrategy: PreloadAllModules }),
     BrowserAnimationsModule,
     UserModule,
-    CrudTableModule
+    CrudTableModule,
+    DemoCrudTableModule
   ],
   providers: [
     UserService,
