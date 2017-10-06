@@ -3,7 +3,7 @@ import { NgModule } from '@angular/core';
 import { CrudTableModule } from '../shared/crud-table';
 
 import {AdminRoutingModule} from './admin.routing';
-import {AdminComponent}   from './admin.component';
+import {AdminComponent} from './admin.component';
 import {AccountComponent} from './account/account.component';
 import {PayBalanceComponent} from './balances/balances.component';
 import {ShopComponent} from './shop/shop.component';

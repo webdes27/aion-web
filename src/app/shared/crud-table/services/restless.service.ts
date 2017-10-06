@@ -1,10 +1,10 @@
 import {Injectable} from '@angular/core';
-import {Http, Response, URLSearchParams, Headers} from '@angular/http';
+import {Http, Response, Headers} from '@angular/http';
 import 'rxjs/add/operator/toPromise';
 import {Filter, ICrudService} from '../types/interfaces';
 
 @Injectable()
-export class YiiService implements ICrudService {
+export class RestlessService implements ICrudService {
 
   public url: string;
   public primaryKey: any;
@@ -27,7 +27,14 @@ export class YiiService implements ICrudService {
 
   getItems(page: number = 1, filters?: Filter, sortField?: string, sortOrder?: number): Promise<any> {
     const headers = this.getAuthHeaders();
-    const url = this.url + '?page=' + page + this.urlEncode(filters) + this.urlSort(sortField, sortOrder);
+    let url = this.url;
+    if (page > 1) {
+      url = url + '?page=' + page + '&';
+    } else {
+      url = url + '?';
+    }
+    url = url + this.filterObject(filters, sortField, sortOrder);
+    // const url = this.url + '?page=' + page + this.urlEncode(filters) + this.urlSort(sortField, sortOrder);
     return this.http.get(url, {headers: headers})
       .toPromise()
       .then(this.extractData)
@@ -91,7 +98,13 @@ export class YiiService implements ICrudService {
   }
 
   private extractData(res: Response) {
-    const body = res.json();
+    let body = res.json();
+    const meta = {
+      'totalCount': body.num_results,
+      'perPage': 10
+    };
+    const items = (body.objects) ? body.objects : body;
+    body = {'items': items, '_meta': meta};
     return body;
   }
 
@@ -115,29 +128,36 @@ export class YiiService implements ICrudService {
     return Promise.reject(errors);
   }
 
-  private urlEncode(obj: Filter): string {
-    const urlSearchParams = new URLSearchParams();
-    for (const key in obj) {
-      if (obj[key]['value']) {
-        urlSearchParams.append(key, obj[key]['value']);
-      }
-    }
-    const url = urlSearchParams.toString();
-    return (url) ? '&' + url : '';
-  }
+  private filterObject(obj: Filter, sortField?: string, sortOrder?: number): string {
+    const filters = [];
+    let orderby = {};
+    let result = '';
+    const filterObject = {};
 
-  private urlSort(sortField: string, sortOrder: number): string {
-    if (sortField) {
-      if (sortOrder > 0) {
-        return '&sort=' + sortField;
-      } else if (sortOrder < 0) {
-        return '&sort=-' + sortField;
-      } else {
-        return '';
+    if (sortField && sortOrder) {
+      const direction = sortOrder > 0 ? 'asc' : (sortOrder < 0 ? 'desc' : null);
+      if (direction) {
+        orderby = [{'field': sortField, 'direction': direction}];
       }
-    } else {
-      return '';
     }
+
+    for (const key in obj) {
+      if (obj[key]['value'] && obj[key]['value']) {
+        filters.push({'name': key, 'op': 'eq', 'val': obj[key]['value']});
+      }
+    }
+
+    if (Object.keys(filters).length !== 0) {
+      filterObject['filters'] = filters;
+    }
+    if (Object.keys(orderby).length !== 0) {
+      filterObject['order_by'] = orderby;
+    }
+
+    if (Object.keys(filterObject).length !== 0) {
+      result = 'q=' + JSON.stringify(filterObject);
+    }
+    return result;
   }
 
 }

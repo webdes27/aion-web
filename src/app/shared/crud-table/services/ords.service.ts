@@ -1,14 +1,13 @@
 import {Injectable} from '@angular/core';
-import {Http, Response, URLSearchParams, Headers} from '@angular/http';
+import {Http, Response, Headers} from '@angular/http';
 import 'rxjs/add/operator/toPromise';
-import {Filter, ICrudService, Settings} from '../types/interfaces';
+import {Filter, ICrudService} from '../types/interfaces';
 
 @Injectable()
 export class OrdsService implements ICrudService {
 
   public url: string;
-  public primaryKey: string = 'id';
-  public settings: Settings;
+  public primaryKey: any;
 
   constructor(private http: Http) {
   }
@@ -30,16 +29,12 @@ export class OrdsService implements ICrudService {
 
   getItems(page: number = 1, filters?: Filter, sortField?: string, sortOrder?: number): Promise<any> {
     const headers = this.getAuthHeaders();
-    const url = this.url;
-    filters = this.filterObject(filters);
-    return this.http.post(url, {
-      process: this.settings.process,
-      limit: 25,
-      page: page,
-      sort_field: sortField,
-      sort: sortOrder,
-      filters: filters
-    }, {headers: headers})
+    let url = this.url + '/';
+    if (page > 1) {
+      url = url + '/?offset=' + page;
+    }
+    url = url + this.filterObject(filters, sortField, sortOrder);
+    return this.http.get(url, {headers: headers})
       .toPromise()
       .then(this.extractData)
       .catch(this.handleError);
@@ -53,13 +48,6 @@ export class OrdsService implements ICrudService {
       .then(data => data.items[0]);
   }
 
-  save(item: any): Promise<any> {
-    if (item[this.primaryKey]) {
-      return this.put(item);
-    }
-    return this.post(item);
-  }
-
   // Add new
   post(item: any): Promise<any> {
     const headers = this.getAuthHeaders();
@@ -71,9 +59,18 @@ export class OrdsService implements ICrudService {
   }
 
   // Update existing
-  put(item: any) {
+  put(item: any): Promise<any> {
     const headers = this.getAuthHeaders();
-    const url = `${this.url}/${item[this.primaryKey]}`;
+    let url;
+    if (Array.isArray(this.primaryKey)) {
+      url = this.url + '?';
+      for (const key of this.primaryKey) {
+        url += key + '=' + item[key] + '&';
+      }
+      url = url.slice(0, -1);
+    } else {
+      url = (this.primaryKey) ? `${this.url}/${item[this.primaryKey]}` : this.url;
+    }
     return this.http
       .put(url, JSON.stringify(item), {headers: headers})
       .toPromise()
@@ -81,9 +78,18 @@ export class OrdsService implements ICrudService {
       .catch(this.handleError);
   }
 
-  delete(item: any) {
+  delete(item: any): Promise<any> {
     const headers = this.getAuthHeaders();
-    const url = `${this.url}?q={"${this.primaryKey}":${item[this.primaryKey]}}`;
+    let url;
+    if (Array.isArray(this.primaryKey)) {
+      url = this.url + '?';
+      for (const key of this.primaryKey) {
+        url += key + '=' + item[key] + '&';
+      }
+      url = url.slice(0, -1);
+    } else {
+      url = (this.primaryKey) ? `${this.url}/?q={"${this.primaryKey}":${item[this.primaryKey]}}` : this.url;
+    }
     return this.http
       .delete(url, {headers: headers})
       .toPromise()
@@ -92,11 +98,9 @@ export class OrdsService implements ICrudService {
 
   private extractData(res: Response) {
     let body = res.json();
-    const count = (body.items[0] && body.items[0].row_cnt) ? body.items[0].row_cnt : 0;
-    const limit = body.limit;
     const meta = {
-      'totalCount': count,
-      'perPage': limit
+      'totalCount': body.count,
+      'perPage': body.limit
     };
     body = {'items': body.items, '_meta': meta};
     return body;
@@ -122,15 +126,32 @@ export class OrdsService implements ICrudService {
     return Promise.reject(errors);
   }
 
-  private filterObject(obj: Filter): any {
-    const filterObjects = [];
+  private filterObject(obj: Filter, sortField?: string, sortOrder?: number): string {
+    const filterObject = {};
+    let orderby = {};
+    let result = '';
+
+    if (sortField && sortOrder) {
+      orderby = {[sortField]: sortOrder};
+    }
 
     for (const key in obj) {
-      if (obj[key]['value']) {
-        filterObjects.push({field: key, value: obj[key]['value'], matchMode: obj[key]['matchMode'] || 'eq'});
+      if (obj[key]['value'] && obj[key]['value'].trim()) {
+        if (typeof obj[key]['value'] === 'string') { // TODO
+          filterObject[key] = {'$like': obj[key]['value'] + '%25'};
+        } else {
+          filterObject[key] = {'$eq': obj[key]['value']};
+        }
       }
     }
-    return JSON.stringify({params: filterObjects});
+
+    if (Object.keys(orderby).length !== 0) {
+      filterObject['$orderby'] = orderby;
+    }
+    if (Object.keys(filterObject).length !== 0) {
+      result = '?q=' + JSON.stringify(filterObject);
+    }
+    return result;
   }
 
 }

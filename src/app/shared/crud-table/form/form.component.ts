@@ -1,5 +1,6 @@
-import {Component, Input, Output, EventEmitter} from '@angular/core';
+import {Component, Input, ViewChild, ViewContainerRef, OnInit, OnDestroy} from '@angular/core';
 import {Column, Settings} from '../types/interfaces';
+import {ColumnUtils} from '../utils/column-utils';
 
 @Component({
   selector: 'row-form',
@@ -7,20 +8,39 @@ import {Column, Settings} from '../types/interfaces';
   styleUrls: ['form.component.css'],
 })
 
-export class FormComponent {
+export class FormComponent implements OnInit, OnDestroy {
 
   @Input() public columns: Column[];
   @Input() public settings: Settings;
   @Input() public item: any;
+  @Input() public isNew: boolean = true;
 
   public beginValidate: any[] = [];
+  @ViewChild('cellTemplate', { read: ViewContainerRef }) cellTemplate: ViewContainerRef;
 
   constructor() {
   }
 
+  ngOnInit() {
+  }
+
+  ngOnDestroy(): void {
+    if (this.cellTemplate) {
+      this.cellTemplate.clear();
+    }
+  }
+
   elemEnabled(name: string): boolean {
-    const pk = (this.settings['primaryKey']) ? this.settings['primaryKey'].toLowerCase() : 'id';
-    return (name === pk) ? false : true;
+    if (Array.isArray(this.settings.primaryKey)) {
+      if (!this.isNew) {
+        return (this.settings.primaryKey.indexOf(name) === -1);
+      } else {
+        return true;
+      }
+    } else {
+      const pk = (this.settings['primaryKey']) ? this.settings['primaryKey'].toLowerCase() : null;
+      return (name !== pk);
+    }
   }
 
   isSelectActive(column, option) {
@@ -82,13 +102,7 @@ export class FormComponent {
   }
 
   getOptions(column: Column) {
-    if (column.options) {
-      if (column.dependsColumn) {
-        return column.options.filter((value) => value.parentId === this.item[column.dependsColumn]);
-      } else {
-        return column.options;
-      }
-    }
+    return ColumnUtils.getOptions(column, this.item);
   }
 
 }

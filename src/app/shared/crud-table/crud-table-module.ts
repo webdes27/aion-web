@@ -16,15 +16,19 @@ import {BodyRowComponent} from './body/body-row.component';
 import {BodyCellComponent} from './body/body-cell.component';
 import {ScrollerComponent} from './body/scroller.component';
 import {FooterComponent} from './footer/footer.component';
+import {DatatableComponent} from './datatable/datatable.component';
 import {TreeViewComponent} from './tree-view/tree-view.component';
 import {ResizeableDirective} from './directives/resizeable.directive';
 import {TreeTableComponent} from './tree-table/tree-table.component';
 import {TreeTableNodeComponent} from './tree-table/tree-table-node.component';
+import {NguiDatetimePickerModule} from './datetime-picker';
+import {ModalEditFormComponent} from './modal-edit-form/modal-edit-form.component';
 
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
+    NguiDatetimePickerModule,
   ],
   declarations: [
     CrudTableComponent,
@@ -42,11 +46,13 @@ import {TreeTableNodeComponent} from './tree-table/tree-table-node.component';
     ResizeableDirective,
     ScrollerComponent,
     FooterComponent,
+    DatatableComponent,
     TreeViewComponent,
     TreeTableComponent,
-    TreeTableNodeComponent
+    TreeTableNodeComponent,
+    ModalEditFormComponent,
   ],
-  exports: [CrudTableComponent, TreeTableComponent, TreeViewComponent],
+  exports: [DatatableComponent, CrudTableComponent, TreeTableComponent, TreeViewComponent, ModalComponent],
   providers: []
 })
 export class CrudTableModule {

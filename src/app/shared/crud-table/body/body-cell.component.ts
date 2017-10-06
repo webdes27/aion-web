@@ -1,8 +1,9 @@
 import {
-  Component, Input, PipeTransform, HostBinding, ViewChild,
+  Component, Input, Pipe, PipeTransform, HostBinding, ViewChild,
   Output, EventEmitter, HostListener, ElementRef, ViewContainerRef, OnDestroy, Renderer
 } from '@angular/core';
 import {Column} from '../types/interfaces';
+import {ColumnUtils} from '../utils/column-utils';
 
 @Component({
   selector: 'datatable-body-cell',
@@ -20,6 +21,7 @@ export class BodyCellComponent implements OnDestroy {
 
   public isFocused: boolean = false;
   public element: any;
+  @ViewChild('cellTemplate', { read: ViewContainerRef }) cellTemplate: ViewContainerRef;
 
   @HostBinding('style.width.px')
   get width(): number {
@@ -52,19 +54,23 @@ export class BodyCellComponent implements OnDestroy {
   }
 
   ngOnDestroy(): void {
+    if (this.cellTemplate) {
+      this.cellTemplate.clear();
+    }
   }
 
   get value(): any {
     if (!this.row || !this.column) {
       return '';
     }
-    const val = this.row[this.column.name];
+    let val = this.row[this.column.name];
     const userPipe: PipeTransform = this.column.pipe;
 
     if (userPipe) {
       return userPipe.transform(val);
     }
     if (val !== undefined) {
+      val = ColumnUtils.getOptionName(val, this.column);
       return val;
     }
     return '';
@@ -72,16 +78,16 @@ export class BodyCellComponent implements OnDestroy {
 
   switchCellToEditMode(event: any, column: Column) {
     if (column.editable) {
-        this.renderer.setElementClass(this.element, 'cell-editing', true);
-        let focusable;
-        if (column.options) {
-          focusable = this.element.querySelector('.cell-editor select');
-        } else {
-          focusable = this.element.querySelector('.cell-editor input');
-        }
-        if (focusable) {
-          setTimeout(() => this.renderer.invokeElementMethod(focusable, 'focus'), 50);
-        }
+      this.renderer.setElementClass(this.element, 'cell-editing', true);
+      let focusable;
+      if (column.options) {
+        focusable = this.element.querySelector('.cell-editor select');
+      } else {
+        focusable = this.element.querySelector('.cell-editor input');
+      }
+      if (focusable) {
+        setTimeout(() => this.renderer.invokeElementMethod(focusable, 'focus'), 50);
+      }
     }
   }
 
@@ -135,14 +141,8 @@ export class BodyCellComponent implements OnDestroy {
     }
   }
 
-  getOptions(column: Column, row: any) {
-    if (column.options) {
-      if (column.dependsColumn) {
-        return column.options.filter((value) => value.parentId === row[column.dependsColumn]);
-      } else {
-        return column.options;
-      }
-    }
+  getOptions(column: Column, row: any[]) {
+    return ColumnUtils.getOptions(column, row);
   }
 
 

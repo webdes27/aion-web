@@ -1,68 +1,37 @@
 <div class="alert alert-danger" *ngIf="errors">{{errors.errMsg}}</div>
 
 <p *ngIf="settings.crud" [style.display]="(!onDetailView) ? 'block' : 'none' ">
-  <button type="button" class="btn btn-primary" (click)="createItem()"><i class="fa fa-plus"></i> Create</button>
+  <button type="button" class="btn btn-primary" (click)="createItem()">Create</button>
 </p>
 <div class="grid-view" [style.display]="(!onDetailView) ? 'block' : 'none' ">
-  <div class="datatable fixed-header fixed-row scroll-horz"
-       [ngStyle]="{'width.px': tableWidth}">
-    <loading-indicator [isLoading]="loading"></loading-indicator>
-    <ng-filter
-      #selectFilter
-      [filters]="filters"
-      (onFilter)="onFilter($event)">
-    </ng-filter>
-    <datatable-header
-         [columns]="columns"
-         [filters]="filters"
-         [sortMeta]="sortMeta"
-         (onSort)="sort($event)"
-         (onShowColumnMenu)="showColumnMenu($event)"
-         [actionColumnWidth]="actionColumnWidth"
-         (onClearAllFilters)="selectFilter.clearAllFilters()"
-         (onResize)="resizeColumn($event)"
-         [offsetX]="offsetX"
-         [headerHeight]="headerHeight">
-    </datatable-header>
-    <datatable-body
-         [ngStyle]="{'height.px': scrollHeight}"
-         [columns]="columns"
-         [items]="items"
-         [enableAction]="true"
-         [(selectedRowIndex)]="selectedRowIndex"
-         [actionColumnWidth]="actionColumnWidth"
-         (editComplete)="editItem($event)"
-         [actionMenu]="rowMenu"
-         [offsetX]="offsetX"
-         (scroll)="onBodyScroll($event)">
-    </datatable-body>
-    <datatable-footer
-      [totalItems]="totalItems"
-      [itemsPerPage]="itemsPerPage"
-      (pageChanged)="pageChanged($event)">
-    </datatable-footer>
-  </div>
+  <app-datatable
+    [columns]="columns"
+    [settings]="settings"
+    [items]="items"
+    [filters]="filters"
+    [rowMenu]="rowMenu"
+    [itemsPerPage]="itemsPerPage"
+    [totalItems]="totalItems"
+    [loading]="loading"
+    (filterChanged)="onFilter($event)"
+    (pageChanged)="pageChanged($event)"
+    (sortChanged)="sort($event)"
+    (editComplete)="editItem($event)"
+    (selectedRowIndexChanged)="onSelectedRow($event)">
+  </app-datatable>
 </div>
 
-<app-modal #childModal [modalTitle]="modalTitle()">
-  <div class="app-modal-body">
-    <div *ngIf="item">
-      <row-form
-        [columns]="columns"
-        [item]="item"
-        [settings]="settings">
-      </row-form>
-    </div>
-  </div>
-  <div class="app-modal-footer">
-    <button type="button" class="btn btn-danger" *ngIf="!newItem" (click)="delete()"><i class="fa fa-close"></i> Delete
-    </button>
-    <button type="button" class="btn btn-success" (click)="save()"><i class="fa fa-check"></i> Save</button>
-    <button type="button" class="btn btn-primary pull-right" (click)="childModal.hide()"><i
-      class="fa fa-arrow-circle-left"></i> Close
-    </button>
-  </div>
-</app-modal>
+<modal-edit-form #modalEditForm
+  [columns]="columns"
+  [item]="item"
+  [settings]="settings"
+  [service]="service"
+  (saved)="onSaved($event)"
+  (updated)="onUpdated($event)"
+  (deleted)="onDeleted($event)"
+  (loading)="onLoading($event)"
+  (errors)="onErrors($event)">
+</modal-edit-form>
 
 <detail-view *ngIf="onDetailView && item"
              [columns]="columns"

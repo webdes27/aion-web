@@ -12,7 +12,7 @@ import { NoContentComponent } from './no-content';
 import {UserService} from './services/user/user.service';
 import {StorageService} from './services/storage/storage.service';
 import {RequestService} from './services/request/request.service';
-import {CONFIG, Config, APP_CONFIG} from './app.config';
+import {CONFIG, APP_CONFIG} from './app.config';
 import {LoadingService} from './services/loading';
 import {CollapseDirective} from './shared/directives/collapse.directive';
 import {DropdownDirective} from './shared/directives/dropdown.directive';
@@ -48,8 +48,8 @@ import {DemoCrudTableModule} from './shared/crud-table/demo/demo-crud-table.modu
     AppComponent,
     NoContentComponent,
     LoadingIndicator,
-    StatComponent, 
-    MenuComponent, 
+    StatComponent,
+    MenuComponent,
     BalanceComponent,
     UsermenuComponent,
     IndexComponent,

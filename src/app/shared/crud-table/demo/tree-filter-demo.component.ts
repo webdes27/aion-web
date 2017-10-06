@@ -1,5 +1,6 @@
 import {Component, ViewChild} from '@angular/core';
-import {ITreeNode, Column, Settings, Filter} from '../index';
+import {ITreeNode, Column, Settings, Filter, ICrudService} from '../index';
+import {DemoService} from '../services/demo.service';
 
 @Component({
   selector: 'tree-filter-demo',
@@ -16,6 +17,7 @@ import {ITreeNode, Column, Settings, Filter} from '../index';
       [columns]="columns"
       [settings]="settings"
       [filters]="filters"
+      [service]="service"
       (filterChanged)="onFilterChanged($event)">
     </crud-table>`
 })
@@ -24,8 +26,12 @@ export class TreeFilterDemoComponent {
   selectedNode: ITreeNode;
   filters: Filter = {};
   @ViewChild('table') table: any;
+  treeViewWidth: number = 150;
+
+  public service: ICrudService;
 
   constructor() {
+    this.service = new DemoService();
   }
 
   public columns: Column[] = [
@@ -43,7 +49,7 @@ export class TreeFilterDemoComponent {
       filter: true,
       frozen: true,
       width: 250,
-      validation: { pattern: '^[a-zA-Z ]+$' },
+      validation: {pattern: '^[a-zA-Z ]+$'},
       editable: true,
     },
     {
@@ -53,8 +59,8 @@ export class TreeFilterDemoComponent {
       filter: true,
       type: 'dropdown',
       options: [
-        { id: 'ASMODIANS', name: 'ASMODIANS' },
-        { id: 'ELYOS', name: 'ELYOS' },
+        {id: 'ASMODIANS', name: 'ASMODIANS'},
+        {id: 'ELYOS', name: 'ELYOS'},
       ],
       editable: true,
     },
@@ -65,8 +71,8 @@ export class TreeFilterDemoComponent {
       filter: true,
       type: 'radio',
       options: [
-        { id: 'MALE', name: 'MALE' },
-        { id: 'FEMALE', name: 'FEMALE' },
+        {id: 'MALE', name: 'MALE'},
+        {id: 'FEMALE', name: 'FEMALE'},
       ],
       editable: true,
     },
@@ -76,7 +82,7 @@ export class TreeFilterDemoComponent {
       sortable: true,
       filter: true,
       type: 'number',
-      validation: { required: true, minLength: 2, maxLength: 10 },
+      validation: {required: true, minLength: 2, maxLength: 10},
       editable: true,
     },
     {
@@ -95,8 +101,7 @@ export class TreeFilterDemoComponent {
     primaryKey: 'id',
     type: 'demo', // ords or yii (default)
     tableWidth: 820,
-    scrollHeight: 380,
-    treeViewWidth: 150,
+    scrollHeight: 380
   };
 
   public treeNodes: ITreeNode[] = [
@@ -141,7 +146,6 @@ export class TreeFilterDemoComponent {
       } else if (this.filters[node.data['column']]) {
         delete this.filters[node.data['column']];
       }
-      this.table.setColumnSelectedOption(node.id, node.data['column'], null);
 
       if (node.parent) {
         this.selectNode(node.parent);
@@ -156,7 +160,6 @@ export class TreeFilterDemoComponent {
       for (const childNode of node.children) {
         if (this.filters[childNode.data['column']]) {
           delete this.filters[childNode.data['column']];
-          this.table.setColumnSelectedOption(null, childNode.data['column'], null);
         }
       }
     }

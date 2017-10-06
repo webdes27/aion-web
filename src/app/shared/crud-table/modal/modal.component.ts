@@ -1,4 +1,4 @@
-import {Component, ElementRef, ViewChild, Input} from "@angular/core";
+import {Component, ElementRef, ViewChild, Input} from '@angular/core';
 
 @Component({
   selector: 'app-modal',
@@ -20,7 +20,7 @@ export class ModalComponent {
     this.visible = true;
     setTimeout(() => {
       this.visibleAnimate = true;
-      this.modalRoot.nativeElement.focus()
+      this.modalRoot.nativeElement.focus();
     }, 1);
   }
 

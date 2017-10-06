@@ -1,18 +1,5 @@
 import {EventEmitter, PipeTransform} from '@angular/core';
 
-export interface Link {
-  self: string;
-  next: string;
-  last: string;
-}
-
-export interface Meta {
-  totalCount: number;
-  pageCount: number;
-  currentPage: number;
-  perPage: number;
-}
-
 export interface ISelectOption {
   id: any;
   name: string;
@@ -22,8 +9,8 @@ export interface ISelectOption {
 export interface Column {
   title: string;
   name: string;
-  sortable: boolean;
-  filter: boolean;
+  sortable?: boolean;
+  filter?: boolean;
   options?: ISelectOption[];
   pipe?: PipeTransform;
   width?: number;
@@ -33,6 +20,7 @@ export interface Column {
   editable?: boolean;
   resizeable?: boolean;
   dependsColumn?: string;
+  cellTemplate?: any;
 }
 
 export interface FilterMetadata {
@@ -48,29 +36,24 @@ export interface Settings {
   api: string;
   process?: string;
   crud: boolean;
-  primaryKey?: string;
+  primaryKey?: any;
   type?: string;
   tableWidth?: number;
   scrollHeight?: number;
-  treeViewWidth?: number;
+  sortable?: boolean;
+  filter?: boolean;
+  initLoad?: boolean;
+  clientSide?: boolean;
 }
 
 export interface ICrudService {
   url: string;
-  primaryKey: string;
-  settings: Settings;
-
+  primaryKey: any;
   getItems(page: number, filters?: Filter, sortField?: string, sortOrder?: number): Promise<any>;
-
   getItem(id: number): Promise<any>;
-
-  save(item: any): Promise<any>;
-
   post(item: any): Promise<any>;
-
-  put(item: any);
-
-  delete(item: any);
+  put(item: any): Promise<any>;
+  delete(item: any): Promise<any>;
 }
 
 export interface SortMeta {
