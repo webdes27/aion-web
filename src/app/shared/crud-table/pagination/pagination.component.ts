@@ -10,43 +10,43 @@ export class PaginationComponent {
   protected _currentPage: number = 1;
   protected _itemsPerPage: number = 10;
   protected _totalItems: number = 0;
+  pages: any;
 
   @Output() pageChanged = new EventEmitter();
 
   @Input()
+  public set itemsPerPage(value: number) {
+    this._itemsPerPage = value;
+    this.pages = this.getPages();
+  }
+
   public get itemsPerPage(): number {
     return this._itemsPerPage;
   }
 
-  public set itemsPerPage(value: number) {
-    this._itemsPerPage = value;
-    this.setPage(this.currentPage);
+  @Input()
+  public set totalItems(value: number) {
+    this._totalItems = value;
+    this.pages = this.getPages();
   }
 
-  @Input()
   public get totalItems(): number {
     return this._totalItems;
   }
 
-  public set totalItems(value: number) {
-    this._totalItems = value;
-    this.setPage(this.currentPage);
-  }
-
   @Input()
-  public get currentPage(): number {
-    return this._currentPage;
-  }
-
   public set currentPage(value: number) {
     const _previous = this._currentPage;
-    this._currentPage = (value > this.calculateTotalPages()) ? this.calculateTotalPages() : (value || 1);
+    this._currentPage = (value > this.totalPages()) ? this.totalPages() : (value || 1);
 
     if (_previous === this._currentPage || typeof _previous === 'undefined') {
       return;
     }
+    this.pages = this.getPages();
+  }
 
-    this.pageChanged.emit(this._currentPage);
+  public get currentPage(): number {
+    return this._currentPage;
   }
 
   public setPage(page: number, event ?: MouseEvent): void {
@@ -58,10 +58,13 @@ export class PaginationComponent {
       const target: any = event.target;
       target.blur();
     }
-    this.currentPage = page;
+    if (page > 0 && page <= this.totalPages() && page !== this.currentPage) {
+      this.currentPage = page;
+      this.pageChanged.emit(this.currentPage);
+    }
   }
 
-  public calculateTotalPages(): number {
+  public totalPages(): number {
     const totalPages = this.itemsPerPage < 1 ? 1 : Math.ceil(this.totalItems / this.itemsPerPage);
     return Math.max(totalPages || 0, 1);
   }
@@ -70,7 +73,7 @@ export class PaginationComponent {
     const maxSize: number = 10;
     const pages: any[] = [];
     let startPage = 1;
-    const totalPages = this.calculateTotalPages();
+    const totalPages = this.totalPages();
     let endPage = totalPages;
     const isMaxSized = typeof maxSize !== 'undefined' && maxSize < totalPages;
 

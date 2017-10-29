@@ -1,32 +1,29 @@
 <span class="cell-data"
-  *ngIf="!column.cellTemplate"
-  [title]="value"
-  [innerHTML]="value">
+      *ngIf="!column.cellTemplate"
+      title="{{value}}">
+  {{value}}
 </span>
 <ng-template #cellTemplate
              *ngIf="column.cellTemplate"
              [ngTemplateOutlet]="column.cellTemplate"
-             [ngOutletContext]="{
-                value: value,
-                row: row,
-                column: column
-             }">
+             [ngTemplateOutletContext]="cellContext">
 </ng-template>
 
 <div class="cell-editor" *ngIf="column.editable">
   <select
+    #selectElement
     *ngIf="column.options"
     [(ngModel)]="row[column.name]"
     [id]="column.name"
-    (keydown)="onCellEditorKeydown($event, column, row, colIndex)"
+    (keydown)="onCellEditorKeydown($event)"
     (blur)="switchCellToViewMode()">
     <option *ngFor="let opt of getOptions(column, row)" [value]="opt.id">{{opt.name}}</option>
   </select>
 
   <input type="text"
+         #inputElement
          *ngIf="!column.options"
          [(ngModel)]="row[column.name]"
-         (keydown)="onCellEditorKeydown($event, column, row, colIndex)"
-         (blur)="switchCellToViewMode()"
-  />
+         (keydown)="onCellEditorKeydown($event)"
+         (blur)="switchCellToViewMode()"/>
 </div>

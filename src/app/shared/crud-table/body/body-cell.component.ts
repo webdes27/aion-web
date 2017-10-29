@@ -1,6 +1,6 @@
 import {
-  Component, Input, Pipe, PipeTransform, HostBinding, ViewChild,
-  Output, EventEmitter, HostListener, ElementRef, ViewContainerRef, OnDestroy, Renderer
+  Component, Input, PipeTransform, HostBinding, ViewChild, ChangeDetectionStrategy, DoCheck, ChangeDetectorRef,
+  Output, EventEmitter, HostListener, ElementRef, ViewContainerRef, OnDestroy
 } from '@angular/core';
 import {Column} from '../types/interfaces';
 import {ColumnUtils} from '../utils/column-utils';
@@ -8,24 +8,84 @@ import {ColumnUtils} from '../utils/column-utils';
 @Component({
   selector: 'datatable-body-cell',
   templateUrl: './body-cell.component.html',
-  host: {
-    class: 'datatable-body-cell'
-  }
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class BodyCellComponent implements OnDestroy {
+export class BodyCellComponent implements OnDestroy, DoCheck {
 
   @Input() row: any;
   @Input() column: Column;
   @Input() colIndex: number;
   @Output() editComplete: EventEmitter<any> = new EventEmitter();
 
-  public isFocused: boolean = false;
-  public element: any;
-  @ViewChild('cellTemplate', { read: ViewContainerRef }) cellTemplate: ViewContainerRef;
+  @ViewChild('cellTemplate', {read: ViewContainerRef}) cellTemplate: ViewContainerRef;
+  @ViewChild('selectElement') selectElement: ElementRef;
+  @ViewChild('inputElement') inputElement: ElementRef;
+
+  @HostBinding('class')
+  get columnCssClasses(): any {
+    let cls = 'datatable-body-cell';
+    if (this.editing) {
+      cls += ' cell-editing';
+    }
+    if (this.isFocused || this.editing) {
+      cls += ' active';
+    }
+    return cls;
+  }
 
   @HostBinding('style.width.px')
   get width(): number {
     return this.column.width;
+  }
+
+  value: any;
+  isFocused: boolean = false;
+  element: any;
+  editing: boolean = false;
+  cellContext: any = {
+    row: this.row,
+    value: this.value,
+    column: this.column
+  };
+
+  constructor(element: ElementRef, private cd: ChangeDetectorRef) {
+    this.element = element.nativeElement;
+  }
+
+  ngDoCheck(): void {
+    this.checkValueUpdates();
+  }
+
+  ngOnDestroy(): void {
+    if (this.cellTemplate) {
+      this.cellTemplate.clear();
+    }
+  }
+
+  checkValueUpdates(): void {
+    let value = '';
+
+    if (!this.row || !this.column) {
+      value = '';
+    } else {
+      const val = this.row[this.column.name];
+      const userPipe: PipeTransform = this.column.pipe;
+
+      if (userPipe) {
+        value = userPipe.transform(val);
+      } else if (value !== undefined) {
+        value = val;
+      }
+    }
+
+    if (this.value !== value) {
+      this.value = value;
+      this.cellContext.value = value;
+      if (value !== null && value !== undefined) {
+        this.value = ColumnUtils.getOptionName(value, this.column);
+      }
+      this.cd.markForCheck();
+    }
   }
 
   @HostListener('focus')
@@ -38,77 +98,38 @@ export class BodyCellComponent implements OnDestroy {
     this.isFocused = false;
   }
 
-  @HostBinding('class')
-  get columnCssClasses(): any {
-    const cls = 'datatable-body-cell';
-    return cls;
-  }
-
   @HostListener('click', ['$event'])
   onClick(event: MouseEvent): void {
-    this.switchCellToEditMode(event, this.column);
+    this.switchCellToEditMode(this.column);
   }
 
-  constructor(element: ElementRef, private renderer: Renderer) {
-    this.element = element.nativeElement;
-  }
-
-  ngOnDestroy(): void {
-    if (this.cellTemplate) {
-      this.cellTemplate.clear();
-    }
-  }
-
-  get value(): any {
-    if (!this.row || !this.column) {
-      return '';
-    }
-    let val = this.row[this.column.name];
-    const userPipe: PipeTransform = this.column.pipe;
-
-    if (userPipe) {
-      return userPipe.transform(val);
-    }
-    if (val !== undefined) {
-      val = ColumnUtils.getOptionName(val, this.column);
-      return val;
-    }
-    return '';
-  }
-
-  switchCellToEditMode(event: any, column: Column) {
+  switchCellToEditMode(column: Column) {
     if (column.editable) {
-      this.renderer.setElementClass(this.element, 'cell-editing', true);
-      let focusable;
+      this.editing = true;
       if (column.options) {
-        focusable = this.element.querySelector('.cell-editor select');
+        setTimeout(() => this.selectElement.nativeElement.focus(), 50);
       } else {
-        focusable = this.element.querySelector('.cell-editor input');
-      }
-      if (focusable) {
-        setTimeout(() => this.renderer.invokeElementMethod(focusable, 'focus'), 50);
+        setTimeout(() => this.inputElement.nativeElement.focus(), 50);
       }
     }
   }
 
   switchCellToViewMode() {
-    this.renderer.setElementClass(this.element, 'cell-editing', false);
+    this.editing = false;
   }
 
-  onCellEditorKeydown(event: any, column: Column, item: any, colIndex: number) {
+  onCellEditorKeydown(event: any) {
+    const colIndex = this.colIndex;
     // enter
     if (event.keyCode === 13) {
-      this.editComplete.emit(item);
-      this.renderer.invokeElementMethod(event.target, 'blur');
+      this.editComplete.emit(this.row);
       this.switchCellToViewMode();
       event.preventDefault();
       // escape
     } else if (event.keyCode === 27) {
-      // this.onEditCancel.emit({column: column, data: rowData});
-      this.renderer.invokeElementMethod(event.target, 'blur');
       this.switchCellToViewMode();
       event.preventDefault();
-      // tab
+      // tab TODO
     } else if (event.keyCode === 9) {
       const currentCell = this.element;
       const row = currentCell.parentElement;
@@ -135,14 +156,14 @@ export class BodyCellComponent implements OnDestroy {
       }
 
       if (targetCell) {
-        this.renderer.invokeElementMethod(targetCell, 'click');
+        targetCell.click();
         event.preventDefault();
       }
     }
   }
 
   getOptions(column: Column, row: any[]) {
-    return ColumnUtils.getOptions(column, row);
+    return ColumnUtils.getOptions(column, row[column.dependsColumn]);
   }
 
 

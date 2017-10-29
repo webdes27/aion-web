@@ -1,9 +1,9 @@
-import {Component, OnInit, Input, Output, EventEmitter, AfterViewInit, OnDestroy} from '@angular/core';
+import {Component, OnInit, Input, Output, EventEmitter, ChangeDetectionStrategy} from '@angular/core';
 import {Column, MenuItem} from '../types/interfaces';
 
 @Component({
   selector: 'datatable-body-row',
-  templateUrl: './body-row.component.html'
+  templateUrl: './body-row.component.html',
 })
 export class BodyRowComponent implements OnInit {
 
@@ -16,6 +16,7 @@ export class BodyRowComponent implements OnInit {
   @Input() public rowIndex: number;
 
   @Output() selectedRowIndexChange: EventEmitter<number> = new EventEmitter();
+  @Output() editComplete: EventEmitter<any> = new EventEmitter();
 
   public frozenColumns: Column[] = [];
   public scrollableColumns: Column[] = [];
@@ -69,6 +70,14 @@ export class BodyRowComponent implements OnInit {
     const styles: any = {};
     styles.left = `${this.offsetX}px`;
     return styles;
+  }
+
+  columnTrackingFn(index: number, column: any): any {
+    return column.name;
+  }
+
+  onCellEditComplete(event) {
+    this.editComplete.emit(event);
   }
 
 }

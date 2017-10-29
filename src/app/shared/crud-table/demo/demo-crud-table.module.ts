@@ -8,13 +8,17 @@ import { CrudTableModule } from '../crud-table-module';
 import { BasicDemoComponent } from './basic-demo.component';
 import { TreeTableDemoComponent } from './tree-table-demo.component';
 import { TreeFilterDemoComponent } from './tree-filter-demo.component';
+import { DataTableDemoComponent } from './data-table-demo.component';
+import { MasterDetailDemoComponent } from './master-detail.component';
 
 @NgModule({
   declarations: [
     DemoCrudTableComponent,
     BasicDemoComponent,
     TreeTableDemoComponent,
-    TreeFilterDemoComponent
+    TreeFilterDemoComponent,
+    DataTableDemoComponent,
+    MasterDetailDemoComponent
   ],
   imports: [
     BrowserModule,

@@ -21,18 +21,21 @@
   </datatable-header>
   <datatable-body
     [columns]="columns"
-    [items]="items"
+    [rows]="rows"
     [bodyHeight]="scrollHeight"
     [actionColumnWidth]="actionColumnWidth"
     (editComplete)="onEditComplete($event)"
     [actionMenu]="rowMenu"
     [offsetX]="offsetX"
+    [selectedRowIndex]="selectedRowIndex"
+    [trackByProp]="trackByProp"
     (scroll)="onBodyScroll($event)"
-    (selectedRowIndexChange)="selectedRowIndexChanged.emit($event)">
+    (selectedRowIndexChange)="onSelectRow($event)">
   </datatable-body>
   <datatable-footer
     [totalItems]="totalItems"
     [itemsPerPage]="itemsPerPage"
+    [currentPage]="currentPage"
     (pageChanged)="onPageChanged($event)">
   </datatable-footer>
 </div>

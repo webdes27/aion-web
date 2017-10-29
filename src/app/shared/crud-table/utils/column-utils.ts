@@ -25,7 +25,7 @@ export class ColumnUtils {
     }
   }
 
-  public static getOptions(column: Column, row: any[]) {
+  public static getOptions(column: Column, dependsValue: any) {
     if (column.options) {
       let options;
       if (typeof column.options === 'function') {
@@ -34,12 +34,25 @@ export class ColumnUtils {
         options = column.options;
       }
       if (column.dependsColumn) {
-        return options.filter((value) => value.parentId === row[column.dependsColumn]);
+        return options.filter((value) => value.parentId === dependsValue);
       } else {
         return options;
       }
     }
   }
 
+  public static getTextWidth(text, font) {
+    const canvas = document.createElement('canvas');
+    const context = canvas.getContext('2d');
+    context.font = font;
+    const metrics = context.measureText(text);
+    return metrics.width;
+  }
+
+  findSelectedIndex(selectedItem: any, items: any): number {
+    const obj = items.find(x => JSON.stringify(x) === JSON.stringify(selectedItem));
+    const index = items.indexOf(obj);
+    return index;
+  }
 
 }

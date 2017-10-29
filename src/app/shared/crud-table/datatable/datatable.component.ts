@@ -1,42 +1,55 @@
 import {
-  Component,
-  OnInit,
-  ViewChild,
-  Input,
-  Output,
-  ViewEncapsulation,
-  EventEmitter
+  Component, OnInit, ViewChild, Input, Output, ViewEncapsulation,
+  EventEmitter, ChangeDetectionStrategy
 } from '@angular/core';
 import {Column, Filter, Settings, SortMeta, MenuItem} from '../types/interfaces';
+import {ColumnUtils} from '../utils/column-utils';
+
 
 @Component({
   selector: 'app-datatable',
   templateUrl: './datatable.component.html',
   styleUrls: ['./datatable.component.css'],
   encapsulation: ViewEncapsulation.None,
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class DatatableComponent implements OnInit {
 
   @Input() public columns: Column[];
   @Input() public settings: Settings;
   @Input() public headerHeight: number = 30;
-  @Input() public items: any;
-  @Input() public filters: Filter;
+  @Input() public filters: Filter = <Filter>{};
   @Input() public rowMenu: MenuItem[];
   @Input() public itemsPerPage: number = 10;
   @Input() public totalItems: number = 0;
+  @Input() public currentPage: number = 1;
   @Input() public loading: boolean = false;
+  @Input() public selectedRowIndex: number;
+  @Input() trackByProp: string;
   @Output() filterChanged: EventEmitter<Filter> = new EventEmitter();
   @Output() pageChanged: EventEmitter<any> = new EventEmitter();
   @Output() sortChanged: EventEmitter<any> = new EventEmitter();
   @Output() editComplete: EventEmitter<any> = new EventEmitter();
   @Output() selectedRowIndexChanged: EventEmitter<number> = new EventEmitter();
 
+  @Input()
+  set rows(val: any[]) {
+    this._rows = val;
+    if (this.settings.clientSide) {
+      this.filters = <Filter>{};
+      this.sortMeta = <SortMeta>{};
+      this.totalItems = this._rows.length;
+      this.itemsCopy = (this.rows) ? this.rows.slice(0) : [];
+    }
+  }
+
+  get rows(): any[] {
+    return this._rows;
+  }
+
   @ViewChild('selectFilter') selectFilter: any;
 
-  public selectedRowIndex: number;
   public sortMeta: SortMeta = <SortMeta>{};
-
   public scrollHeight: number;
   public tableWidth: number;
   public letterWidth: number = 10;
@@ -48,6 +61,7 @@ export class DatatableComponent implements OnInit {
   scrollableColumnsWidth: number = 0;
   offsetX: number = 0;
   itemsCopy: any;
+  _rows: any[];
 
   constructor() {
   }
@@ -56,16 +70,16 @@ export class DatatableComponent implements OnInit {
     this.initColumns();
     this.initTableSize();
     if (this.settings.clientSide) {
-      // TODO client side
-      this.itemsCopy = Object.assign({}, this.items);
+      this._rows = this.getItems();
     }
+    this.setDefaultSelectedRowIndex();
   }
 
   initColumns(): void {
     this.settings.sortable = (this.settings.hasOwnProperty('sortable')) ? this.settings.sortable : true;
     this.settings.filter = (this.settings.hasOwnProperty('filter')) ? this.settings.filter : true;
 
-    this.letterWidth = this.getTextWidth('M', 'bold 14px arial');
+    this.letterWidth = ColumnUtils.getTextWidth('M', 'bold 14px arial');
     this.setColumnsDefaults(this.columns);
 
     this.scrollableColumns = [];
@@ -88,7 +102,8 @@ export class DatatableComponent implements OnInit {
 
   onPageChanged(event: any): void {
     if (this.settings.clientSide) {
-      this.items = this.page(this.items, event);
+      this.currentPage = event;
+      this._rows = this.getItems();
     } else {
       this.pageChanged.emit(event);
     }
@@ -101,7 +116,8 @@ export class DatatableComponent implements OnInit {
   onFilter(event) {
     this.filters = event;
     if (this.settings.clientSide) {
-      this.items = this.filter(this.itemsCopy, this.filters);
+      this.currentPage = 1;
+      this._rows = this.getItems();
     } else {
       this.filterChanged.emit(this.filters);
     }
@@ -110,10 +126,15 @@ export class DatatableComponent implements OnInit {
   onSort(event) {
     this.sortMeta = event.sortMeta;
     if (this.settings.clientSide) {
-      this.items = this.sort(this.items, this.sortMeta.field, this.sortMeta.order);
+      this._rows = this.getItems();
     } else {
       this.sortChanged.emit(this.sortMeta);
     }
+  }
+
+  onSelectRow(event) {
+    this.selectedRowIndex = event;
+    this.selectedRowIndexChanged.emit(this.selectedRowIndex);
   }
 
   showColumnMenu(event) {
@@ -137,11 +158,16 @@ export class DatatableComponent implements OnInit {
       column.frozen = false;
     }
     if (!column.hasOwnProperty('type')) {
-      column.type = 'text';
+      if (column.hasOwnProperty('options')) {
+        column.type = 'dropdown';
+      } else {
+        column.type = 'text';
+      }
     }
     if (!column.hasOwnProperty('resizeable')) {
       column.resizeable = true;
     }
+
     return column;
   }
 
@@ -149,8 +175,7 @@ export class DatatableComponent implements OnInit {
     if (!columns) {
       return;
     }
-    const result = columns.map(this.setColumnDefaults, this);
-    return result;
+    return columns.map(this.setColumnDefaults, this);
   }
 
   columnsTotalWidth(columns: Column[]): number {
@@ -159,14 +184,6 @@ export class DatatableComponent implements OnInit {
       totalWidth = totalWidth + column.width;
     }
     return totalWidth + this.actionColumnWidth;
-  }
-
-  getTextWidth(text, font) {
-    const canvas = document.createElement('canvas');
-    const context = canvas.getContext('2d');
-    context.font = font;
-    const metrics = context.measureText(text);
-    return metrics.width;
   }
 
   resizeColumn({column, newValue}: any) {
@@ -182,12 +199,12 @@ export class DatatableComponent implements OnInit {
     this.selectFilter.hide();
   }
 
-  filter(data: any, filters: Filter) {
-    let filteredData: Array<any> = data;
+  filter(data: any[], filters: Filter) {
+    let filteredData: any[] = data;
     for (const key in filters) {
       if (filters[key]['value']) {
         filteredData = filteredData.filter((item: any) => {
-          if (item[key]) {
+          if (key in item) {
             return item[key].toString().match(filters[key]['value']);
           } else {
             return false;
@@ -209,10 +226,25 @@ export class DatatableComponent implements OnInit {
     });
   }
 
-  page(data: any, page: any): Array<any> {
+  pager(data: any, page: any): any[] {
     const start = (page - 1) * this.itemsPerPage;
     const end = this.itemsPerPage > -1 ? (start + this.itemsPerPage) : data.length;
     return data.slice(start, end);
+  }
+
+  setDefaultSelectedRowIndex() {
+    if (!this.selectedRowIndex) {
+      this.selectedRowIndex = 0;
+      this.selectedRowIndexChanged.emit(this.selectedRowIndex);
+    }
+  }
+
+  getItems() {
+    let data = this.filter(this.itemsCopy, this.filters);
+    this.totalItems = data.length;
+    data = this.sort(data, this.sortMeta.field, this.sortMeta.order);
+    data = this.pager(data, this.currentPage);
+    return data;
   }
 
 }

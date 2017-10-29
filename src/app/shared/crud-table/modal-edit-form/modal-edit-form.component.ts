@@ -4,8 +4,7 @@ import {Column, Settings, ICrudService} from '../types/interfaces';
 
 @Component({
   selector: 'modal-edit-form',
-  templateUrl: './modal-edit-form.component.html',
-  styleUrls: ['./modal-edit-form.component.css']
+  templateUrl: './modal-edit-form.component.html'
 })
 export class ModalEditFormComponent implements OnInit {
 
@@ -34,6 +33,7 @@ export class ModalEditFormComponent implements OnInit {
   public newItem: boolean;
   @ViewChild('childModal')
   public readonly childModal: ModalComponent;
+  public formValid: boolean = true;
 
   constructor() {
   }

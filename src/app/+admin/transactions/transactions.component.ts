@@ -25,6 +25,7 @@ export class TransactionsComponent implements OnInit {
   public settings: Settings = {
     api: CONFIG.apiTransactions,
     crud: true,
+    primaryKey: 'id',
     tableWidth: 800
   };
 

@@ -7,37 +7,40 @@
   <app-datatable
     [columns]="columns"
     [settings]="settings"
-    [items]="items"
+    [rows]="items"
     [filters]="filters"
     [rowMenu]="rowMenu"
     [itemsPerPage]="itemsPerPage"
     [totalItems]="totalItems"
     [loading]="loading"
+    [trackByProp]="trackByProp"
     (filterChanged)="onFilter($event)"
     (pageChanged)="pageChanged($event)"
     (sortChanged)="sort($event)"
-    (editComplete)="editItem($event)"
+    (editComplete)="onEditComplete($event)"
     (selectedRowIndexChanged)="onSelectedRow($event)">
   </app-datatable>
 </div>
 
 <modal-edit-form #modalEditForm
-  [columns]="columns"
-  [item]="item"
-  [settings]="settings"
-  [service]="service"
-  (saved)="onSaved($event)"
-  (updated)="onUpdated($event)"
-  (deleted)="onDeleted($event)"
-  (loading)="onLoading($event)"
-  (errors)="onErrors($event)">
+                 [columns]="columns"
+                 [item]="item"
+                 [settings]="settings"
+                 [service]="service"
+                 (saved)="onSaved($event)"
+                 (updated)="onUpdated($event)"
+                 (deleted)="onDeleted($event)"
+                 (loading)="onLoading($event)"
+                 (errors)="onErrors($event)">
 </modal-edit-form>
 
-<detail-view *ngIf="onDetailView && item"
-             [columns]="columns"
-             [item]="item"
-             [settings]="settings"
-             (onClose)="closeDetails()"
-             (onSaveItem)="save()"
-             (onDeleteItem)="delete()">
-</detail-view>
+<app-detail-view *ngIf="onDetailView"
+                 [columns]="columns"
+                 [item]="item"
+                 [settings]="settings"
+                 [service]="service"
+                 (onClose)="closeDetails()"
+                 (updated)="onUpdated($event)"
+                 (deleted)="onDeleted($event)"
+                 (errors)="onErrors($event)">
+</app-detail-view>

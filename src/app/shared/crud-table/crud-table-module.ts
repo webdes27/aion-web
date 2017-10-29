@@ -21,14 +21,20 @@ import {TreeViewComponent} from './tree-view/tree-view.component';
 import {ResizeableDirective} from './directives/resizeable.directive';
 import {TreeTableComponent} from './tree-table/tree-table.component';
 import {TreeTableNodeComponent} from './tree-table/tree-table-node.component';
-import {NguiDatetimePickerModule} from './datetime-picker';
 import {ModalEditFormComponent} from './modal-edit-form/modal-edit-form.component';
+import {DropdownComponent} from './form/dropdown.component';
+import {CheckboxComponent} from './form/checkbox.component';
+import {RadioComponent} from './form/radio.component';
+import {InputTextComponent} from './form/input-text.component';
+import {TextareaComponent} from './form/textarea.component';
+import {CalendarComponent} from './form/calendar.component';
+import {CustomValidator} from './form/custom-validator';
+import {FormService} from './form/form.service';
 
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
-    NguiDatetimePickerModule,
   ],
   declarations: [
     CrudTableComponent,
@@ -51,9 +57,15 @@ import {ModalEditFormComponent} from './modal-edit-form/modal-edit-form.componen
     TreeTableComponent,
     TreeTableNodeComponent,
     ModalEditFormComponent,
+    DropdownComponent,
+    CheckboxComponent,
+    RadioComponent,
+    InputTextComponent,
+    TextareaComponent,
+    CalendarComponent,
   ],
   exports: [DatatableComponent, CrudTableComponent, TreeTableComponent, TreeViewComponent, ModalComponent],
-  providers: []
+  providers: [CustomValidator, FormService]
 })
 export class CrudTableModule {
 }

@@ -6,7 +6,7 @@
        [ngStyle]="stylesByGroup()">
 
     <div class="datatable-body-cell"
-         *ngIf="enableAction"
+         style="text-align: center;"
          [ngStyle]="{'width.px': actionColumnWidth}">
 
       <ng-template ngFor let-action [ngForOf]="actionMenu">
@@ -16,25 +16,29 @@
           <span [ngClass]="action.icon"></span>
         </a>
       </ng-template>
+
+      <span *ngIf="!enableAction">{{rowIndex+1}}</span>
     </div>
 
     <datatable-body-cell
-      *ngFor="let column of frozenColumns; let colIndex = index"
+      *ngFor="let column of frozenColumns; let colIndex = index; trackBy: columnTrackingFn"
       tabindex="-1"
       [colIndex]="colIndex"
       [row]="row"
-      [column]="column">
+      [column]="column"
+      (editComplete)="onCellEditComplete($event)">
     </datatable-body-cell>
 
   </div>
 
   <div class="datatable-row-center datatable-row-group">
     <datatable-body-cell
-      *ngFor="let column of scrollableColumns; let colIndex = index"
+      *ngFor="let column of scrollableColumns; let colIndex = index; trackBy: columnTrackingFn"
       tabindex="-1"
       [colIndex]="colIndex"
       [row]="row"
-      [column]="column">
+      [column]="column"
+      (editComplete)="onCellEditComplete($event)">>
     </datatable-body-cell>
   </div>
 

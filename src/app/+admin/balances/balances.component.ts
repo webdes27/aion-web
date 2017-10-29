@@ -18,6 +18,7 @@ export class PayBalanceComponent implements OnInit {
   public settings: Settings = {
     api: CONFIG.apiPayBalance,
     crud: true,
+    primaryKey: 'id',
   };
 
   public service: ICrudService;

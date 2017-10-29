@@ -31,7 +31,6 @@ export class CrudTableComponent implements OnInit {
 
   public items: any[];
   public item: any;
-  public selectedItem: any;
   public selectedRowIndex: number;
   public errors: any;
   public onDetailView: boolean = false;
@@ -44,6 +43,7 @@ export class CrudTableComponent implements OnInit {
 
   public sortMeta: SortMeta = <SortMeta>{};
   public rowMenu: MenuItem[];
+  public trackByProp: string;
 
   @ViewChild('modalEditForm') modalEditForm: ModalEditFormComponent;
 
@@ -58,6 +58,9 @@ export class CrudTableComponent implements OnInit {
     if (this.settings.initLoad) {
       this.getItems();
     }
+    if (!Array.isArray(this.settings.primaryKey)) {
+      this.trackByProp = this.settings.primaryKey;
+    }
   }
 
   initRowMenu() {
@@ -65,12 +68,12 @@ export class CrudTableComponent implements OnInit {
       {
         label: 'View',
         icon: 'glyphicon glyphicon-eye-open',
-        command: (event) => this.viewDetails(this.items[this.selectedRowIndex])
+        command: (event) => this.viewDetails()
       },
       {
         label: 'Update',
         icon: 'glyphicon glyphicon-pencil',
-        command: (event) => this.updateItem(this.items[this.selectedRowIndex]),
+        command: (event) => this.updateItem(),
         disabled: !this.settings.crud
       }
     ];
@@ -82,6 +85,7 @@ export class CrudTableComponent implements OnInit {
     }
     this.loading = true;
     this.errors = null;
+    this.onDetailView = false;
     this.service.getItems(this.currentPage, this.filters, this.sortMeta.field, this.sortMeta.order)
       .then(data => {
         this.loading = false;
@@ -98,6 +102,7 @@ export class CrudTableComponent implements OnInit {
   clear() {
     this.items = [];
     this.totalItems = 0;
+    this.onDetailView = false;
   }
 
   pageChanged(event: any): void {
@@ -107,14 +112,7 @@ export class CrudTableComponent implements OnInit {
 
   cloneItem(item: any) {
     const clone = Object.assign({}, item);
-    this.selectedItem = Object.assign({}, item);
     return clone;
-  }
-
-  findSelectedItemIndex(selectedItem: any): number {
-    const obj = this.items.find(x => JSON.stringify(x) === JSON.stringify(selectedItem));
-    const index = this.items.indexOf(obj);
-    return index;
   }
 
   createItem() {
@@ -122,16 +120,28 @@ export class CrudTableComponent implements OnInit {
     this.modalEditForm.open();
   }
 
-  updateItem(item: any) {
+  updateItem() {
+    const item = this.items[this.selectedRowIndex];
     this.item = this.cloneItem(item);
     this.modalEditForm.open();
   }
 
-  editItem(item: any) {
-    this.item = this.cloneItem(item);
+  onEditComplete(row: any) {
+    this.loading = true;
+    this.service
+      .put(row)
+      .then(res => {
+        this.loading = false;
+        this.errors = null;
+      })
+      .catch(error => {
+        this.loading = false;
+        this.errors = error;
+      });
   }
 
-  viewDetails(item: any) {
+  viewDetails() {
+    const item = this.items[this.selectedRowIndex];
     this.errors = null;
     this.item = this.cloneItem(item);
     this.onDetailView = true;
@@ -179,8 +189,5 @@ export class CrudTableComponent implements OnInit {
   onErrors(event) {
     this.errors = event;
   }
-
-  save() {}
-  delete() {}
 
 }

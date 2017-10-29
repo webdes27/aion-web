@@ -1,4 +1,4 @@
-import {Component, Input, Output, EventEmitter, HostBinding} from '@angular/core';
+import {Component, Input, Output, EventEmitter, HostBinding, ChangeDetectionStrategy, OnInit} from '@angular/core';
 import {Column, MenuItem} from '../types/interfaces';
 
 @Component({
@@ -8,14 +8,22 @@ import {Column, MenuItem} from '../types/interfaces';
     class: 'datatable-body'
   }
 })
-export class BodyComponent {
+export class BodyComponent implements OnInit {
 
   @Input() public columns: Column[];
-  @Input() public items: any;
   @Input() public actionColumnWidth: number;
   @Input() public actionMenu: MenuItem[];
   @Input() public offsetX: number;
   @Input() public selectedRowIndex: number;
+  @Input() trackByProp: string;
+
+  @Input() set rows(val: any[]) {
+    this._rows = val;
+  }
+
+  get rows(): any[] {
+    return this._rows;
+  }
 
   @Input()
   @HostBinding('style.height')
@@ -36,9 +44,22 @@ export class BodyComponent {
   @Output() selectedRowIndexChange: EventEmitter<number> = new EventEmitter();
 
   offsetY: number = 0;
+  rowTrackingFn: any;
+  _rows: any[];
   _bodyHeight: any;
 
   constructor() {
+    // declare fn here so we can get access to the `this` property
+    this.rowTrackingFn = function(index: number, row: any): any {
+      if (this.trackByProp) {
+        return row[this.trackByProp];
+      } else {
+        return index;
+      }
+    }.bind(this);
+  }
+
+  ngOnInit(): void {
   }
 
   onBodyScroll(event: any): void {
@@ -59,5 +80,8 @@ export class BodyComponent {
 
   }
 
+  onEditComplete(event) {
+    this.editComplete.emit(event);
+  }
 
 }
