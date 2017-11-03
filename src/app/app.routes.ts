@@ -15,7 +15,6 @@ import {HistoryComponent} from './history/history.component';
 import {PassComponent} from './pass/pass.component';
 import {BonusComponent} from './bonus/bonus.component';
 import {PayComponent} from './pay/pay.component';
-import {DemoComponent} from './demo/demo.component';
 
 export const ROUTES: Routes = [
   {path: '',      component: IndexComponent},
@@ -34,7 +33,6 @@ export const ROUTES: Routes = [
   {path: 'bonus', component: BonusComponent},
   {path: 'pay', component: PayComponent},
   {path: 'admin', loadChildren: './+admin/admin.module#AdminModule'},
-  {path: 'demo', component: DemoComponent},
 
   { path: '**',    component: NoContentComponent },
 ];

@@ -1,42 +1,42 @@
-import {Component, Input, Output, OnInit, EventEmitter, Pipe, ViewChild} from '@angular/core';
+import {
+  Component, Input, Output, OnInit, EventEmitter, ViewChild,
+  ChangeDetectionStrategy, ChangeDetectorRef
+} from '@angular/core';
 import {ISelectOption, Column, Filter} from '../types/interfaces';
 
 @Component({
   selector: 'ng-filter',
   templateUrl: './filter.component.html',
   styleUrls: ['./filter.component.css'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class FilterComponent implements OnInit {
 
   @Input() filters: Filter = {};
   @Output() onFilter: EventEmitter<any> = new EventEmitter();
-  column: Column = <Column> {};
 
   @ViewChild('selectionSpan') selectionSpan: any;
   @ViewChild('searchFilterInput') searchFilterInput: any;
   @ViewChild('filterInput') filterInput: any;
 
-  // Width and position for the dropdown container.
   left: number;
   top: number;
   width: number;
-
+  column: Column = <Column> {};
   selectionLimit: number = 1;
   selectedOptions: any[];
   columnsSelectedOptions: any[] = [];
   numSelected: number = 0;
   isVisible: boolean = false;
   searchFilterText: string = '';
-
   selectContainerClicked: boolean = false;
   filterTimeout: any;
 
-  constructor() {
+  constructor(private cd: ChangeDetectorRef) {
   }
 
   ngOnInit() {
   }
-
 
   clearSearch() {
     this.searchFilterText = '';
@@ -65,6 +65,7 @@ export class FilterComponent implements OnInit {
     if (this.isVisible) {
       this.clearSearch();
       this.isVisible = false;
+      this.cd.markForCheck();
     }
   }
 
@@ -145,7 +146,8 @@ export class FilterComponent implements OnInit {
     event.stopPropagation();
   }
 
-  onFilterKeyup(value, field, matchMode) {
+  onFilterKeyup(event, field, matchMode) {
+    const value = event.target.value;
     if (this.filterTimeout) {
       clearTimeout(this.filterTimeout);
     }

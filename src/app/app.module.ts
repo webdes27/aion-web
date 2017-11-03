@@ -2,6 +2,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http';
+import { HttpClientModule } from '@angular/common/http';
 import { RouterModule, PreloadAllModules } from '@angular/router';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
@@ -40,8 +41,7 @@ import {PayComponent} from './pay/pay.component';
 import {RatesComponent} from './rates/rates.component';
 import {UserModule} from './users';
 import {CrudTableModule} from './shared/crud-table';
-import {DemoComponent} from './demo/demo.component';
-import {DemoCrudTableModule} from './shared/crud-table/demo/demo-crud-table.module';
+
 
 @NgModule({
   declarations: [
@@ -69,18 +69,17 @@ import {DemoCrudTableModule} from './shared/crud-table/demo/demo-crud-table.modu
     RatesComponent,
     CollapseDirective,
     DropdownDirective,
-    DemoComponent,
   ],
   imports: [
     BrowserModule,
     FormsModule,
     ReactiveFormsModule,
     HttpModule,
+    HttpClientModule,
     RouterModule.forRoot(ROUTES, { useHash: true, preloadingStrategy: PreloadAllModules }),
     BrowserAnimationsModule,
     UserModule,
     CrudTableModule,
-    DemoCrudTableModule
   ],
   providers: [
     UserService,

@@ -1,7 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {CONFIG} from '../app.config';
 import {Column, Settings, ICrudService, YiiService} from '../shared/crud-table';
-import {Http} from '@angular/http';
+import {HttpClient} from '@angular/common/http';
 
 @Component({
   selector: 'my-app',
@@ -30,7 +30,7 @@ export class HistoryComponent implements OnInit {
 
   public service: ICrudService;
 
-  constructor(private http: Http) {
+  constructor(private http: HttpClient) {
     this.service = new YiiService(this.http);
   }
 

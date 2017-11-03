@@ -1,7 +1,7 @@
-import {OpaqueToken} from '@angular/core';
+import {InjectionToken} from "@angular/core";
 import {environment} from '../environments/environment';
 
-export let APP_CONFIG = new OpaqueToken('app.config');
+export let APP_CONFIG = new InjectionToken<Config>('app.config');
 
 export interface Config {
   title: string;
