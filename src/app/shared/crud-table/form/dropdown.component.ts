@@ -1,17 +1,16 @@
-import {Component, Input, Output, OnInit, EventEmitter} from '@angular/core';
-import {Column} from '../types/interfaces';
+import {Component, Input, Output, OnInit, EventEmitter, HostBinding} from '@angular/core';
+import {Column, ICrudService} from '../types/interfaces';
 import {ColumnUtils} from '../utils/column-utils';
 import {CustomValidator} from './custom-validator';
-import {FormService} from './form.service';
 
 
 @Component({
   selector: 'app-form-dropdown',
   template: `
-    <div class="form-group" [ngClass]="{'has-error':hasError()}">
+    <div class="df-group" [ngClass]="{'df-has-error':hasError()}">
       <label [attr.for]="column.name">{{column.title}}</label>
 
-      <select class="form-control"
+      <select class="df-control"
               [(ngModel)]="model"
               (focus)="beginValidate = true"
               [id]="column.name">
@@ -19,7 +18,7 @@ import {FormService} from './form.service';
         <option *ngFor="let opt of getOptions()" [ngValue]="opt.id">{{opt.name}}</option>
       </select>
 
-      <div class="help-block">
+      <div class="df-help-block">
         <span *ngFor="let err of errors()">{{err}}<br></span>
       </div>
     </div>
@@ -28,6 +27,7 @@ import {FormService} from './form.service';
 export class DropdownComponent implements OnInit {
 
   @Input() public column: Column;
+  @Input() public service: ICrudService;
   @Output() valueChange: EventEmitter<any> = new EventEmitter();
   @Output() valid: EventEmitter<boolean> = new EventEmitter();
 
@@ -57,8 +57,18 @@ export class DropdownComponent implements OnInit {
   private _options: any;
   private _dependsValue: any;
   public beginValidate: boolean;
+  public loading: boolean = false;
 
-  constructor(private validator: CustomValidator, private formService: FormService) {
+  @HostBinding('class')
+  get cssClass() {
+    let cls = 'df-elem';
+    if (this.loading) {
+      cls += ' df-wait';
+    }
+    return cls;
+  }
+
+  constructor(private validator: CustomValidator) {
   }
 
   ngOnInit() {
@@ -66,9 +76,13 @@ export class DropdownComponent implements OnInit {
 
   setOptions() {
     if (this._dependsValue) {
-      if (this.column.optionsUrl) {
-        this.formService.getOptions(this.column.optionsUrl, this._dependsValue).then((res) => {
+      if (this.column.optionsUrl && this.service.getOptions) {
+        this.loading = true;
+        this.service.getOptions(this.column.optionsUrl, this._dependsValue).then((res) => {
           this._options = res;
+          this.loading = false;
+        }).catch(error => {
+          this.loading = false;
         });
       }
     } else {

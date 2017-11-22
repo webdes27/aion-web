@@ -15,6 +15,7 @@ import {LoadingIndicatorComponent} from './loading-indicator/loading-indicator.c
 import {BodyComponent} from './body/body.component';
 import {BodyRowComponent} from './body/body-row.component';
 import {BodyCellComponent} from './body/body-cell.component';
+import {BodyCellEditComponent} from './body/body-cell-edit.component';
 import {ScrollerComponent} from './body/scroller.component';
 import {FooterComponent} from './footer/footer.component';
 import {DatatableComponent} from './datatable/datatable.component';
@@ -30,7 +31,6 @@ import {InputTextComponent} from './form/input-text.component';
 import {TextareaComponent} from './form/textarea.component';
 import {CalendarComponent} from './form/calendar.component';
 import {CustomValidator} from './form/custom-validator';
-import {FormService} from './form/form.service';
 
 @NgModule({
   imports: [
@@ -51,6 +51,7 @@ import {FormService} from './form/form.service';
     BodyComponent,
     BodyRowComponent,
     BodyCellComponent,
+    BodyCellEditComponent,
     ResizeableDirective,
     ScrollerComponent,
     FooterComponent,
@@ -66,8 +67,8 @@ import {FormService} from './form/form.service';
     TextareaComponent,
     CalendarComponent,
   ],
-  exports: [DatatableComponent, CrudTableComponent, TreeTableComponent, TreeViewComponent, ModalComponent],
-  providers: [CustomValidator, FormService]
+  exports: [DatatableComponent, CrudTableComponent, TreeTableComponent, TreeViewComponent, ModalComponent, ModalEditFormComponent],
+  providers: [CustomValidator]
 })
 export class CrudTableModule {
 }

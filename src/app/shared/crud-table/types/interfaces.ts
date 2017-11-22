@@ -23,6 +23,7 @@ export interface Column {
   cellTemplate?: any;
   formHidden?: boolean;
   optionsUrl?: string;
+  cellClass?: any;
 }
 
 export interface FilterMetadata {
@@ -56,6 +57,7 @@ export interface ICrudService {
   post(item: any): Promise<any>;
   put(item: any): Promise<any>;
   delete(item: any): Promise<any>;
+  getOptions?(url: string, parentId: any): Promise<any>;
 }
 
 export interface SortMeta {

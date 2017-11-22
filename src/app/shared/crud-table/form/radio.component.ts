@@ -1,17 +1,16 @@
-import {Component, Input, Output, OnInit, EventEmitter} from '@angular/core';
-import {Column} from '../types/interfaces';
+import {Component, Input, Output, OnInit, EventEmitter, HostBinding} from '@angular/core';
+import {Column, ICrudService} from '../types/interfaces';
 import {ColumnUtils} from '../utils/column-utils';
 import {CustomValidator} from './custom-validator';
-import {FormService} from './form.service';
 
 
 @Component({
   selector: 'app-form-radio',
   template: `
-    <div class="form-group" [ngClass]="{'has-error':hasError()}">
+    <div class="df-group" [ngClass]="{'df-has-error':hasError()}">
       <label [attr.for]="column.name">{{column.title}}</label>
 
-      <div class="radio" *ngFor="let o of getOptions()">
+      <div class="df-radio" *ngFor="let o of getOptions()">
         <label>
           <input
             type="radio"
@@ -24,7 +23,7 @@ import {FormService} from './form.service';
         <span>{{o.name ? o.name : o.id}}</span>
       </div>
 
-      <div class="help-block">
+      <div class="df-help-block">
         <span *ngFor="let err of errors()">{{err}}<br></span>
       </div>
     </div>
@@ -33,6 +32,7 @@ import {FormService} from './form.service';
 export class RadioComponent implements OnInit {
 
   @Input() public column: Column;
+  @Input() public service: ICrudService;
   @Output() valueChange: EventEmitter<any> = new EventEmitter();
   @Output() valid: EventEmitter<boolean> = new EventEmitter();
 
@@ -62,8 +62,18 @@ export class RadioComponent implements OnInit {
   private _options: any;
   private _dependsValue: any;
   public beginValidate: boolean;
+  public loading: boolean = false;
 
-  constructor(private validator: CustomValidator, private formService: FormService) {
+  @HostBinding('class')
+  get cssClass() {
+    let cls = 'df-elem';
+    if (this.loading) {
+      cls += ' df-wait';
+    }
+    return cls;
+  }
+
+  constructor(private validator: CustomValidator) {
   }
 
   ngOnInit() {
@@ -71,9 +81,13 @@ export class RadioComponent implements OnInit {
 
   setOptions() {
     if (this._dependsValue) {
-      if (this.column.optionsUrl) {
-        this.formService.getOptions(this.column.optionsUrl, this._dependsValue).then((res) => {
+      if (this.column.optionsUrl && this.service.getOptions) {
+        this.loading = true;
+        this.service.getOptions(this.column.optionsUrl, this._dependsValue).then((res) => {
           this._options = res;
+          this.loading = false;
+        }).catch(error => {
+          this.loading = false;
         });
       }
     } else {

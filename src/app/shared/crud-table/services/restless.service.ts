@@ -24,12 +24,16 @@ export class RestlessService implements ICrudService {
     const headers = this.getAuthHeaders();
     let url = this.url;
     if (page > 1) {
-      url = url + '?page=' + page + '&';
-    } else {
-      url = url + '?';
+      if (url.indexOf('?') === -1) {
+        url = url + '?page=' + page;
+      } else {
+        url = url + '&page=' + page;
+      }
     }
-    url = url + this.filterObject(filters, sortField, sortOrder);
-    // const url = this.url + '?page=' + page + this.urlEncode(filters) + this.urlSort(sortField, sortOrder);
+    if (this.filterObject(filters, sortField, sortOrder)) {
+      url += (url.indexOf('?') === -1) ? '?' : '&';
+      url = url + this.filterObject(filters, sortField, sortOrder);
+    }
     return this.http.get(url, {headers: headers})
       .toPromise()
       .then(this.extractData)
@@ -48,7 +52,7 @@ export class RestlessService implements ICrudService {
   post(item: any): Promise<any> {
     const headers = this.getAuthHeaders();
     return this.http
-      .post(this.url, JSON.stringify(item), {headers: headers})
+      .post(this.removeUrlParams(this.url), JSON.stringify(item), {headers: headers})
       .toPromise()
       .then(res => res)
       .catch(this.handleError);
@@ -57,15 +61,15 @@ export class RestlessService implements ICrudService {
   // Update existing
   put(item: any): Promise<any> {
     const headers = this.getAuthHeaders();
-    let url;
+    let url = this.removeUrlParams(this.url);
     if (Array.isArray(this.primaryKey)) {
-      url = this.url + '?';
+      url = url + '?';
       for (const key of this.primaryKey) {
         url += key + '=' + item[key] + '&';
       }
       url = url.slice(0, -1);
     } else {
-      url = (this.primaryKey) ? `${this.url}/${item[this.primaryKey]}` : this.url;
+      url = (this.primaryKey) ? `${url}/${item[this.primaryKey]}` : url;
     }
     return this.http
       .put(url, JSON.stringify(item), {headers: headers})
@@ -76,15 +80,15 @@ export class RestlessService implements ICrudService {
 
   delete(item: any): Promise<any> {
     const headers = this.getAuthHeaders();
-    let url;
+    let url = this.removeUrlParams(this.url);
     if (Array.isArray(this.primaryKey)) {
-      url = this.url + '?';
+      url = url + '?';
       for (const key of this.primaryKey) {
         url += key + '=' + item[key] + '&';
       }
       url = url.slice(0, -1);
     } else {
-      url = (this.primaryKey) ? `${this.url}/${item[this.primaryKey]}` : this.url;
+      url = (this.primaryKey) ? `${url}/${item[this.primaryKey]}` : url;
     }
     return this.http
       .delete(url, {headers: headers})
@@ -103,24 +107,10 @@ export class RestlessService implements ICrudService {
     return body;
   }
 
-  private handleError(response: any) {
-    let errMsg: string;
-    let errors: any;
-    let fieldErrors: any;
-    if (response instanceof HttpResponse) {
-      const body = response || '';
-      const err = body || JSON.stringify(body);
-      errMsg = `${response.status} - ${response.statusText || ''} ${err}`;
-    } else {
-      errMsg = response.message ? response.message : response.toString();
-    }
-
-    if (response.status === 422) {
-      fieldErrors = response;
-    }
-    errors = {'errMsg': errMsg, 'fieldErrors': fieldErrors};
-    console.error(response);
-    return Promise.reject(errors);
+  private handleError(error: any) {
+    const errMsg = error.message ? error.message : error.toString();
+    console.error(error);
+    return Promise.reject(errMsg);
   }
 
   private filterObject(obj: Filter, sortField?: string, sortOrder?: number): string {
@@ -153,6 +143,22 @@ export class RestlessService implements ICrudService {
       result = 'q=' + JSON.stringify(filterObject);
     }
     return result;
+  }
+
+  getOptions(url: string, parentId: any): Promise<any> {
+    return this.http.get(url + '/' + parentId)
+      .toPromise()
+      .then(response => {
+        return response;
+      })
+      .catch(this.handleError);
+  }
+
+  removeUrlParams(url: string) {
+    if (url.indexOf('?') !== -1) {
+      url = url.substring(0, url.indexOf('?'));
+    }
+    return url;
   }
 
 }

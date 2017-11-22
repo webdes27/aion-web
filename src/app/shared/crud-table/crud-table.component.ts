@@ -6,7 +6,7 @@ import {ModalEditFormComponent} from './modal-edit-form/modal-edit-form.componen
 @Component({
   selector: 'crud-table',
   templateUrl: './crud-table.component.html',
-  styleUrls: ['./crud-table.css'],
+  styleUrls: ['crud-table.css', 'icons.css'],
   encapsulation: ViewEncapsulation.None,
 })
 
@@ -15,6 +15,7 @@ export class CrudTableComponent implements OnInit {
   @Input() public columns: Column[];
   @Input() public settings: Settings;
   @Input() public service: ICrudService;
+  @Input() public zIndexModal: number;
   @Output() filterChanged: EventEmitter<Filter> = new EventEmitter();
   @Output() dataChanged: EventEmitter<any> = new EventEmitter();
 
@@ -68,12 +69,12 @@ export class CrudTableComponent implements OnInit {
     this.rowMenu = [
       {
         label: 'View',
-        icon: 'glyphicon glyphicon-eye-open',
+        icon: 'icon icon-rightwards',
         command: (event) => this.viewDetails()
       },
       {
         label: 'Update',
-        icon: 'glyphicon glyphicon-pencil',
+        icon: 'icon icon-pencil',
         command: (event) => this.updateItem(),
         disabled: !this.settings.crud
       }
