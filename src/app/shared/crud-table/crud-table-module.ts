@@ -8,7 +8,6 @@ import {ModalComponent} from './modal/modal.component';
 import {HeaderComponent} from './header/header.component';
 import {FilterComponent} from './filter/filter.component';
 import {SearchFilterPipe} from './filter/search-filter.pipe';
-import {DetailViewComponent} from './detail-view/detail-view.component';
 import {FormComponent} from './form/form.component';
 import {CrudTableComponent} from './crud-table.component';
 import {LoadingIndicatorComponent} from './loading-indicator/loading-indicator.component';
@@ -20,17 +19,21 @@ import {ScrollerComponent} from './body/scroller.component';
 import {FooterComponent} from './footer/footer.component';
 import {DatatableComponent} from './datatable/datatable.component';
 import {TreeViewComponent} from './tree-view/tree-view.component';
+import {TreeViewNodeComponent} from './tree-view/tree-view-node.component';
 import {ResizeableDirective} from './directives/resizeable.directive';
 import {TreeTableComponent} from './tree-table/tree-table.component';
 import {TreeTableNodeComponent} from './tree-table/tree-table-node.component';
 import {ModalEditFormComponent} from './modal-edit-form/modal-edit-form.component';
-import {DropdownComponent} from './form/dropdown.component';
+import {SelectComponent} from './form/select.component';
 import {CheckboxComponent} from './form/checkbox.component';
 import {RadioComponent} from './form/radio.component';
 import {InputTextComponent} from './form/input-text.component';
 import {TextareaComponent} from './form/textarea.component';
 import {CalendarComponent} from './form/calendar.component';
 import {CustomValidator} from './form/custom-validator';
+import {ContextMenuComponent} from './context-menu/context-menu.component';
+import {ModalSelectComponent} from './modal-select/modal-select.component';
+import {PopupSelectComponent} from './form/select-popup.component';
 
 @NgModule({
   imports: [
@@ -44,7 +47,6 @@ import {CustomValidator} from './form/custom-validator';
     ModalComponent,
     HeaderComponent,
     FilterComponent,
-    DetailViewComponent,
     FormComponent,
     SearchFilterPipe,
     LoadingIndicatorComponent,
@@ -57,17 +59,30 @@ import {CustomValidator} from './form/custom-validator';
     FooterComponent,
     DatatableComponent,
     TreeViewComponent,
+    TreeViewNodeComponent,
     TreeTableComponent,
     TreeTableNodeComponent,
     ModalEditFormComponent,
-    DropdownComponent,
+    SelectComponent,
     CheckboxComponent,
     RadioComponent,
     InputTextComponent,
     TextareaComponent,
     CalendarComponent,
+    ContextMenuComponent,
+    ModalSelectComponent,
+    PopupSelectComponent,
   ],
-  exports: [DatatableComponent, CrudTableComponent, TreeTableComponent, TreeViewComponent, ModalComponent, ModalEditFormComponent],
+  exports: [
+    DatatableComponent,
+    CrudTableComponent,
+    TreeTableComponent,
+    TreeViewComponent,
+    ModalComponent,
+    ModalEditFormComponent,
+    ContextMenuComponent,
+    PopupSelectComponent,
+  ],
   providers: [CustomValidator]
 })
 export class CrudTableModule {

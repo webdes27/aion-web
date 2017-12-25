@@ -41,7 +41,6 @@ export class DatatableComponent implements OnInit, DoCheck {
       this.totalItems = this._rows.length;
       this.itemsCopy = (this.rows) ? this.rows.slice(0) : [];
     }
-    this.setDefaultSelectedRowIndex();
   }
 
   get rows(): any {
@@ -89,19 +88,21 @@ export class DatatableComponent implements OnInit, DoCheck {
 
     this.scrollableColumns = [];
     this.columns.forEach((column) => {
-      if (column.frozen) {
-        this.frozenColumns = this.frozenColumns || [];
-        this.frozenColumns.push(column);
-        this.frozenWidth = this.frozenWidth + column.width;
-      } else {
-        this.scrollableColumns.push(column);
-        this.scrollableColumnsWidth = this.scrollableColumnsWidth + column.width;
+      if (!column.tableHidden) {
+        if (column.frozen) {
+          this.frozenColumns = this.frozenColumns || [];
+          this.frozenColumns.push(column);
+          this.frozenWidth = this.frozenWidth + column.width;
+        } else {
+          this.scrollableColumns.push(column);
+          this.scrollableColumnsWidth = this.scrollableColumnsWidth + column.width;
+        }
       }
     });
   }
 
   initTableSize() {
-    this.tableWidth = this.settings.tableWidth || this.columnsTotalWidth(this.columns);
+    this.tableWidth = this.settings.tableWidth;
     this.scrollHeight = this.settings.scrollHeight;
   }
 
@@ -111,6 +112,7 @@ export class DatatableComponent implements OnInit, DoCheck {
       this._rows = this.getItems();
     }
     this.pageChanged.emit(event);
+    this.selectRow(0);
   }
 
   onEditComplete(event) {
@@ -124,6 +126,7 @@ export class DatatableComponent implements OnInit, DoCheck {
       this._rows = this.getItems();
     }
     this.filterChanged.emit(this.filters);
+    this.selectRow(0);
   }
 
   onSort(event) {
@@ -132,23 +135,24 @@ export class DatatableComponent implements OnInit, DoCheck {
       this._rows = this.getItems();
     }
     this.sortChanged.emit(this.sortMeta);
+    this.selectRow(0);
   }
 
-  onSelectRow(event) {
-    this.selectedRowIndex = event;
+  selectRow(rowIndex: number) {
+    if (this.rows && this.rows.length) {
+      this.selectedRowIndex = rowIndex;
+    } else {
+      this.selectedRowIndex = undefined;
+    }
     this.selectedRowIndexChanged.emit(this.selectedRowIndex);
+  }
+
+  onSelectRow(rowIndex: number) {
+    this.selectRow(rowIndex);
   }
 
   showColumnMenu(event) {
     this.selectFilter.show(200, event.top, event.left, event.column);
-  }
-
-  columnsTotalWidth(columns: Column[]): number {
-    let totalWidth = 0;
-    for (const column of columns) {
-      totalWidth = totalWidth + column.width;
-    }
-    return totalWidth + this.actionColumnWidth;
   }
 
   onResizeColumn({column, newValue}: any) {
@@ -196,13 +200,6 @@ export class DatatableComponent implements OnInit, DoCheck {
     const start = (page - 1) * this.itemsPerPage;
     const end = this.itemsPerPage > -1 ? (start + this.itemsPerPage) : data.length;
     return data.slice(start, end);
-  }
-
-  setDefaultSelectedRowIndex() {
-    if (!this.selectedRowIndex) {
-      this.selectedRowIndex = 0;
-      this.selectedRowIndexChanged.emit(this.selectedRowIndex);
-    }
   }
 
   getItems() {

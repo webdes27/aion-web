@@ -6,14 +6,14 @@
       <div class="datatable-body-cell"
            [ngStyle]="{'width.px': 250}">
 
-        <div class="treenode"
-             style=" cursor: pointer;">
-          <i class="icon-node"
+        <div class="datatable-tree-node"
              [ngStyle]="{'padding-left.px': level*10}"
-             [ngClass]="{'icon-node': !isLeaf(node), 'icon-collapsed': !isLeaf(node) && node.isExpanded}"
+             style=" cursor: pointer;">
+          <i [class]="getIcon(node)"
              (click)="onExpand(node)">
           </i>
-          <span class="treenode-content"
+          <i *ngIf="node.icon" [ngClass]="node.icon"></i>
+          <span class="datatable-tree-node-content"
                 (dblclick)="onExpand(node)">
             {{node.name}}
           </span>
@@ -45,9 +45,11 @@
 
   <tree-table-node
     [nodes]="node.children"
-    *ngIf="node.children && node.isExpanded"
+    [service]="service"
+    *ngIf="node.children && node.expanded"
     [columns]="columns"
-    [level]="level+1">
+    [level]="level+1"
+    (requestNodes)="onRequestLocal($event)">
   </tree-table-node>
 
 </div>

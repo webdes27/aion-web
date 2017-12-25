@@ -1,5 +1,4 @@
 import {Column, Settings} from '../types/interfaces';
-import {isUndefined} from "util";
 
 export class ColumnUtils {
 
@@ -25,7 +24,7 @@ export class ColumnUtils {
       }
       if (!column.hasOwnProperty('type')) {
         if (column.hasOwnProperty('options')) {
-          column.type = 'dropdown';
+          column.type = 'select';
         } else {
           column.type = 'text';
         }
@@ -76,10 +75,20 @@ export class ColumnUtils {
     }
   }
 
-  findSelectedIndex(selectedItem: any, items: any): number {
+  public static findSelectedIndex(selectedItem: any, items: any): number {
     const obj = items.find(x => JSON.stringify(x) === JSON.stringify(selectedItem));
     const index = items.indexOf(obj);
     return index;
+  }
+
+  public static getColumnsTotalWidth(columns: Column[]): number {
+    let totalWidth = 0;
+    for (const column of columns) {
+      if (!column.tableHidden) {
+        totalWidth = totalWidth + column.width;
+      }
+    }
+    return totalWidth;
   }
 
 }

@@ -338,6 +338,10 @@
   background-color: #ecf3ff;
 }
 
+.row-selected .datatable-row-left {
+  background-color: #ecf3ff;
+}
+
 .cell-selected {
   background-color: #b3c4c7;
 }
@@ -345,4 +349,8 @@
 .row-menu {
   color: #337ab7;
   cursor: pointer;
+}
+
+.empty-row {
+  padding: 0 0 5px 5px;
 }

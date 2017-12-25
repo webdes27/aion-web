@@ -1,4 +1,4 @@
-import {Component, Input, Output, OnInit, EventEmitter, HostBinding} from '@angular/core';
+import {Component, Input, Output, OnInit, EventEmitter} from '@angular/core';
 import {Column, ICrudService} from '../types/interfaces';
 import {ColumnUtils} from '../utils/column-utils';
 import {CustomValidator} from './custom-validator';
@@ -9,17 +9,17 @@ import {CustomValidator} from './custom-validator';
   template: `
     <div class="df-group" [ngClass]="{'df-has-error':hasError()}">
       <label [attr.for]="column.name">{{column.title}}</label>
-
-      <div class="df-checkbox" *ngFor="let o of getOptions()">
-        <label>
+      <i class="icon-collapsing" *ngIf="loading"></i>
+      <div *ngFor="let o of getOptions()">
+        <label class="checkcontainer">{{o.name ? o.name : o.id}}
           <input
             type="checkbox"
             [(ngModel)]="model"
             [name]="column.name"
             [value]="o.id"
             [checked]="isSelectActive(o)"/>
+          <span class="checkmark"></span>
         </label>
-        <span>{{o.name ? o.name : o.id}}</span>
       </div>
 
       <div class="df-help-block">
@@ -45,8 +45,10 @@ export class CheckboxComponent implements OnInit {
 
   @Input()
   set dependsValue(value) {
-    this._dependsValue = value;
-    this.setOptions();
+    if (this._dependsValue !== value) {
+      this._dependsValue = value;
+      this.setDependsOptions();
+    }
   }
 
   get model() {
@@ -63,43 +65,44 @@ export class CheckboxComponent implements OnInit {
   public beginValidate: boolean;
   public loading: boolean = false;
 
-  @HostBinding('class')
-  get cssClass() {
-    let cls = 'df-elem';
-    if (this.loading) {
-      cls += ' df-wait';
-    }
-    return cls;
-  }
-
   constructor(private validator: CustomValidator) {
   }
 
   ngOnInit() {
+    if (this.column.optionsUrl && !this.column.dependsColumn) {
+      this.loadOptions();
+    } else {
+      this._options = ColumnUtils.getOptions(this.column, this.dependsValue);
+    }
   }
 
-  setOptions() {
-    if (this._dependsValue) {
-      if (this.column.optionsUrl && this.service.getOptions) {
-        this.loading = true;
-        this.service.getOptions(this.column.optionsUrl, this._dependsValue).then((res) => {
-          this._options = res;
-          this.loading = false;
-        }).catch(error => {
-          this.loading = false;
-        });
+  setDependsOptions() {
+    if (this.dependsValue) {
+      if (this.column.optionsUrl) {
+        this.loadOptions();
+      } else {
+        this._options = ColumnUtils.getOptions(this.column, this.dependsValue);
       }
     } else {
-      this._options = null;
+      this._options = [];
+    }
+  }
+
+  loadOptions() {
+    if (this.column.optionsUrl && this.service.getOptions) {
+      this.loading = true;
+      this.service.getOptions(this.column.optionsUrl, this._dependsValue).then((res) => {
+        this._options = res;
+        this.loading = false;
+      }).catch(error => {
+        this._options = [];
+        this.loading = false;
+      });
     }
   }
 
   getOptions() {
-    if (this.column.optionsUrl) {
-      return this._options;
-    } else {
-      return ColumnUtils.getOptions(this.column, this.dependsValue);
-    }
+    return this._options;
   }
 
   errors() {

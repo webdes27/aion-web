@@ -5,36 +5,28 @@ import {CustomValidator} from './custom-validator';
 
 
 @Component({
-  selector: 'app-form-radio',
+  selector: 'app-form-select-popup',
   template: `
     <div class="df-group" [ngClass]="{'df-has-error':hasError()}">
       <label [attr.for]="column.name">{{column.title}}</label>
       <i class="icon-collapsing" *ngIf="loading"></i>
-      <div *ngFor="let o of getOptions()">
-        <label class="checkcontainer">{{o.name ? o.name : o.id}}
-          <input
-            type="radio"
-            [(ngModel)]="model"
-            [name]="column.name"
-            [value]="o.id"
-            [checked]="model === o.id"
-            (click)="model = o.id"/>
-          <span class="radiobtn"></span>
-        </label>
-      </div>
-
+      <modal-select [(value)]="model"
+                    [options]="getOptions()"
+                    (valueChange)="onValueChange($event)">
+      </modal-select>
       <div class="df-help-block">
         <span *ngFor="let err of errors()">{{err}}<br></span>
       </div>
     </div>
   `
 })
-export class RadioComponent implements OnInit {
+export class PopupSelectComponent implements OnInit {
 
   @Input() public column: Column;
   @Input() public service: ICrudService;
   @Output() valueChange: EventEmitter<any> = new EventEmitter();
   @Output() valid: EventEmitter<boolean> = new EventEmitter();
+  @Output() keyColumnChange: EventEmitter<any> = new EventEmitter();
 
   @Input('value')
   set model(value) {
@@ -116,6 +108,15 @@ export class RadioComponent implements OnInit {
     const hasError = this.validator.hasError(this.column, this.model);
     this.valid.emit(!hasError);
     return hasError;
+  }
+
+  onValueChange(event) {
+    if (this.column.keyColumn) {
+      this.keyColumnChange.emit({
+        'column': this.column.keyColumn,
+        'value': this.model
+      });
+    }
   }
 
 }

@@ -11,18 +11,18 @@ import {HttpClient} from '@angular/common/http';
 export class ShopComponent implements OnInit {
 
   public columns: Column[] = [
-    {title: 'Id', name: 'id', sortable: true, filter: true},
-    {title: 'Type', name: 'type', sortable: true, filter: true},
-    {title: 'Pic', name: 'pic', sortable: true, filter: true},
-    {title: 'Item_name.', name: 'item_name', sortable: true, filter: true},
-    {title: 'Description', name: 'description', sortable: true, filter: true},
-    {title: 'Price', name: 'price', sortable: true, filter: true},
-    {title: 'Status', name: 'status', sortable: true, filter: true},
+    {title: 'Id', name: 'id', formHidden: true},
+    {title: 'Type', name: 'type'},
+    {title: 'Pic', name: 'pic'},
+    {title: 'Item_name.', name: 'item_name'},
+    {title: 'Description', name: 'description'},
+    {title: 'Price', name: 'price'},
+    {title: 'Status', name: 'status'},
   ];
   public settings: Settings = {
     api: CONFIG.apiPayShop,
     crud: true,
-    primaryKey: 'id',
+    primaryKeys: ['id'],
   };
 
   public service: ICrudService;

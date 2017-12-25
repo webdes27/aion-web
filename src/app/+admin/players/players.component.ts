@@ -15,16 +15,13 @@ export class PlayersComponent {
     {
       title: 'Id',
       name: 'id',
-      sortable: true,
-      filter: true,
       frozen: true,
       resizeable: false,
+      formHidden: true,
     },
     {
       title: 'Name',
       name: 'name',
-      sortable: true,
-      filter: true,
       frozen: true,
       width: 250,
       validation: {pattern: '^[a-zA-Z ]+$'},
@@ -34,9 +31,7 @@ export class PlayersComponent {
     {
       title: 'Race',
       name: 'race',
-      sortable: true,
-      filter: true,
-      type: 'dropdown',
+      type: 'select',
       options: [
         {id: 'ASMODIANS', name: 'ASMODIANS'},
         {id: 'ELYOS', name: 'ELYOS'},
@@ -47,7 +42,7 @@ export class PlayersComponent {
       title: 'Cascading Select',
       name: 'note',
       editable: true,
-      type: 'dropdown',
+      type: 'select',
       options: [
         {id: 'ASM1', name: 'ASM note 1', parentId: 'ASMODIANS'},
         {id: 'ASM2', name: 'ASM note 2', parentId: 'ASMODIANS'},
@@ -62,8 +57,6 @@ export class PlayersComponent {
     {
       title: 'Gender',
       name: 'gender',
-      sortable: true,
-      filter: true,
       type: 'radio',
       options: [
         {id: 'MALE', name: 'MALE'},
@@ -74,8 +67,6 @@ export class PlayersComponent {
     {
       title: 'Exp',
       name: 'exp',
-      sortable: true,
-      filter: true,
       type: 'number',
       validation: {required: true, minLength: 2, maxLength: 10},
       editable: true,
@@ -83,8 +74,6 @@ export class PlayersComponent {
     {
       title: 'Last online',
       name: 'last_online',
-      sortable: true,
-      filter: true,
       type: 'date',
       editable: true,
     },
@@ -101,7 +90,7 @@ export class PlayersComponent {
   public settings: Settings = {
     api: CONFIG.apiPlayers,
     crud: true,
-    primaryKey: 'id',
+    primaryKeys: ['id'],
     tableWidth: 820,
     scrollHeight: 380
   };

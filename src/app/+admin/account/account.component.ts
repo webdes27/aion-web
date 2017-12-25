@@ -11,16 +11,16 @@ import {HttpClient} from '@angular/common/http';
 export class AccountComponent implements OnInit {
 
   public columns: Column[] = [
-    {title: 'Id', name: 'id', sortable: true, filter: true},
-    {title: 'Name', name: 'name', sortable: true, filter: true},
-    {title: 'Activated', name: 'activated', sortable: true, filter: true},
-    {title: 'Access_level', name: 'access_level', sortable: true, filter: true},
-    {title: 'Membership', name: 'membership', sortable: true, filter: true},
+    {title: 'Id', name: 'id', formHidden: true},
+    {title: 'Name', name: 'name'},
+    {title: 'Activated', name: 'activated'},
+    {title: 'Access_level', name: 'access_level'},
+    {title: 'Membership', name: 'membership'},
   ];
   public settings: Settings = {
     api: CONFIG.apiAccount,
     crud: true,
-    primaryKey: 'id',
+    primaryKeys: ['id'],
   };
 
   public service: ICrudService;

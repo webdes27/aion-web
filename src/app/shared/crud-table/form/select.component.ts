@@ -1,21 +1,22 @@
-import {Component, Input, Output, OnInit, EventEmitter, HostBinding} from '@angular/core';
+import {Component, Input, Output, OnInit, EventEmitter} from '@angular/core';
 import {Column, ICrudService} from '../types/interfaces';
 import {ColumnUtils} from '../utils/column-utils';
 import {CustomValidator} from './custom-validator';
 
 
 @Component({
-  selector: 'app-form-dropdown',
+  selector: 'app-form-select',
   template: `
     <div class="df-group" [ngClass]="{'df-has-error':hasError()}">
       <label [attr.for]="column.name">{{column.title}}</label>
-
+      <i class="icon-collapsing" *ngIf="loading"></i>
       <select class="df-control"
               [(ngModel)]="model"
               (focus)="beginValidate = true"
-              [id]="column.name">
+              [id]="column.name"
+              (change)="onValueChange($event)">
         <option></option>
-        <option *ngFor="let opt of getOptions()" [ngValue]="opt.id">{{opt.name}}</option>
+        <option *ngFor="let opt of getOptions()" [value]="opt.id">{{opt.name}}</option>
       </select>
 
       <div class="df-help-block">
@@ -24,12 +25,13 @@ import {CustomValidator} from './custom-validator';
     </div>
   `
 })
-export class DropdownComponent implements OnInit {
+export class SelectComponent implements OnInit {
 
   @Input() public column: Column;
   @Input() public service: ICrudService;
   @Output() valueChange: EventEmitter<any> = new EventEmitter();
   @Output() valid: EventEmitter<boolean> = new EventEmitter();
+  @Output() keyColumnChange: EventEmitter<any> = new EventEmitter();
 
   @Input('value')
   set model(value) {
@@ -41,8 +43,10 @@ export class DropdownComponent implements OnInit {
 
   @Input()
   set dependsValue(value) {
-    this._dependsValue = value;
-    this.setOptions();
+    if (this._dependsValue !== value) {
+      this._dependsValue = value;
+      this.setDependsOptions();
+    }
   }
 
   get model() {
@@ -59,43 +63,44 @@ export class DropdownComponent implements OnInit {
   public beginValidate: boolean;
   public loading: boolean = false;
 
-  @HostBinding('class')
-  get cssClass() {
-    let cls = 'df-elem';
-    if (this.loading) {
-      cls += ' df-wait';
-    }
-    return cls;
-  }
-
   constructor(private validator: CustomValidator) {
   }
 
   ngOnInit() {
+    if (this.column.optionsUrl && !this.column.dependsColumn) {
+      this.loadOptions();
+    } else {
+      this._options = ColumnUtils.getOptions(this.column, this.dependsValue);
+    }
   }
 
-  setOptions() {
-    if (this._dependsValue) {
-      if (this.column.optionsUrl && this.service.getOptions) {
-        this.loading = true;
-        this.service.getOptions(this.column.optionsUrl, this._dependsValue).then((res) => {
-          this._options = res;
-          this.loading = false;
-        }).catch(error => {
-          this.loading = false;
-        });
+  setDependsOptions() {
+    if (this.dependsValue) {
+      if (this.column.optionsUrl) {
+        this.loadOptions();
+      } else {
+        this._options = ColumnUtils.getOptions(this.column, this.dependsValue);
       }
     } else {
-      this._options = null;
+      this._options = [];
+    }
+  }
+
+  loadOptions() {
+    if (this.column.optionsUrl && this.service.getOptions) {
+      this.loading = true;
+      this.service.getOptions(this.column.optionsUrl, this._dependsValue).then((res) => {
+        this._options = res;
+        this.loading = false;
+      }).catch(error => {
+        this._options = [];
+        this.loading = false;
+      });
     }
   }
 
   getOptions() {
-    if (this.column.optionsUrl) {
-      return this._options;
-    } else {
-      return ColumnUtils.getOptions(this.column, this.dependsValue);
-    }
+    return this._options;
   }
 
   errors() {
@@ -108,6 +113,15 @@ export class DropdownComponent implements OnInit {
     const hasError = this.validator.hasError(this.column, this.model);
     this.valid.emit(!hasError);
     return hasError;
+  }
+
+  onValueChange(event) {
+    if (this.column.keyColumn) {
+      this.keyColumnChange.emit({
+        'column': this.column.keyColumn,
+        'value': this.model
+      });
+    }
   }
 
 }

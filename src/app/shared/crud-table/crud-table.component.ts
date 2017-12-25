@@ -16,8 +16,10 @@ export class CrudTableComponent implements OnInit {
   @Input() public settings: Settings;
   @Input() public service: ICrudService;
   @Input() public zIndexModal: number;
+  @Input() public trackByProp: string;
   @Output() filterChanged: EventEmitter<Filter> = new EventEmitter();
   @Output() dataChanged: EventEmitter<any> = new EventEmitter();
+  @Output() select: EventEmitter<any> = new EventEmitter();
 
   @Input()
   set filters(val: any) {
@@ -29,14 +31,13 @@ export class CrudTableComponent implements OnInit {
     return this._filters;
   }
 
-  _filters: Filter = {};
+  private _filters: Filter = {};
 
   public items: any[];
   public item: any;
   public selectedRowIndex: number;
   public errors: any;
-  public onDetailView: boolean = false;
-
+  public detailView: boolean = false;
   public loading: boolean = false;
 
   public itemsPerPage: number = 10;
@@ -45,7 +46,6 @@ export class CrudTableComponent implements OnInit {
 
   public sortMeta: SortMeta = <SortMeta>{};
   public rowMenu: MenuItem[];
-  public trackByProp: string;
 
   @ViewChild('modalEditForm') modalEditForm: ModalEditFormComponent;
 
@@ -54,14 +54,14 @@ export class CrudTableComponent implements OnInit {
 
   ngOnInit() {
     this.service.url = this.settings.api;
-    this.service.primaryKey = this.settings.primaryKey;
+    this.service.primaryKeys = this.settings.primaryKeys;
     this.initRowMenu();
     this.settings.initLoad = (this.settings.initLoad !== undefined) ? this.settings.initLoad : true;
     if (this.settings.initLoad) {
       this.getItems();
     }
-    if (!Array.isArray(this.settings.primaryKey)) {
-      this.trackByProp = this.settings.primaryKey;
+    if (!this.trackByProp && this.settings.primaryKeys && this.settings.primaryKeys.length === 1) {
+      this.trackByProp = this.settings.primaryKeys[0];
     }
   }
 
@@ -81,14 +81,13 @@ export class CrudTableComponent implements OnInit {
     ];
   }
 
-  getItems() {
+  getItems(): Promise<any> | any {
     if (!this.service.url) {
       return;
     }
     this.loading = true;
     this.errors = null;
-    this.onDetailView = false;
-    this.service.getItems(this.currentPage, this.filters, this.sortMeta.field, this.sortMeta.order)
+    return this.service.getItems(this.currentPage, this.filters, this.sortMeta.field, this.sortMeta.order)
       .then(data => {
         this.loading = false;
         this.items = data.items;
@@ -104,7 +103,7 @@ export class CrudTableComponent implements OnInit {
   clear() {
     this.items = [];
     this.totalItems = 0;
-    this.onDetailView = false;
+    this.detailView = false;
   }
 
   pageChanged(event: any): void {
@@ -119,12 +118,14 @@ export class CrudTableComponent implements OnInit {
 
   createItem() {
     this.item = {};
+    this.detailView = false;
     this.modalEditForm.open();
   }
 
   updateItem() {
     const item = this.items[this.selectedRowIndex];
     this.item = this.cloneItem(item);
+    this.detailView = false;
     this.modalEditForm.open();
   }
 
@@ -146,11 +147,8 @@ export class CrudTableComponent implements OnInit {
     const item = this.items[this.selectedRowIndex];
     this.errors = null;
     this.item = this.cloneItem(item);
-    this.onDetailView = true;
-  }
-
-  closeDetails() {
-    this.onDetailView = false;
+    this.detailView = true;
+    this.modalEditForm.open();
   }
 
   onFilter(event) {
@@ -165,6 +163,7 @@ export class CrudTableComponent implements OnInit {
 
   onSelectedRow(event) {
     this.selectedRowIndex = event;
+    this.select.emit(this.items[this.selectedRowIndex]);
   }
 
   onSaved(event) {
@@ -172,8 +171,12 @@ export class CrudTableComponent implements OnInit {
     this.dataChanged.emit(true);
   }
 
-  onUpdated(event) {
-    this.items[this.selectedRowIndex] = event;
+  onUpdated(event: any) {
+    Object.keys(event).forEach(function(k){
+      if (k in this.items[this.selectedRowIndex]) {
+        this.items[this.selectedRowIndex][k] = event[k];
+      }
+    }.bind(this));
     this.dataChanged.emit(true);
   }
 

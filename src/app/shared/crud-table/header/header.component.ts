@@ -50,10 +50,12 @@ export class HeaderComponent implements OnInit {
       });
 
       this.columns.forEach((column) => {
-        if (column.frozen) {
-          this.frozenColumns.push(column);
-        } else {
-          this.scrollableColumns.push(column);
+        if (!column.tableHidden) {
+          if (column.frozen) {
+            this.frozenColumns.push(column);
+          } else {
+            this.scrollableColumns.push(column);
+          }
         }
       });
     }
@@ -115,10 +117,6 @@ export class HeaderComponent implements OnInit {
     top = top + rowHeight;
     // datatable-row-left + offsetLeft
     left = left + el.parentNode.offsetLeft;
-
-    const doc = el.parentNode.parentNode.parentNode.parentNode;
-    const windowScrollLeft = (window.pageXOffset || doc.scrollLeft) - (doc.clientLeft || 0);
-    left = left - windowScrollLeft;
 
     this.onShowColumnMenu.emit({'top': top, 'left': left, 'column': column});
   }

@@ -1,5 +1,5 @@
 import {Component, Input, Output, EventEmitter} from '@angular/core';
-import {ITreeNode, Column} from '../types/interfaces';
+import {ITreeNode, ITreeService, Column} from '../types/interfaces';
 
 @Component({
   selector: 'tree-table-node',
@@ -8,11 +8,14 @@ import {ITreeNode, Column} from '../types/interfaces';
 export class TreeTableNodeComponent {
 
   @Input() public nodes: ITreeNode[];
+  @Input() public service: ITreeService;
   @Input() public columns: Column[];
   @Input() public level: number = 0;
   @Input() public offsetX: number;
-  @Output() onRequestNodes: EventEmitter<ITreeNode> = new EventEmitter();
+  @Output() requestNodes: EventEmitter<ITreeNode> = new EventEmitter();
   @Output() editComplete: EventEmitter<any> = new EventEmitter();
+
+  loading: boolean = false;
 
   constructor() {
   }
@@ -22,10 +25,36 @@ export class TreeTableNodeComponent {
   }
 
   onExpand(node: ITreeNode) {
-    node.isExpanded = !node.isExpanded;
-    if (node.isExpanded && (!node.children || node.children.length === 0)) {
-      this.onRequestNodes.emit(node);
+    node.expanded = !node.expanded;
+    if (node.expanded && (!node.children || node.children.length === 0) && node.leaf === false) {
+      if (this.service) {
+        this.loading = true;
+        this.service.getNodes(node).then(data => {
+          node.children = data;
+          this.loading = false;
+          this.requestNodes.emit(node);
+        }).catch(err => {
+          this.loading = false;
+        });
+      }
     }
+  }
+
+  onRequestLocal(node: ITreeNode) {
+    this.requestNodes.emit(node);
+  }
+
+  getIcon(node: ITreeNode) {
+    let icon: string;
+    if (this.loading) {
+      return 'icon-collapsing';
+    }
+    if (!this.isLeaf(node) && node.expanded) {
+      icon = 'icon-node icon-collapsed';
+    } else if (!this.isLeaf(node)) {
+      icon = 'icon-node';
+    }
+    return icon;
   }
 
   stylesByGroup() {
