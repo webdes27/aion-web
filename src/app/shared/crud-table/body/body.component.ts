@@ -1,82 +1,51 @@
 import {
-  Component, Input, Output, EventEmitter, HostBinding, OnInit,
-  ChangeDetectionStrategy, DoCheck, KeyValueDiffers, KeyValueDiffer, ChangeDetectorRef
+  Component, Input, Output, EventEmitter, HostBinding, OnInit, ChangeDetectionStrategy
 } from '@angular/core';
-import {Column, MenuItem} from '../types/interfaces';
-import {ColumnUtils} from '../utils/column-utils';
+import {DataTable} from '../models/data-table';
 
 @Component({
-  selector: 'datatable-body',
+  selector: 'app-datatable-body',
   templateUrl: './body.component.html',
-  host: {
-    class: 'datatable-body'
-  },
-  changeDetection: ChangeDetectionStrategy.OnPush,
+  // changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class BodyComponent implements OnInit, DoCheck {
+export class BodyComponent implements OnInit {
 
-  @Input() public columns: Column[];
-  @Input() public actionColumnWidth: number;
-  @Input() public actionMenu: MenuItem[];
+  @Input() public table: DataTable;
+  @Input() public rows: any;
   @Input() public offsetX: number;
-  @Input() public selectedRowIndex: number;
   @Input() public trackByProp: string;
   @Input() public loading: boolean = false;
-
-  @Input()
-  set rows(val: any) {
-    this._rows = val;
-  }
-
-  get rows(): any {
-    return this._rows;
-  }
-
-  @Input()
-  @HostBinding('style.height')
-  set bodyHeight(val) {
-    if (val) {
-      this._bodyHeight = val + 'px';
-    } else {
-      this._bodyHeight = 'auto';
-    }
-  }
-
-  get bodyHeight() {
-    return this._bodyHeight;
-  }
 
   @Output() editComplete: EventEmitter<any> = new EventEmitter();
   @Output() scroll: EventEmitter<any> = new EventEmitter();
   @Output() selectedRowIndexChange: EventEmitter<number> = new EventEmitter();
 
-  private rowDiffer: KeyValueDiffer<{}, {}>;
+  @HostBinding('class') cssClass = 'datatable-body';
+
   offsetY: number = 0;
   rowTrackingFn: any;
-  _rows: any[];
-  _bodyHeight: any;
-  columnsTotalWidth: number;
 
-  constructor(private differs: KeyValueDiffers, private cd: ChangeDetectorRef) {
-    this.rowDiffer = this.differs.find({}).create();
+  constructor() {
     // declare fn here so we can get access to the `this` property
     this.rowTrackingFn = function (index: number, row: any): any {
       if (this.trackByProp) {
-        return row[this.trackByProp];
+        return `${index}-${this.trackByProp}`;
       } else {
         return index;
       }
     }.bind(this);
   }
 
-  ngOnInit(): void {
-    this.columnsTotalWidth = ColumnUtils.getColumnsTotalWidth(this.columns) + this.actionColumnWidth;
+  @HostBinding('style.height')
+  get bodyHeight() {
+    if (this.table.scrollHeight) {
+      return this.table.scrollHeight + 'px';
+    } else {
+      return 'auto';
+    }
   }
 
-  ngDoCheck(): void {
-    if (this.rowDiffer.diff(this.rows)) {
-      this.cd.markForCheck();
-    }
+  ngOnInit(): void {
   }
 
   onBodyScroll(event: any): void {
@@ -91,10 +60,8 @@ export class BodyComponent implements OnInit, DoCheck {
         offsetX: scrollXPos
       });
     }
-
     this.offsetY = scrollYPos;
     this.offsetX = scrollXPos;
-
   }
 
   onEditComplete(event) {

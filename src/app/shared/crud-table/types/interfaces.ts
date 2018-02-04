@@ -1,4 +1,4 @@
-import {EventEmitter, PipeTransform} from '@angular/core';
+import {EventEmitter} from '@angular/core';
 
 export interface ISelectOption {
   id: any;
@@ -6,55 +6,33 @@ export interface ISelectOption {
   parentId?: any;
 }
 
-export interface Column {
-  title: string;
-  name: string;
-  sortable?: boolean;
-  filter?: boolean;
-  options?: ISelectOption[];
-  pipe?: PipeTransform;
-  width?: number;
-  frozen?: boolean;
-  type?: 'text' | 'password' | 'number' | 'select' | 'radio' | 'checkbox' | 'textarea' | 'date' | 'datetime-local' | 'select-popup';
-  validation?: IValidation;
-  editable?: boolean;
-  resizeable?: boolean;
-  dependsColumn?: string;
-  cellTemplate?: any;
-  formHidden?: boolean;
-  tableHidden?: boolean;
-  optionsUrl?: string;
-  cellClass?: any;
-  keyColumn?: string;
-}
+export type ColumnType =
+  'text'
+  | 'password'
+  | 'number'
+  | 'select'
+  | 'radio'
+  | 'checkbox'
+  | 'textarea'
+  | 'date'
+  | 'datetime-local'
+  | 'select-popup';
 
 export interface FilterMetadata {
   value?: any;
   matchMode?: string;
+  valueTo?: any;
+  type?: string;
 }
 
 export interface Filter {
   [s: string]: FilterMetadata;
 }
 
-export interface Settings {
-  api: string;
-  process?: string;
-  crud: boolean;
-  primaryKeys?: string[];
-  type?: string;
-  tableWidth?: number;
-  scrollHeight?: number;
-  sortable?: boolean;
-  filter?: boolean;
-  initLoad?: boolean;
-  clientSide?: boolean;
-}
-
 export interface ICrudService {
   url: string;
   primaryKeys: string[];
-  getItems(page: number, filters?: Filter, sortField?: string, sortOrder?: number): Promise<any>;
+  getItems(page: number, filters?: Filter, sortMeta?: SortMeta[]): Promise<any>;
   getItem(row: any): Promise<any>;
   post(row: any): Promise<any>;
   put(row: any): Promise<any>;

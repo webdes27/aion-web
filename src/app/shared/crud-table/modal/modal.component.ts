@@ -1,10 +1,12 @@
-import {Component, ElementRef, ViewChild, Input, OnInit, AfterViewChecked, HostListener} from '@angular/core';
+import {
+  Component, ElementRef, ViewChild, Input, Output, OnInit, AfterViewChecked,
+  HostListener, HostBinding, EventEmitter
+} from '@angular/core';
 
 @Component({
   selector: 'app-modal',
   templateUrl: 'modal.component.html',
-  styleUrls: ['modal.component.css'],
-  host: {'class': 'app-modal'}
+  styleUrls: ['modal.component.css']
 })
 export class ModalComponent implements OnInit, AfterViewChecked {
 
@@ -13,8 +15,12 @@ export class ModalComponent implements OnInit, AfterViewChecked {
   @Input() zIndex: number = 0;
   @Input() autoZIndex: boolean;
 
+  @Output() close: EventEmitter<any> = new EventEmitter();
+
   @ViewChild('modalRoot') modalRoot: ElementRef;
   @ViewChild('modalBody') modalBody: ElementRef;
+
+  @HostBinding('class') cssClass = 'app-modal';
 
   public visible: boolean = false;
   executePostDisplayActions: boolean;
@@ -56,7 +62,6 @@ export class ModalComponent implements OnInit, AfterViewChecked {
     event.preventDefault();
     event.stopPropagation();
     this.hide();
-    this.focusLastModal();
   }
 
   @HostListener('mousemove', ['$event'])
@@ -81,6 +86,8 @@ export class ModalComponent implements OnInit, AfterViewChecked {
 
   public hide(): void {
     this.visible = false;
+    this.close.emit();
+    this.focusLastModal();
   }
 
   get contentzIndex(): number {

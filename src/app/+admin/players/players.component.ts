@@ -6,7 +6,7 @@ import {HttpClient} from '@angular/common/http';
 @Component({
   selector: 'my-app',
   template: `
-    <crud-table [columns]="columns" [settings]="settings" [service]="service"></crud-table>`
+    <app-crud-table [columns]="columns" [settings]="settings" [service]="service"></app-crud-table>`
 })
 
 export class PlayersComponent {

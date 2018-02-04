@@ -1,17 +1,18 @@
-import {Component, OnInit, Input, Output, ViewChild, EventEmitter, PipeTransform} from '@angular/core';
+import {Component, OnInit, Input, Output, ViewChild, EventEmitter, PipeTransform, ViewEncapsulation} from '@angular/core';
 import {ModalComponent} from '../modal/modal.component';
-import {Column, Settings, ICrudService} from '../types/interfaces';
-import {ColumnUtils} from '../utils/column-utils';
+import {ICrudService} from '../types';
+import {DataTable} from '../models/data-table';
+import {Column} from '../models/column';
 
 @Component({
-  selector: 'modal-edit-form',
+  selector: 'app-modal-edit-form',
   templateUrl: './modal-edit-form.component.html',
-  styleUrls: ['modal-edit-form.component.css'],
+  styleUrls: ['../styles/index.css'],
+  encapsulation: ViewEncapsulation.None,
 })
 export class ModalEditFormComponent implements OnInit {
 
-  @Input() public columns: Column[];
-  @Input() public settings: Settings;
+  @Input() public table: DataTable;
   @Input() public service: ICrudService;
   @Input() public zIndex: number;
   @Input() public view: boolean;
@@ -32,26 +33,27 @@ export class ModalEditFormComponent implements OnInit {
   get item() {
     return this._item;
   }
-  private _item: any;
 
-  public newItem: boolean;
   @ViewChild('childModal')
+
   public readonly childModal: ModalComponent;
   public formValid: boolean = true;
+  public newItem: boolean;
+  private _item: any;
 
   constructor() {
   }
 
   ngOnInit() {
-    this.service.url = this.settings.api;
-    this.service.primaryKeys = this.settings.primaryKeys;
+    this.service.url = this.table.settings.api;
+    this.service.primaryKeys = this.table.settings.primaryKeys;
   }
 
   modalTitle() {
     if (!this.view) {
-      return this.newItem ? 'Create' : 'Update';
+      return this.newItem ? this.table.settings.messages.titleCreate : this.table.settings.messages.titleUpdate;
     } else {
-      return 'Detail view';
+      return this.table.settings.messages.titleDetailView;
     }
   }
 
@@ -128,7 +130,7 @@ export class ModalEditFormComponent implements OnInit {
       return userPipe.transform(value);
     }
     if (value) {
-      value = ColumnUtils.getOptionName(value, column);
+      value = column.getOptionName(value);
     }
     return value;
   }

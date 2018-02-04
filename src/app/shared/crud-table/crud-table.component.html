@@ -1,39 +1,34 @@
-<div class="datatable-alert" *ngIf="errors">{{errors}}</div>
+<div class="df-alert df-alert-danger" *ngIf="errors">{{errors}}</div>
 
 <button type="button"
         class="button"
         style="margin-bottom: 5px;"
         *ngIf="settings.crud"
-        (click)="createItem()">Create
+        (click)="createItem()">{{table.settings.messages.create}}
 </button>
 
 <app-datatable
-  [columns]="columns"
-  [settings]="settings"
+  [table]="table"
   [rows]="items"
-  [filters]="filters"
-  [rowMenu]="rowMenu"
-  [itemsPerPage]="itemsPerPage"
-  [totalItems]="totalItems"
   [loading]="loading"
   [trackByProp]="trackByProp"
-  (filterChanged)="onFilter($event)"
-  (pageChanged)="pageChanged($event)"
-  (sortChanged)="sort($event)"
+  (filterChanged)="onFilter()"
+  (pageChanged)="onPageChanged()"
+  (sortChanged)="onSort()"
   (editComplete)="onEditComplete($event)"
   (selectedRowIndexChanged)="onSelectedRow($event)">
 </app-datatable>
 
-<modal-edit-form #modalEditForm
-                 [columns]="columns"
-                 [item]="item"
-                 [settings]="settings"
-                 [service]="service"
-                 [zIndex]="zIndexModal"
-                 [view]="detailView"
-                 (saved)="onSaved($event)"
-                 (updated)="onUpdated($event)"
-                 (deleted)="onDeleted($event)"
-                 (loading)="onLoading($event)"
-                 (errors)="onErrors($event)">
-</modal-edit-form>
+<app-modal-edit-form
+  #modalEditForm
+  [table]="table"
+  [item]="item"
+  [service]="service"
+  [zIndex]="zIndexModal"
+  [view]="detailView"
+  (saved)="onSaved($event)"
+  (updated)="onUpdated($event)"
+  (deleted)="onDeleted($event)"
+  (loading)="onLoading($event)"
+  (errors)="onErrors($event)">
+</app-modal-edit-form>

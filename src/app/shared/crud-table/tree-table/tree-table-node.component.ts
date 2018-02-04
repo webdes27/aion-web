@@ -1,8 +1,9 @@
 import {Component, Input, Output, EventEmitter} from '@angular/core';
-import {ITreeNode, ITreeService, Column} from '../types/interfaces';
+import {ITreeNode, ITreeService} from '../types';
+import {Column} from '../models/column';
 
 @Component({
-  selector: 'tree-table-node',
+  selector: 'app-tree-table-node',
   templateUrl: './tree-table-node.component.html',
 })
 export class TreeTableNodeComponent {

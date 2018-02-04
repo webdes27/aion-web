@@ -5,7 +5,7 @@ import {HttpClient} from '@angular/common/http';
 
 @Component({
   selector: 'my-app',
-  template: `<crud-table [columns]="columns" [settings]="settings" [service]="service"></crud-table>`
+  template: `<app-crud-table [columns]="columns" [settings]="settings" [service]="service"></app-crud-table>`
 })
 
 export class AccountComponent implements OnInit {
@@ -21,6 +21,7 @@ export class AccountComponent implements OnInit {
     api: CONFIG.apiAccount,
     crud: true,
     primaryKeys: ['id'],
+    multipleSort: true,
   };
 
   public service: ICrudService;

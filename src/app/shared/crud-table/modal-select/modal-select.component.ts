@@ -1,9 +1,10 @@
-import {Component, OnInit, Input, Output, EventEmitter, ViewChild} from '@angular/core';
+import {Component, OnInit, Input, Output, EventEmitter, ViewChild, ViewEncapsulation} from '@angular/core';
 
 @Component({
-  selector: 'modal-select',
+  selector: 'app-modal-select',
   templateUrl: './modal-select.component.html',
-  styleUrls: ['modal-select.component.css']
+  styleUrls: ['../styles/index.css'],
+  encapsulation: ViewEncapsulation.None,
 })
 
 export class ModalSelectComponent implements OnInit {
@@ -36,6 +37,7 @@ export class ModalSelectComponent implements OnInit {
 
   @Input() public zIndex: number;
   @Input() public filterDelay: number = 300;
+  @Input() public disabled: boolean;
   @Output() valueChange: EventEmitter<any> = new EventEmitter();
 
   @ViewChild('modal') readonly modal: any;
@@ -59,9 +61,11 @@ export class ModalSelectComponent implements OnInit {
   }
 
   open() {
-    this.searchFilterText = '';
-    this.modal.show();
-    this._options = this.getOptions();
+    if (!this.disabled) {
+      this.searchFilterText = '';
+      this.modal.show();
+      this._options = this.getOptions();
+    }
   }
 
   onFilterKeyup() {
@@ -151,6 +155,11 @@ export class ModalSelectComponent implements OnInit {
       });
       return (item) ? item['name'] : '';
     }
+  }
+
+  onClickClearSearch() {
+    this.searchFilterText = '';
+    this.onFilterKeyup();
   }
 
 }

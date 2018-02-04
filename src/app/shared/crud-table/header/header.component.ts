@@ -1,138 +1,71 @@
-import {Component, OnInit, Input, Output, EventEmitter, HostBinding, ChangeDetectionStrategy} from '@angular/core';
-import {Column, Filter, SortMeta, Settings} from '../types/interfaces';
-import {DomUtils} from '../utils/dom-utils';
-
+import {Component, OnInit, Input, Output, EventEmitter, HostBinding} from '@angular/core';
+import {DataTable} from '../models/data-table';
+import {Column} from '../models/column';
+import {getHeight} from '../utils/dom-utils';
 
 @Component({
-  selector: 'datatable-header',
+  selector: 'app-datatable-header',
   templateUrl: 'header.component.html',
-  host: {
-    class: 'datatable-header'
-  },
-  changeDetection: ChangeDetectionStrategy.OnPush
 })
 
 export class HeaderComponent implements OnInit {
 
-  @Input() public columns: Column[];
-  @Input() public filters: Filter = {};
-  @Input() public sortMeta: SortMeta;
-  @Input() public actionColumnWidth: number;
-  @Input() offsetX: number;
-  @Input() public settings: Settings;
+  @Input() public table: DataTable;
+  @Input() public offsetX: number;
 
-  @Output() onSort: EventEmitter<any> = new EventEmitter();
-  @Output() onFilter: EventEmitter<any> = new EventEmitter();
-  @Output() onShowColumnMenu: EventEmitter<any> = new EventEmitter();
-  @Output() onClearAllFilters: EventEmitter<any> = new EventEmitter();
-  @Output() onResize: EventEmitter<any> = new EventEmitter();
+  @Output() sort: EventEmitter<any> = new EventEmitter();
+  @Output() showColumnMenu: EventEmitter<any> = new EventEmitter();
+  @Output() clearFilters: EventEmitter<any> = new EventEmitter();
 
-  @HostBinding('style.height.px')
-  @Input() headerHeight: number;
+  @HostBinding('class') cssClass = 'datatable-header';
 
-  public minWidthColumn: number = 50;
-  public maxWidthColumn: number = 500;
   frozenColumns: Column[] = [];
-  scrollableColumns: Column[] = [];
 
   constructor() {
   }
 
   ngOnInit() {
-    if (this.columns) {
-      /* action column */
-      this.frozenColumns.push(<Column>{
+    if (this.table.columns) {
+      this.frozenColumns = [...this.table.frozenColumns];
+      const actionColumn: Column = new Column({
         title: '',
         name: '',
         sortable: false,
         filter: false,
-        width: this.actionColumnWidth
+        resizeable: false,
+        width: this.table.actionColumnWidth
       });
-
-      this.columns.forEach((column) => {
-        if (!column.tableHidden) {
-          if (column.frozen) {
-            this.frozenColumns.push(column);
-          } else {
-            this.scrollableColumns.push(column);
-          }
-        }
-      });
+      this.frozenColumns.unshift(actionColumn);
     }
   }
 
-  sort(event, column: Column) {
+  onSort(column: Column) {
     if (!column.sortable) {
       return;
     }
-    this.sortMeta.order = (this.sortMeta.field === column.name) ? this.sortMeta.order * -1 : 1;
-    this.sortMeta.field = column.name;
-    this.onSort.emit({
-      sortMeta: this.sortMeta
-    });
-  }
-
-  getSortOrder(column: Column) {
-    let order = 0;
-    if (this.sortMeta.field && this.sortMeta.field === column.name) {
-      order = this.sortMeta.order;
-    }
-    return order;
-  }
-
-  isFilter(column: Column): boolean {
-    let length = 0;
-    if (this.filters[column.name] && this.filters[column.name].value) {
-      length = this.filters[column.name].value.trim().length;
-    }
-    return length > 0;
-  }
-
-  filter(event) {
-    this.filters = event;
-    this.onFilter.emit(this.filters);
+    this.table.sorter.setOrder(column.name);
+    this.sort.emit(this.table.sorter.sortMeta);
   }
 
   clearAllFilters() {
-    this.filters = {};
-    this.onClearAllFilters.emit(true);
+    this.table.dataFilter.clear();
+    this.clearFilters.emit(true);
   }
 
-  hasFilter() {
-    let empty = true;
-    for (const prop in this.filters) {
-      if (this.filters.hasOwnProperty(prop)) {
-        empty = false;
-        break;
-      }
-    }
-    return !empty;
-  }
-
-  showColumnMenu(event, column: Column) {
+  clickColumnMenu(event, column: Column) {
     const el = event.target.parentNode;
     let left = el.offsetLeft;
     let top = el.offsetTop;
-    const rowHeight = DomUtils.getHeight(el.parentNode);
+    const rowHeight = getHeight(el.parentNode);
     top = top + rowHeight;
     // datatable-row-left + offsetLeft
     left = left + el.parentNode.offsetLeft;
 
-    this.onShowColumnMenu.emit({'top': top, 'left': left, 'column': column});
+    this.showColumnMenu.emit({'top': top, 'left': left, 'column': column});
   }
 
   onColumnResized(width: number, column: Column): void {
-
-    if (width <= this.minWidthColumn) {
-      width = this.minWidthColumn;
-    } else if (width >= this.maxWidthColumn) {
-      width = this.maxWidthColumn;
-    }
-
-    this.onResize.emit({
-      column: column,
-      newValue: width
-    });
+    this.table.setColumnWidth(column, width);
   }
 
   stylesByGroup() {

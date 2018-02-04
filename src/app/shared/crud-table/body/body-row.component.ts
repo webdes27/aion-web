@@ -2,35 +2,30 @@ import {
   Component, OnInit, Input, Output, EventEmitter, HostBinding, HostListener,
   ChangeDetectionStrategy, DoCheck, KeyValueDiffers, KeyValueDiffer, ChangeDetectorRef
 } from '@angular/core';
-import {Column, MenuItem} from '../types/interfaces';
+import {MenuItem} from '../types';
+import {DataTable} from '../models/data-table';
 
 @Component({
-  selector: 'datatable-body-row',
+  selector: 'app-datatable-body-row',
   templateUrl: './body-row.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush,
+  // changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class BodyRowComponent implements OnInit, DoCheck {
 
-  @Input() public columns: Column[];
+  @Input() public table: DataTable;
   @Input() public row: any;
-  @Input() public actionColumnWidth: number;
-  @Input() public actionMenu: MenuItem[];
   @Input() public offsetX: number;
-  @Input() public selectedRowIndex: number;
   @Input() public rowIndex: number;
 
   @Output() selectedRowIndexChange: EventEmitter<number> = new EventEmitter();
   @Output() editComplete: EventEmitter<any> = new EventEmitter();
 
-  public frozenColumns: Column[] = [];
-  public scrollableColumns: Column[] = [];
-  public enableAction: boolean = false;
   private rowDiffer: KeyValueDiffer<{}, {}>;
 
   @HostBinding('class')
   get cssClass() {
     let cls = 'datatable-body-row';
-    if (this.rowIndex === this.selectedRowIndex) {
+    if (this.rowIndex === this.table.selectedRowIndex) {
       cls += ' row-selected';
     }
     return cls;
@@ -41,20 +36,6 @@ export class BodyRowComponent implements OnInit, DoCheck {
   }
 
   ngOnInit() {
-    if (this.actionMenu) {
-      this.enableAction = true;
-    }
-    if (this.columns) {
-      this.columns.forEach((column) => {
-        if (!column.tableHidden) {
-          if (column.frozen) {
-            this.frozenColumns.push(column);
-          } else {
-            this.scrollableColumns.push(column);
-          }
-        }
-      });
-    }
   }
 
   ngDoCheck(): void {
@@ -69,13 +50,13 @@ export class BodyRowComponent implements OnInit, DoCheck {
   }
 
   rowClick(rowIndex: number) {
-    this.selectedRowIndex = rowIndex;
-    this.selectedRowIndexChange.emit(this.selectedRowIndex);
+    this.table.selectedRowIndex = rowIndex;
+    this.selectedRowIndexChange.emit(this.table.selectedRowIndex);
   }
 
   actionClick(event, item: MenuItem, rowIndex: number) {
-    this.selectedRowIndex = rowIndex;
-    this.selectedRowIndexChange.emit(this.selectedRowIndex);
+    this.table.selectedRowIndex = rowIndex;
+    this.selectedRowIndexChange.emit(this.table.selectedRowIndex);
 
     if (!item.url) {
       event.preventDefault();

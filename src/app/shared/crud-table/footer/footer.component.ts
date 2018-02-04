@@ -1,29 +1,21 @@
-import {Component, Output, EventEmitter, Input, ChangeDetectionStrategy} from '@angular/core';
+import {Component, Output, EventEmitter, Input, ChangeDetectionStrategy, HostBinding} from '@angular/core';
+import {DataTable} from '../models/data-table';
 
 @Component({
-  selector: 'datatable-footer',
+  selector: 'app-datatable-footer',
   templateUrl: './footer.component.html',
-  host: {
-    class: 'datatable-footer'
-  },
-  changeDetection: ChangeDetectionStrategy.OnPush
+  // changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class FooterComponent {
 
-  @Input() footerHeight: number;
-  @Input() totalItems: number;
-  @Input() itemsPerPage: number;
-  @Input() currentPage: number;
-  @Output() pageChanged: EventEmitter<any> = new EventEmitter();
+  @Input() public table: DataTable;
+  @Output() pageChanged: EventEmitter<boolean> = new EventEmitter();
+
+  @HostBinding('class') cssClass = 'datatable-footer';
 
   onPageChanged(event) {
-    this.pageChanged.emit(event);
-    this.currentPage = event;
-  }
-
-  rowCount() {
-    const count = this.itemsPerPage * this.currentPage;
-    return (count < this.totalItems) ? count : this.totalItems;
+    this.table.pager.current = event;
+    this.pageChanged.emit(true);
   }
 
 }

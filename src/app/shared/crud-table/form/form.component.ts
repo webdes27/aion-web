@@ -1,27 +1,16 @@
-import {
-  Component,
-  Input,
-  Output,
-  ViewChild,
-  ViewContainerRef,
-  OnInit,
-  OnDestroy,
-  EventEmitter,
-  ViewEncapsulation
-} from '@angular/core';
-import {Column, Settings, ICrudService} from '../types/interfaces';
+import {Component, Input, Output, ViewChild, ViewContainerRef, OnInit, OnDestroy, EventEmitter} from '@angular/core';
+import {ICrudService} from '../types';
+import {DataTable} from '../models/data-table';
+import {Column} from '../models/column';
 
 @Component({
   selector: 'app-row-form',
-  templateUrl: 'form.component.html',
-  styleUrls: ['form.component.css', 'checkbox-radio.css'],
-  encapsulation: ViewEncapsulation.None,
+  templateUrl: 'form.component.html'
 })
 
 export class FormComponent implements OnInit, OnDestroy {
 
-  @Input() public columns: Column[];
-  @Input() public settings: Settings;
+  @Input() public table: DataTable;
   @Input() public item: any;
   @Input() public isNew: boolean = true;
   @Input() public service: ICrudService;
@@ -47,8 +36,8 @@ export class FormComponent implements OnInit, OnDestroy {
       return false;
     }
     const name = column.name;
-    if (this.settings.primaryKeys && this.settings.primaryKeys.length && !this.isNew) {
-      return (this.settings.primaryKeys.indexOf(name) === -1);
+    if (this.table.settings.primaryKeys && this.table.settings.primaryKeys.length && !this.isNew) {
+      return (this.table.settings.primaryKeys.indexOf(name) === -1);
     } else {
       return true;
     }
@@ -72,6 +61,14 @@ export class FormComponent implements OnInit, OnDestroy {
 
   onKeyColumnChange(event) {
     this.item[event.column] = event.value;
+  }
+
+  isDisabled(column: Column) {
+    if (column.keyColumn && !this.isNew) {
+      return (this.table.settings.primaryKeys.indexOf(column.keyColumn) !== -1);
+    } else {
+      return false;
+    }
   }
 
 }

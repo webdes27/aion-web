@@ -2,11 +2,10 @@ import {
   Component, Input, Output, EventEmitter, PipeTransform, HostBinding, HostListener, ElementRef, ViewChild,
   ChangeDetectionStrategy, DoCheck, ChangeDetectorRef,
 } from '@angular/core';
-import {Column} from '../types/interfaces';
-import {ColumnUtils} from '../utils/column-utils';
+import {Column} from '../models/column';
 
 @Component({
-  selector: 'datatable-body-cell-edit',
+  selector: 'app-datatable-body-cell-edit',
   templateUrl: './body-cell-edit.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
@@ -86,7 +85,7 @@ export class BodyCellEditComponent implements DoCheck {
     if (this.value !== value) {
       this.value = value;
       if (value !== null && value !== undefined) {
-        this.value = ColumnUtils.getOptionName(value, this.column);
+        this.value = this.column.getOptionName(value);
       }
       this.cd.markForCheck();
     }
@@ -158,8 +157,8 @@ export class BodyCellEditComponent implements DoCheck {
     }
   }
 
-  getOptions(column: Column, row: any[]) {
-    return ColumnUtils.getOptions(column, row[column.dependsColumn]);
+  getOptions(row: any[]) {
+    return this.column.getOptions(row[this.column.dependsColumn]);
   }
 
 

@@ -2,17 +2,15 @@ import {
   Component, Input, PipeTransform, HostBinding,
   ChangeDetectionStrategy, DoCheck, ChangeDetectorRef,
 } from '@angular/core';
-import {Column} from '../types/interfaces';
-import {ColumnUtils} from '../utils/column-utils';
+import {Column} from '../models/column';
 
 @Component({
-  selector: 'datatable-body-cell',
+  selector: 'app-datatable-body-cell',
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
-    <span
-      *ngIf="!column.cellTemplate"
-      class="cell-data" title="{{value}}">{{value}}
-    </span>
+    <div class="cell-data" *ngIf="!column.cellTemplate" title="{{value}}">
+      {{value}}
+    </div>
     <ng-template #cellTemplate
                  *ngIf="column.cellTemplate"
                  [ngTemplateOutlet]="column.cellTemplate"
@@ -24,7 +22,8 @@ export class BodyCellComponent implements DoCheck {
 
   @Input() colIndex: number;
 
-  @Input() set column(column: Column) {
+  @Input()
+  set column(column: Column) {
     this._column = column;
     this.cellContext.column = column;
     this.checkValueUpdates();
@@ -35,7 +34,8 @@ export class BodyCellComponent implements DoCheck {
     return this._column;
   }
 
-  @Input() set row(row: any) {
+  @Input()
+  set row(row: any) {
     this._row = row;
     this.cellContext.row = row;
     this.checkValueUpdates();
@@ -57,7 +57,7 @@ export class BodyCellComponent implements DoCheck {
         const res = this.column.cellClass({
           row: this.row,
           column: this.column,
-          value: this.value ,
+          value: this.value,
         });
 
         if (typeof res === 'string') {
@@ -116,7 +116,7 @@ export class BodyCellComponent implements DoCheck {
       this.value = value;
       this.cellContext.value = value;
       if (value !== null && value !== undefined) {
-        this.value = ColumnUtils.getOptionName(value, this.column);
+        this.value = this.column.getOptionName(value);
       }
       this.cd.markForCheck();
     }

@@ -1,28 +1,24 @@
 <div class="datatable fixed-header fixed-row scroll-horz">
-  <datatable-header
-    [columns]="columns"
-    [actionColumnWidth]="250"
-    (onResize)="resizeColumn($event)"
-    [offsetX]="offsetX"
-    [headerHeight]="headerHeight"
-    [settings]="settings">
-  </datatable-header>
+  <app-datatable-header
+    [table]="table"
+    [offsetX]="offsetX">
+  </app-datatable-header>
 
   <div class="datatable-body">
     <div class="datatable-selection">
-      <datatable-scroller
+      <app-datatable-scroller
         [scrollbarV]="true"
         [scrollbarH]="true"
         (scroll)="onBodyScroll($event)">
-        <tree-table-node
+        <app-tree-table-node
           [nodes]="nodes"
           [service]="service"
-          [columns]="columns"
+          [columns]="table.columns"
           [offsetX]="offsetX"
           (editComplete)="onCellEditComplete($event)"
           (requestNodes)="onRequestNodes($event)">
-        </tree-table-node>
-      </datatable-scroller>
+        </app-tree-table-node>
+      </app-datatable-scroller>
     </div>
   </div>
 

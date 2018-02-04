@@ -1,25 +1,48 @@
 import {Component, OnInit, Input, Output, EventEmitter, ViewEncapsulation} from '@angular/core';
-import {ITreeNode, ITreeService, Column, Settings} from '../types/interfaces';
+import {ITreeNode, ITreeService, Settings} from '../types';
+import {DataTable} from '../models/data-table';
+import {ColumnBase} from '../models/column-base';
 
 @Component({
-  selector: 'tree-table',
+  selector: 'app-tree-table',
   templateUrl: './tree-table.component.html',
-  styleUrls: ['../tree-view/tree-view.component.css'],
+  styleUrls: ['../styles/index.css'],
   encapsulation: ViewEncapsulation.None,
 })
 export class TreeTableComponent implements OnInit {
 
   @Input() public nodes: ITreeNode[];
   @Input() public service: ITreeService;
-  @Input() public columns: Column[];
-  @Input() public headerHeight: number = 30;
-  @Input() public settings: Settings = <Settings> {};
   @Output() requestNodes: EventEmitter<ITreeNode> = new EventEmitter();
   @Output() editComplete: EventEmitter<any> = new EventEmitter();
 
-  offsetX: number = 0;
+  @Input()
+  set columns(val: ColumnBase[]) {
+    this._columns = val;
+    this.table.createColumns(this._columns);
+  }
+
+  get columns(): ColumnBase[] {
+    return this._columns;
+  }
+
+  @Input()
+  set settings(val: Settings) {
+    this._settings = val;
+    this.table.setSettings(this._settings);
+  }
+
+  get settings(): Settings {
+    return this._settings;
+  }
+
+  public table: DataTable;
+  public offsetX: number = 0;
+  private _columns: ColumnBase[];
+  private _settings: Settings;
 
   constructor() {
+    this.table = new DataTable();
   }
 
   ngOnInit() {
@@ -28,17 +51,7 @@ export class TreeTableComponent implements OnInit {
         this.nodes = data;
       });
     }
-    this.settings.sortable = (this.settings.hasOwnProperty('sortable')) ? this.settings.sortable : true;
-    this.settings.filter = (this.settings.hasOwnProperty('filter')) ? this.settings.filter : true;
-    this.settings.initLoad = (this.settings.initLoad !== undefined) ? this.settings.initLoad : true;
-  }
-
-  resizeColumn({column, newValue}: any) {
-    for (const col of this.columns) {
-      if (col.name === column.name) {
-        col.width = newValue;
-      }
-    }
+    this.table.actionColumnWidth = 250;
   }
 
   onBodyScroll(event: any): void {

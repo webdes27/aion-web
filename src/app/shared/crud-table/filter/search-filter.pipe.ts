@@ -1,15 +1,14 @@
 import {PipeTransform, Pipe} from '@angular/core';
-import {ISelectOption} from '../types/interfaces';
+import {ISelectOption} from '../types';
 
 @Pipe({
   name: 'searchFilter'
 })
 export class SearchFilterPipe implements PipeTransform {
+
   transform(options: ISelectOption[], args: string): ISelectOption[] {
     options = options || [];
     return options.filter((option: ISelectOption) =>
-      option.name
-        .toLowerCase()
-        .indexOf((args || '').toLowerCase()) > -1);
+      option.name.toLowerCase().indexOf((args || '').toLowerCase()) > -1);
   }
 }

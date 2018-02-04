@@ -1,42 +1,30 @@
 <div class="datatable fixed-header fixed-row scroll-horz"
-     [ngStyle]="{'width.px': tableWidth}">
-  <loading-indicator [isLoading]="loading"></loading-indicator>
-  <ng-filter
+     [ngStyle]="{'width.px': table.tableWidth}">
+  <div class="spinner" [style.visibility]="loading ? 'visible': 'hidden'"></div>
+  <app-filter
     #selectFilter
-    [filters]="filters"
-    (onFilter)="onFilter($event)">
-  </ng-filter>
-  <datatable-header
-    [columns]="columns"
-    [filters]="filters"
-    [sortMeta]="sortMeta"
-    (onSort)="onSort($event)"
-    (onShowColumnMenu)="showColumnMenu($event)"
-    [actionColumnWidth]="actionColumnWidth"
-    (onClearAllFilters)="selectFilter.clearAllFilters()"
-    (onResize)="onResizeColumn($event)"
-    [offsetX]="offsetX"
-    [headerHeight]="headerHeight"
-    [settings]="settings">
-  </datatable-header>
-  <datatable-body
-    [columns]="columns"
+    [table]="table"
+    (filterChanged)="onFilter()">
+  </app-filter>
+  <app-datatable-header
+    [table]="table"
+    (sort)="onSort()"
+    (showColumnMenu)="showColumnMenu($event)"
+    (clearFilters)="onFilter()"
+    [offsetX]="offsetX">
+  </app-datatable-header>
+  <app-datatable-body
+    [table]="table"
     [rows]="rows"
-    [bodyHeight]="scrollHeight"
-    [actionColumnWidth]="actionColumnWidth"
     (editComplete)="onEditComplete($event)"
-    [actionMenu]="rowMenu"
     [offsetX]="offsetX"
-    [selectedRowIndex]="selectedRowIndex"
     [trackByProp]="trackByProp"
     [loading]="loading"
     (scroll)="onBodyScroll($event)"
     (selectedRowIndexChange)="onSelectRow($event)">
-  </datatable-body>
-  <datatable-footer
-    [totalItems]="totalItems"
-    [itemsPerPage]="itemsPerPage"
-    [currentPage]="currentPage"
-    (pageChanged)="onPageChanged($event)">
-  </datatable-footer>
+  </app-datatable-body>
+  <app-datatable-footer
+    [table]="table"
+    (pageChanged)="onPageChanged()">
+  </app-datatable-footer>
 </div>
