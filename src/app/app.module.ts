@@ -6,9 +6,9 @@ import { HttpClientModule } from '@angular/common/http';
 import { RouterModule, PreloadAllModules } from '@angular/router';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
-import { ROUTES } from './app.routes';
-import { AppComponent } from './app.component';
-import { NoContentComponent } from './no-content';
+import {ROUTES} from './app.routes';
+import {AppComponent} from './app.component';
+import {NoContentComponent} from './no-content';
 
 import {UserService} from './services/user/user.service';
 import {StorageService} from './services/storage/storage.service';
@@ -39,8 +39,7 @@ import {PassComponent} from './pass/pass.component';
 import {BonusComponent} from './bonus/bonus.component';
 import {PayComponent} from './pay/pay.component';
 import {RatesComponent} from './rates/rates.component';
-import {UserModule} from './users';
-import {CrudTableModule} from './shared/crud-table';
+import {CrudTableModule} from './shared/ng-crud-table';
 
 
 @NgModule({
@@ -78,7 +77,6 @@ import {CrudTableModule} from './shared/crud-table';
     HttpClientModule,
     RouterModule.forRoot(ROUTES, { useHash: true, preloadingStrategy: PreloadAllModules }),
     BrowserAnimationsModule,
-    UserModule,
     CrudTableModule,
   ],
   providers: [

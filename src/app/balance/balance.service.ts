@@ -1,7 +1,8 @@
 import {Injectable}     from '@angular/core';
 import {Http, Response} from '@angular/http';
 import {Balance}           from './balance';
-import {Observable}     from 'rxjs/Observable';
+import {Observable}     from 'rxjs';
+import {map, catchError} from 'rxjs/operators';
 import {CONFIG} from '../app.config';
 import {RequestService} from '../services/request/request.service';
 
@@ -16,8 +17,7 @@ export class BalanceService {
   getData():Observable<Balance> {
     let headers = this.requestService.getAuthHeaders();
     return this.http.get(this.url, {headers: headers})
-      .map(this.extractData)
-      .catch(this.handleError);
+      .pipe(map(this.extractData), catchError(this.handleError));
   }
 
   private extractData(res:Response) {

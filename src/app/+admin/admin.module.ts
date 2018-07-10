@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 
-import { CrudTableModule } from '../shared/crud-table';
+import { CrudTableModule } from '../shared/ng-crud-table';
 
 import {AdminRoutingModule} from './admin.routing';
 import {AdminComponent} from './admin.component';

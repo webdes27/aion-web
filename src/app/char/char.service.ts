@@ -1,6 +1,5 @@
 import {Injectable}    from '@angular/core';
 import {Headers, Http} from '@angular/http';
-import 'rxjs/add/operator/toPromise';
 import {Char} from './char';
 import {Product} from './product';
 import {RequestService} from '../services/request/request.service';

@@ -1,6 +1,7 @@
 import {Injectable} from '@angular/core';
 import {Http, Response} from '@angular/http';
-import {Observable} from 'rxjs/Observable';
+import {Observable} from 'rxjs';
+import {map, catchError} from 'rxjs/operators';
 import {CONFIG} from '../app.config';
 
 @Injectable()
@@ -12,8 +13,7 @@ export class BaseService {
     let url = CONFIG.apiGetData + '?type=' + term;
     return this.http
       .get(url)
-      .map(this.extractData)
-      .catch(this.handleError);
+      .pipe(map(this.extractData), catchError(this.handleError));
   }
 
   private extractData(res: Response) {

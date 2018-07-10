@@ -1,6 +1,6 @@
 import {Component, ElementRef, OnInit, OnDestroy} from '@angular/core';
 import {LoadingService} from './loading.service';
-import {Subscription} from 'rxjs/Rx';
+import {Subscription} from 'rxjs';
 
 @Component({
   selector: 'loading-indicator',

@@ -1,12 +1,11 @@
 import {Component} from '@angular/core';
 import {CONFIG} from '../../app.config';
-import {Column, Settings, ICrudService, YiiService} from '../../shared/crud-table';
+import {Column, Settings, DataSource, YiiService, DataManager} from '../../shared/ng-crud-table';
 import {HttpClient} from '@angular/common/http';
 
 @Component({
   selector: 'my-app',
-  template: `
-    <app-crud-table [columns]="columns" [settings]="settings" [service]="service"></app-crud-table>`
+  template: `<app-crud-table [dataManager]="dataManager"></app-crud-table>`
 })
 
 export class PlayersComponent {
@@ -92,13 +91,15 @@ export class PlayersComponent {
     crud: true,
     primaryKeys: ['id'],
     tableWidth: 820,
-    scrollHeight: 380
+    bodyHeight: 380
   };
 
-  public service: ICrudService;
+  public service: DataSource;
+  public dataManager: DataManager;
 
   constructor(private http: HttpClient) {
     this.service = new YiiService(this.http);
+    this.dataManager = new DataManager(this.columns, this.settings, this.service);
   }
 
 }

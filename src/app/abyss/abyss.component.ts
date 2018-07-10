@@ -1,5 +1,5 @@
 import {Component, OnInit}  from '@angular/core';
-import {Observable}       from 'rxjs/Observable';
+import {Observable}       from 'rxjs';
 import {BaseService} from './../services/base.service';
 import {Rank, Ranks} from './ranks';
 
