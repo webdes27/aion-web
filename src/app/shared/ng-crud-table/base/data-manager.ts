@@ -1,4 +1,4 @@
-import {DataSource} from './interface';
+import {DataSource, MenuItem} from './interface';
 import {Row, Filter} from '../../ng-data-table';
 import {DataTable} from '../../ng-data-table/base/data-table';
 import {ColumnBase} from '../../ng-data-table/base/column-base';
@@ -7,19 +7,16 @@ import {Message} from '../../ng-data-table/base/message';
 
 export class DataManager extends DataTable {
 
-  public service: DataSource;
-  public errors: any;
-  public item: any;
-  public isNewItem: boolean;
-  public detailView: boolean;
-  public formValid: boolean = true;
-  public refreshRowOnSave: boolean;
+  service: DataSource;
+  errors: any;
+  item: any;
+  refreshRowOnSave: boolean;
+  actionMenu: MenuItem[] = [];
 
   constructor(columns: ColumnBase[], settings: Settings, dataSource: DataSource, messages?: Message) {
     super(columns, settings, messages);
     this.settings.clientSide = false;
     this.setService(dataSource);
-    this.refreshRowOnSave = this.columns.some(x => x.keyColumn !== undefined);
   }
 
   set filters(val: Filter) {
@@ -36,7 +33,7 @@ export class DataManager extends DataTable {
     if (this.settings.api) {
       this.service.url = this.settings.api;
     }
-    this.service.primaryKeys = this.settings.primaryKeys;
+    this.service.primaryKeys = this.columns.filter(col => col.isPrimaryKey).map(col => col.name);
   }
 
   getItems(concatRows: boolean = false): Promise<any> {
@@ -71,7 +68,6 @@ export class DataManager extends DataTable {
         this.events.onLoading(false);
         this.errors = null;
         this.afterCreate(res);
-        this.item = res;
       })
       .catch(error => {
         this.events.onLoading(false);
@@ -103,7 +99,6 @@ export class DataManager extends DataTable {
         this.events.onLoading(false);
         this.errors = null;
         this.afterDelete(row, true);
-        this.item = null;
       })
       .catch(error => {
         this.events.onLoading(false);
@@ -112,51 +107,30 @@ export class DataManager extends DataTable {
   }
 
   afterCreate(result: any) {
-    if (this.refreshRowOnSave) {
-      this.refreshRow(result, true);
-    } else {
-      this.addRow(result);
-    }
+    this.addRow(result);
   }
 
   afterUpdate(row: Row, result: any) {
     if (this.refreshRowOnSave) {
-      this.refreshRow(row, false);
+      this.refreshRow(row);
     } else {
-      this.mergeRow(row.$$uid, result);
+      this.mergeRow(row, result);
     }
-    this.events.onRowsChanged();
   }
 
   afterDelete(row: Row, result: boolean) {
     if (result) {
-      const rowIndex: number = this.rows.findIndex(x => x.$$uid === row.$$uid);
-      this.rows.splice(rowIndex, 1);
+      this.deleteRow(row);
     }
   }
 
-  mergeRow(rowUid: number, result: any) {
-    const rowIndex: number = this.rows.findIndex(x => x.$$uid === rowUid);
-
-    for (const key of Object.keys(result)) {
-      if (key in this.rows[rowIndex]) {
-        this.rows[rowIndex][key] = result[key];
-      }
-    }
-    this.rows[rowIndex] = this.generateRow(result);
-  }
-
-  refreshRow(row: any, isNew: boolean) {
+  refreshRow(row: Row) {
     this.events.onLoading(true);
     this.errors = null;
     this.service.getItem(row)
       .then(data => {
         this.events.onLoading(false);
-        if (isNew) {
-          this.addRow(data);
-        } else {
-          this.mergeRow(row.$$uid, data);
-        }
+        this.mergeRow(row, data);
       })
       .catch(error => {
         this.events.onLoading(false);
@@ -164,32 +138,17 @@ export class DataManager extends DataTable {
       });
   }
 
-  saveRow() {
-    if (this.isNewItem) {
-      this.create(this.item);
-    } else {
-      this.update(this.item);
-    }
-  }
-
-  deleteRow() {
-    this.delete(this.item);
-  }
-
-  clearItem() {
-    this.item = {};
-    this.isNewItem = true;
-  }
-
-  setItem(row: Row) {
-    this.item = Object.assign({}, row);
-    this.isNewItem = false;
-  }
-
   clear() {
     this.rows = [];
     this.pager.total = 0;
-    this.detailView = false;
+  }
+
+  rowIsValid(row: Row) {
+    const hasError = this.columns.some(x => {
+      const errors = x.validate(row[x.name]);
+      return (errors && errors.length > 0);
+    });
+    return !hasError;
   }
 
 }

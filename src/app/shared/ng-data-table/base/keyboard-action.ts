@@ -8,7 +8,7 @@ export class KeyboardAction {
     constructor(private table: DataTable) {
     }
 
-    public handleEvent(event: KeyboardEvent, target: HTMLElement) {
+    handleEvent(event: KeyboardEvent, target: HTMLElement) {
         const keyCode = event.keyCode;
         const shiftKey = event.shiftKey;
         if (!this.isAction(keyCode) && !this.isNavigationKey(keyCode)) {
@@ -27,7 +27,7 @@ export class KeyboardAction {
             if (this.isNavigationKey(keyCode) && !isEditing) {
                 [columnIndex, rowIndex] = this.findNextCell(columnIndex, rowIndex, keyCode, shiftKey);
                 this.table.events.onActivateCell(<CellEventArgs>{ columnIndex, rowIndex, event, fromCell: target });
-                if (this.table.settings.selectionType !== 'multiple') {
+                if (!this.table.selection.multiple) {
                     this.table.selectRow(rowIndex);
                 }
                 event.preventDefault();

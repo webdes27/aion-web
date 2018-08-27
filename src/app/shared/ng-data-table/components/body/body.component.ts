@@ -7,14 +7,14 @@ import {translate} from '../../base/util';
 import {Row} from '../../types';
 
 @Component({
-  selector: 'app-datatable-body',
+  selector: 'dt-body',
   templateUrl: './body.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class BodyComponent implements OnInit, OnDestroy {
 
-  @Input() public table: DataTable;
-  @Input() public loading: boolean;
+  @Input() table: DataTable;
+  @Input() loading: boolean;
 
   @HostBinding('class') cssClass = 'datatable-body';
 
@@ -64,12 +64,12 @@ export class BodyComponent implements OnInit, OnDestroy {
   }
 
   stylesByGroup() {
-    return translate(this.table.offsetX, 0);
+    return translate(this.table.dimensions.offsetX, 0);
   }
 
   styleTranslate(row: Row) {
     if (this.table.settings.virtualScroll) {
-      return `translate3d(0, ${row.$$index * this.table.dimensions.rowHeight}px, 0)`;
+      return `translate3d(0, ${row.$$offset}px, 0)`;
     }
   }
 

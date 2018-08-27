@@ -11,14 +11,13 @@ import {HttpClient} from '@angular/common/http';
 export class PayBalanceComponent implements OnInit {
 
   public columns: Column[] = [
-    {title: 'Id', name: 'id', formHidden: true},
+    {title: 'Id', name: 'id', formHidden: true, isPrimaryKey: true},
     {title: 'Login', name: 'login', editable: true},
     {title: 'Balance', name: 'balance', editable: true},
   ];
   public settings: Settings = {
     api: CONFIG.apiPayBalance,
     crud: true,
-    primaryKeys: ['id'],
   };
 
   public service: DataSource;

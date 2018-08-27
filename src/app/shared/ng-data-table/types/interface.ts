@@ -22,35 +22,6 @@ export interface SortMeta {
   order: number;
 }
 
-export interface MenuItem {
-  label?: string;
-  icon?: string;
-  command?: string;
-  url?: string;
-  routerLink?: any;
-  disabled?: boolean;
-}
-
-export interface TreeNode {
-  id: string;
-  name: string;
-  data: any;
-  children?: TreeNode[];
-  expanded?: boolean;
-  leaf?: boolean;
-  parent?: TreeNode;
-  icon?: string;
-  $$id?: string;
-  $$filterState?: number;
-  $$level?: number;
-}
-
-export interface TreeDataSource {
-  url: string;
-  getNodes(node?: TreeNode): Promise<TreeNode[]>;
-  searchNodes(name: string): Promise<any>;
-}
-
 export interface AggregateMeta {
   field: string;
   type: AggregateType;
@@ -61,6 +32,8 @@ export interface Row {
   $$uid: number;
   $$index: number;
   $$data: Object;
+  $$height: number;
+  $$offset: number;
 }
 
 export interface Validation {

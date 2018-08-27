@@ -3,8 +3,8 @@ import {Settings} from './settings';
 
 export class DataSort {
 
-  public multiple: boolean;
-  public sortMeta: SortMeta[] = [];
+  multiple: boolean;
+  sortMeta: SortMeta[] = [];
 
   constructor(private settings: Settings) {
     this.multiple = this.settings.multipleSort;
@@ -22,6 +22,18 @@ export class DataSort {
     } else if (this.sortMeta[index].order === -1) {
       this.sortMeta.splice(index, 1);
     }
+  }
+
+  set(columnNames: string[]): void {
+    columnNames.forEach(columnName => {
+      const index = this.sortMeta.findIndex((x: SortMeta) => x.field === columnName);
+      if (index === -1) {
+        if (!this.multiple) {
+          this.sortMeta = [];
+        }
+        this.sortMeta.push(<SortMeta>{field: columnName, order: 1});
+      }
+    });
   }
 
   getOrder(columnName: string) {

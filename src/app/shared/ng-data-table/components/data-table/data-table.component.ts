@@ -7,16 +7,15 @@ import {Subscription} from 'rxjs';
 import {BodyScrollDirective} from '../../directives/body-scroll.directive';
 
 @Component({
-  selector: 'app-datatable',
+  selector: 'app-datatable, app-data-table',
   templateUrl: './data-table.component.html',
-  styleUrls: ['../../styles/index.css'],
+  styleUrls: ['../../styles/index.css', '../../../lib/theming/blue.scss'],
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class DataTableComponent implements OnInit, DoCheck, OnDestroy {
 
-  @Input() public table: DataTable;
-  @Output() editComplete: EventEmitter<any> = new EventEmitter();
+  @Input() table: DataTable;
   @Output() selectionChange: EventEmitter<any> = new EventEmitter();
 
   @ViewChild('resizeHelper') resizeHelper: ElementRef;
@@ -24,6 +23,7 @@ export class DataTableComponent implements OnInit, DoCheck, OnDestroy {
   @ViewChild(BodyScrollDirective) bodyScroll: BodyScrollDirective;
 
   @HostBinding('class') cssClass = 'datatable';
+  @HostBinding('attr.role') role = 'grid';
 
   @HostBinding('class.scroll-vertical')
   get isVirtualScroll(): boolean {
@@ -35,7 +35,7 @@ export class DataTableComponent implements OnInit, DoCheck, OnDestroy {
     return this.table.dimensions.tableWidth;
   }
 
-  public loading: boolean;
+  loading: boolean;
   private rowDiffer: KeyValueDiffer<{}, {}>;
   private subscriptions: Subscription[] = [];
 
@@ -53,9 +53,6 @@ export class DataTableComponent implements OnInit, DoCheck, OnDestroy {
     const subSort = this.table.events.sortSource$.subscribe(() => {
       this.onSort();
     });
-    const subEdit = this.table.events.editSource$.subscribe((row) => {
-      this.onEditComplete(row);
-    });
     const subColumnBeginResize = this.table.events.resizeBeginSource$.subscribe(() => {
       this.onColumnResizeBegin();
     });
@@ -72,11 +69,14 @@ export class DataTableComponent implements OnInit, DoCheck, OnDestroy {
     });
     const subLoading = this.table.events.loadingSource$.subscribe((event) => {
       this.loading = event;
+      // for server-side virtual scroll
+      requestAnimationFrame(() => {
+        this.cd.detectChanges();
+      });
     });
     this.subscriptions.push(subSelection);
     this.subscriptions.push(subFilter);
     this.subscriptions.push(subSort);
-    this.subscriptions.push(subEdit);
     this.subscriptions.push(subColumnBeginResize);
     this.subscriptions.push(subColumnResize);
     this.subscriptions.push(subColumnResizeEnd);
@@ -98,8 +98,7 @@ export class DataTableComponent implements OnInit, DoCheck, OnDestroy {
     this.table.pager.current = page;
     this.table.events.onPage();
     if (this.table.settings.virtualScroll) {
-      const rowIndex = this.table.pager.perPage * (page - 1);
-      const offset = rowIndex * this.table.dimensions.rowHeight;
+      const offset = this.table.rowVirtual.calcPageOffsetY(page);
       this.bodyScroll.setOffsetY(offset);
     } else {
       if (this.table.settings.clientSide) {
@@ -107,10 +106,6 @@ export class DataTableComponent implements OnInit, DoCheck, OnDestroy {
       }
     }
     this.table.selection.clearSelection();
-  }
-
-  onEditComplete(event) {
-    this.editComplete.emit(event);
   }
 
   onFilter() {

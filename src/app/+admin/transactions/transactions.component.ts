@@ -11,7 +11,7 @@ import {HttpClient} from '@angular/common/http';
 export class TransactionsComponent implements OnInit {
 
   public columns: Column[] = [
-    {title: 'Id', name: 'id', formHidden: true},
+    {title: 'Id', name: 'id', formHidden: true, isPrimaryKey: true},
     {title: 'Ip', name: 'ip'},
     {title: 'Login', name: 'login'},
     {title: 'Char_name', name: 'char_name'},
@@ -25,7 +25,6 @@ export class TransactionsComponent implements OnInit {
   public settings: Settings = {
     api: CONFIG.apiTransactions,
     crud: true,
-    primaryKeys: ['id'],
     tableWidth: 800
   };
 

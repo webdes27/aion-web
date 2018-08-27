@@ -1,0 +1,14 @@
+<select class="dt-filter-select sm"
+        [(ngModel)]="matchMode"
+        (change)="onModeChange()">
+  <option *ngFor="let opt of stringOperators" [value]="opt.value">{{opt.text}}</option>
+</select>
+<div class="clearable-input">
+  <input class="dt-filter-input"
+         #filterInput
+         [attr.placeholder]="column.name"
+         [value]="table.dataFilter.getFilterValue(column.name)"
+         (input)="onFilterInput($event)"/>
+  <span [style.display]="table.dataFilter.isFilter(column.name) ? 'block' : 'none' "
+        (click)="uncheckAll()">&times;</span>
+</div>

@@ -1,24 +1,32 @@
 import {Column} from './column';
 import {Settings} from './settings';
+import {Row} from '../types';
 
 export class Dimensions {
 
-  public tableWidth: number;
-  public bodyHeight: number;
-  public actionColumnWidth: number = 40;
-  public columnMenuWidth: number = 200;
-  public columnsTotalWidth: number;
-  public frozenColumnsWidth: number;
-  public scrollableColumnsWidth: number;
-  public headerRowHeight: number = 40;
-  public rowHeight: number = 30;
-  public scrollHeight: number;
+  tableWidth: number;
+  bodyHeight: number;
+  actionColumnWidth: number = 40;
+  columnMenuWidth: number = 200;
+  columnsTotalWidth: number;
+  frozenColumnsWidth: number;
+  scrollableColumnsWidth: number;
+  headerRowHeight: number = 40;
+  rowHeight: number = 30;
+  summaryRowHeight: number = 30;
+  scrollHeight: number;
+  offsetX: number = 0;
+  offsetY: number = 0;
+  headerTemplateHeight: number = 0;
+
+  private rowHeightCache: number[] = [];
 
   constructor(private settings: Settings, private columns: Column[]) {
     this.tableWidth = this.settings.tableWidth;
     this.bodyHeight = this.settings.bodyHeight;
     this.rowHeight = this.settings.rowHeight;
     this.headerRowHeight = this.settings.headerRowHeight;
+    this.actionColumnWidth = this.settings.actionColumnWidth;
     this.calcColumnsTotalWidth(this.columns);
   }
 
@@ -55,7 +63,45 @@ export class Dimensions {
   }
 
   calcScrollHeight(totalRecords: number) {
-    this.scrollHeight = totalRecords * this.rowHeight;
+    this.scrollHeight = this.rowHeightCache[totalRecords - 1];
+  }
+
+  initRowHeightCache(rows: Row[]) {
+    const size = rows.length;
+    this.rowHeightCache = new Array(size);
+    for (let i = 0; i < size; ++i) {
+      this.rowHeightCache[i] = 0;
+    }
+    rows.forEach((row, i) => {
+      for (let index = i; index < size; index++) {
+        this.rowHeightCache[index] += row.$$height;
+      }
+      row.$$offset = (i === 0) ? 0 : this.rowHeightCache[i - 1];
+    });
+  }
+
+  calcRowIndex(offsetY: number): number {
+    if (offsetY === 0) {
+      return 0;
+    }
+    let pos = -1;
+    const dataLength = this.rowHeightCache.length;
+
+    for (let i = dataLength; i >= 0; i--) {
+      const nextPos = pos + i;
+      if (nextPos < dataLength && offsetY >= this.rowHeightCache[nextPos]) {
+        offsetY -= this.rowHeightCache[nextPos];
+        pos = nextPos;
+      }
+    }
+    return pos + 1;
+  }
+
+  getRowOffset(rowIndex: number) {
+    if (rowIndex < 0) {
+      return 0;
+    }
+    return this.rowHeightCache[rowIndex];
   }
 
 }

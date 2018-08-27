@@ -11,7 +11,7 @@ import {HttpClient} from '@angular/common/http';
 export class AccountComponent implements OnInit {
 
   public columns: Column[] = [
-    {title: 'Id', name: 'id', formHidden: true},
+    {title: 'Id', name: 'id', formHidden: true, isPrimaryKey: true},
     {title: 'Name', name: 'name'},
     {title: 'Activated', name: 'activated'},
     {title: 'Access_level', name: 'access_level'},
@@ -20,7 +20,6 @@ export class AccountComponent implements OnInit {
   public settings: Settings = {
     api: CONFIG.apiAccount,
     crud: true,
-    primaryKeys: ['id'],
     multipleSort: true,
   };
 

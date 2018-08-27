@@ -1,9 +1,9 @@
 export class DataPager {
 
-  public perPage: number = 10;
-  public total: number = 0;
-  public current: number = 1;
-  public cache: any = {};
+  perPage: number = 10;
+  total: number = 0;
+  current: number = 1;
+  cache: any = {};
 
   pager(data: any[]): any[] {
     const start = (this.current - 1) * this.perPage;
@@ -22,6 +22,10 @@ export class DataPager {
 
   isViewed() {
     return this.cache[this.current];
+  }
+
+  getRange(): string {
+    return `${(this.perPage * (this.current - 1)) + 1} - ${this.rowCount()}`;
   }
 
 }

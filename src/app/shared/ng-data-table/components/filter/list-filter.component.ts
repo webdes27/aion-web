@@ -1,5 +1,5 @@
 import {
-  Component, OnInit, Input, Output, EventEmitter, AfterViewInit,
+  Component, OnInit, Input, Output, EventEmitter, AfterViewInit, ChangeDetectionStrategy, ChangeDetectorRef,
   OnChanges, SimpleChanges, ViewChild
 } from '@angular/core';
 import {SelectOption} from '../../types';
@@ -7,50 +7,23 @@ import {Column, DataTable, DataFilter} from '../../base';
 
 @Component({
   selector: 'app-list-filter',
-  template: `
-    <div class="clearable-input">
-      <input class="df-control"
-             placeholder="{{table.messages.search}}"
-             #filterInput
-             [(ngModel)]="searchFilterText"/>
-      <span [style.display]="searchFilterText.length > 0 ? 'block' : 'none' "
-            (click)="clearSearch()">&times;</span>
-    </div>
-
-    <ul class="list-menu">
-      <li>
-      <span (click)="uncheckAll()">
-        <i class="icon icon-remove"></i>&nbsp;&nbsp;{{table.messages.clear}}
-      </span>
-      </li>
-      <li *ngIf="column.selectionLimit !== 1">
-      <span (click)="checkAll()">
-        <i class="icon icon-ok"></i>&nbsp;&nbsp;{{table.messages.selectAll}}
-      </span>
-      </li>
-      <li class="list-divider"></li>
-      <li *ngFor="let option of column.options | filterBy: 'name':searchFilterText">
-      <span [ngClass]="{'active': isSelected(option)}"
-            (click)="setSelected(option.id)">
-        <i class="icon" [class.icon-ok]="isSelected(option)"></i>&nbsp;&nbsp;{{ option.name }}
-      </span>
-      </li>
-    </ul>
-  `,
+  templateUrl: 'list-filter.component.html',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ListFilterComponent implements OnInit, AfterViewInit, OnChanges {
 
-  @Input() public table: DataTable;
-  @Input() public column: Column;
-  @Input() public isOpen: boolean;
+  @Input() table: DataTable;
+  @Input() column: Column;
+  @Input() isOpen: boolean;
   @Output() filterClose: EventEmitter<boolean> = new EventEmitter();
 
   @ViewChild('filterInput') filterInput: any;
 
   selectedOptions: any;
   searchFilterText: string = '';
+  loading: boolean;
 
-  constructor() {
+  constructor(private cd: ChangeDetectorRef) {
   }
 
   ngOnInit() {
@@ -64,6 +37,17 @@ export class ListFilterComponent implements OnInit, AfterViewInit, OnChanges {
     this.setFocus();
     this.clearSearch();
     this.selectedOptions = this.table.dataFilter.getFilterValue(this.column.name);
+    if (this.isOpen) {
+      this.loading = true;
+      this.column.getFilterValues().then((res) => {
+        this.column.filterValues = res;
+        this.loading = false;
+        this.cd.markForCheck();
+      }).catch(() => {
+        this.loading = false;
+        this.cd.markForCheck();
+      });
+    }
   }
 
   clearSearch() {
@@ -94,11 +78,11 @@ export class ListFilterComponent implements OnInit, AfterViewInit, OnChanges {
   }
 
   checkAll() {
-    if (typeof this.column.options !== 'function') {
-      this.selectedOptions = this.column.options.map(option => option.id);
+    if (!this.loading) {
+      this.selectedOptions = this.column.filterValues.map(option => option.id);
+      this.filter(this.selectedOptions, this.column.name);
+      this.filterClose.emit(true);
     }
-    this.filter(this.selectedOptions, this.column.name);
-    this.filterClose.emit(true);
   }
 
   uncheckAll() {

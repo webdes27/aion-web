@@ -11,7 +11,7 @@ import {HttpClient} from '@angular/common/http';
 export class ShopComponent implements OnInit {
 
   public columns: Column[] = [
-    {title: 'Id', name: 'id', formHidden: true},
+    {title: 'Id', name: 'id', formHidden: true, isPrimaryKey: true},
     {title: 'Type', name: 'type'},
     {title: 'Pic', name: 'pic'},
     {title: 'Item_name.', name: 'item_name'},
@@ -22,7 +22,6 @@ export class ShopComponent implements OnInit {
   public settings: Settings = {
     api: CONFIG.apiPayShop,
     crud: true,
-    primaryKeys: ['id'],
   };
 
   public service: DataSource;

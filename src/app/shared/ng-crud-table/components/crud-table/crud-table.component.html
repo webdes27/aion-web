@@ -1,11 +1,17 @@
-<div class="df-alert df-alert-danger" *ngIf="this.dataManager.errors">{{this.dataManager.errors}}</div>
+<dt-message [severity]="'danger'" [text]="this.dataManager.errors"></dt-message>
 
-<app-datatable-toolbar [table]="dataManager" (createAction)="onCreateAction()">
-</app-datatable-toolbar>
+<dt-toolbar #toolbar [table]="dataManager" (createAction)="onCreateAction()">
+</dt-toolbar>
 
-<app-datatable [table]="dataManager"></app-datatable>
+<app-data-table [table]="dataManager"></app-data-table>
 
-<app-modal-edit-form
-  #modalEditForm
-  [dataManager]="dataManager">
+<app-modal-edit-form #modalEditForm [dataManager]="dataManager" (loaded)="onLoadedForm()">
 </app-modal-edit-form>
+
+<ng-template #rowActionTemplate let-row="row">
+  <button class="button-actions" (click)="onRowMenuClick($event, row)">
+    <i class="icon icon-actions"></i>
+  </button>
+</ng-template>
+
+<app-row-menu #rowMenu [menu]="dataManager.actionMenu"></app-row-menu>

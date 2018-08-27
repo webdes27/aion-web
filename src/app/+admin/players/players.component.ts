@@ -17,6 +17,7 @@ export class PlayersComponent {
       frozen: true,
       resizeable: false,
       formHidden: true,
+      isPrimaryKey: true,
     },
     {
       title: 'Name',
@@ -89,7 +90,6 @@ export class PlayersComponent {
   public settings: Settings = {
     api: CONFIG.apiPlayers,
     crud: true,
-    primaryKeys: ['id'],
     tableWidth: 820,
     bodyHeight: 380
   };

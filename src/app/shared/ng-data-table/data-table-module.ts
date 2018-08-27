@@ -2,8 +2,10 @@ import {NgModule} from '@angular/core';
 import {CommonModule} from '@angular/common';
 import {FormsModule} from '@angular/forms';
 
-import {PaginationComponent} from './components/pagination/pagination.component';
+import {PaginationModule} from '../lib/pagination';
 import {HeaderComponent} from './components/header/header.component';
+import {HeaderCellComponent} from './components/header/header-cell.component';
+import {HeaderCellActionComponent} from './components/header/header-cell-action.component';
 import {FilterComponent} from './components/filter/filter.component';
 import {FilterPipe} from './pipes/filter.pipe';
 import {StringFilterComponent} from './components/filter/string-filter.component';
@@ -14,13 +16,11 @@ import {BodyRowComponent} from './components/body/body-row.component';
 import {BodyCellComponent} from './components/body/body-cell.component';
 import {BodyCellEditComponent} from './components/body/body-cell-edit.component';
 import {BodyCellActionComponent} from './components/body/body-cell-action.component';
-import {BodyScrollDirective} from './directives/body-scroll.directive';
 import {DataTableComponent} from './components/data-table/data-table.component';
-import {ResizeableColumnDirective} from './directives/resizeable-column.directive';
-import {TreeTableComponent} from './components/tree-table/tree-table.component';
-import {TreeTableNodeComponent} from './components/tree-table/tree-table-node.component';
 import {SummaryRowComponent} from './components/body/summary-row.component';
-import {ToolbarComponent} from './components/toolbar/toolbar.component';
+
+import {BodyScrollDirective} from './directives/body-scroll.directive';
+import {ResizeableColumnDirective} from './directives/resizeable-column.directive';
 import {BodyMouseoverDirective} from './directives/body-mouseover.directive';
 import {BodyKeydownDirective} from './directives/body-keydown.directive';
 import {BodyClickDirective} from './directives/body-click.directive';
@@ -32,10 +32,12 @@ import {BodyContextMenuDirective} from './directives/body-contextmenu.directive'
   imports: [
     CommonModule,
     FormsModule,
+    PaginationModule,
   ],
   declarations: [
-    PaginationComponent,
     HeaderComponent,
+    HeaderCellComponent,
+    HeaderCellActionComponent,
     FilterComponent,
     FilterPipe,
     StringFilterComponent,
@@ -46,13 +48,10 @@ import {BodyContextMenuDirective} from './directives/body-contextmenu.directive'
     BodyCellComponent,
     BodyCellEditComponent,
     BodyCellActionComponent,
+    DataTableComponent,
+    SummaryRowComponent,
     BodyScrollDirective,
     ResizeableColumnDirective,
-    DataTableComponent,
-    TreeTableComponent,
-    TreeTableNodeComponent,
-    SummaryRowComponent,
-    ToolbarComponent,
     BodyMouseoverDirective,
     BodyKeydownDirective,
     BodyClickDirective,
@@ -62,11 +61,7 @@ import {BodyContextMenuDirective} from './directives/body-contextmenu.directive'
   ],
   exports: [
     DataTableComponent,
-    TreeTableComponent,
-    ToolbarComponent,
-    PaginationComponent,
   ],
   providers: []
 })
-export class DataTableModule {
-}
+export class DataTableModule {}

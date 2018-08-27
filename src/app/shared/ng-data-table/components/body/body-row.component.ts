@@ -8,14 +8,14 @@ import {translate, addClass} from '../../base/util';
 import {Row} from '../../types';
 
 @Component({
-  selector: 'app-datatable-body-row',
+  selector: 'dt-body-row',
   templateUrl: './body-row.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class BodyRowComponent implements OnInit, OnDestroy {
 
-  @Input() public table: DataTable;
-  @Input() public row: Row;
+  @Input() table: DataTable;
+  @Input() row: Row;
 
   private rowDiffer: KeyValueDiffer<{}, {}>;
   private subscriptions: Subscription[] = [];
@@ -38,9 +38,11 @@ export class BodyRowComponent implements OnInit, OnDestroy {
     return cls;
   }
 
+  @HostBinding('attr.role') role = 'row';
+
   @HostBinding('style.height.px')
   get rowHeight(): number {
-    return this.table.dimensions.rowHeight;
+    return this.row.$$height;
   }
 
   constructor(private differs: KeyValueDiffers, private cd: ChangeDetectorRef) {
@@ -83,7 +85,7 @@ export class BodyRowComponent implements OnInit, OnDestroy {
   }
 
   stylesByGroup() {
-    return translate(this.table.offsetX, 0);
+    return translate(this.table.dimensions.offsetX, 0);
   }
 
 }

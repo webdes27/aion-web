@@ -7,14 +7,14 @@ import {translate} from '../../base/util';
 import {Row} from '../../types';
 
 @Component({
-  selector: 'app-datatable-summary-row',
+  selector: 'dt-summary-row',
   templateUrl: './summary-row.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class SummaryRowComponent implements OnInit, OnDestroy {
 
-  @Input() public table: DataTable;
-  @Input() public row: Row;
+  @Input() table: DataTable;
+  @Input() row: Row;
 
   private subscriptions: Subscription[] = [];
 
@@ -24,9 +24,11 @@ export class SummaryRowComponent implements OnInit, OnDestroy {
     return cls;
   }
 
+  @HostBinding('attr.role') role = 'row';
+
   @HostBinding('style.height.px')
   get rowHeight(): number {
-    return this.table.dimensions.rowHeight;
+    return this.table.dimensions.summaryRowHeight;
   }
 
   constructor(private cd: ChangeDetectorRef) {
@@ -58,7 +60,7 @@ export class SummaryRowComponent implements OnInit, OnDestroy {
   }
 
   stylesByGroup() {
-    return translate(this.table.offsetX, 0);
+    return translate(this.table.dimensions.offsetX, 0);
   }
 
 }

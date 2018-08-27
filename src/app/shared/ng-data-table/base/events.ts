@@ -7,8 +7,7 @@ export class Events {
   private filterSource = new Subject();
   private selectionSource = new Subject();
   private pageSource = new Subject();
-  private editSource = new Subject<any>();
-  private rowMenuSource = new Subject<any>();
+  private cellValueChangedSource = new Subject<any>();
   private columnMenuSource = new Subject<ColumnMenuEventArgs>();
   private resizeBeginSource = new Subject();
   private resizeSource = new Subject<any>();
@@ -24,13 +23,13 @@ export class Events {
   private contextMenuSource = new Subject<CellEventArgs>();
   private loadingSource = new BehaviorSubject<boolean>(false);
   private cellEditModeSource = new Subject<CellEventArgs>();
+  private checkboxSource = new Subject<any>();
 
   sortSource$ = this.sortSource.asObservable();
   filterSource$ = this.filterSource.asObservable();
   selectionSource$ = this.selectionSource.asObservable();
   pageSource$ = this.pageSource.asObservable();
-  editSource$ = this.editSource.asObservable();
-  rowMenuSource$ = this.rowMenuSource.asObservable();
+  cellValueChangedSource$ = this.cellValueChangedSource.asObservable();
   columnMenuSource$ = this.columnMenuSource.asObservable();
   resizeBeginSource$ = this.resizeBeginSource.asObservable();
   resizeSource$ = this.resizeSource.asObservable();
@@ -46,6 +45,7 @@ export class Events {
   contextMenuSource$ = this.contextMenuSource.asObservable();
   loadingSource$ = this.loadingSource.asObservable();
   cellEditModeSource$ = this.cellEditModeSource.asObservable();
+  checkboxSource$ = this.checkboxSource.asObservable();
 
   onSort() {
     this.sortSource.next();
@@ -63,12 +63,8 @@ export class Events {
     this.pageSource.next();
   }
 
-  onEdit(row: any) {
-    this.editSource.next(row);
-  }
-
-  onRowMenuClick(data: any) {
-    this.rowMenuSource.next(data);
+  onCellValueChanged(data: any) {
+    this.cellValueChangedSource.next(data);
   }
 
   onColumnMenuClick(data: ColumnMenuEventArgs) {
@@ -129,6 +125,10 @@ export class Events {
 
   onCellEditMode(data: CellEventArgs) {
     this.cellEditModeSource.next(data);
+  }
+
+  onCheckbox(data: any) {
+    this.checkboxSource.next(data);
   }
 
 }
